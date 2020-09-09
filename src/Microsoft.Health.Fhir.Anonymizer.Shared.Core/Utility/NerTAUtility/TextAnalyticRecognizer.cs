@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
-using Microsoft.Extensions.Logging;
 using Microsoft.Health.Fhir.Anonymizer.Core.AnonymizerConfigurations.TextAnalytics;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models.TextAnalytics;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models.TextAnalytics.Html;
-using Microsoft.Health.Fhir.Anonymizer.Core.Processors;
-using Microsoft.Health.Fhir.Anonymizer.Core.Utility.NerTAUtility;
 using Newtonsoft.Json;
 using Polly;
 
