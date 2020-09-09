@@ -22,7 +22,6 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.NerTAUtility
     public class TextAnalyticRecognizer : INamedEntityRecognizer
     {
         // Class members for HTTP requests
-        private readonly ApiConfiguration _api;
         private readonly string _version = "v31preview1";
         private readonly int _maxLength = 5000; // byte
         private readonly int _maxRate = 200; // times/s
@@ -36,33 +35,17 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.NerTAUtility
             HttpStatusCode.ServiceUnavailable, // 503
             HttpStatusCode.GatewayTimeout // 504
         };
-        // Class members for caching
-        private readonly Cache _cache;
-        // Class members for mapping
-        private readonly MappingConfiguration _mapping;
 
-        public TextAnalyticRecognizer(RecognizerConfiguration recognizerConfiguration)
+        public TextAnalyticRecognizer(RecognizerApi recognizerApi)
         {
-            _api = recognizerConfiguration.Api;
-            _mapping = recognizerConfiguration.Mapper;
-            _cache = new Cache(recognizerConfiguration.Cache, _version);
             // Configure client
-            _client.BaseAddress = new Uri(new Uri(_api.Endpoint), _api.Path);
-            _client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _api.Key);
+            _client.BaseAddress = new Uri(recognizerApi.Url);
+            _client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", recognizerApi.Key);
         }
 
         public List<Entity> ProcessSegment(Segment segment)
         {
-            string responseString;
-            try
-            {
-                responseString = _cache.Get(segment.DocumentId, segment.Offset);
-            }
-            catch
-            {
-                responseString = GetResponse(segment.Text).Result;
-                _cache.Set(segment.DocumentId, segment.Offset, responseString);
-            }
+            string responseString = GetResponse(segment.Text).Result;
             var responseContent = JsonConvert.DeserializeObject<MicrosoftResponseContent>(responseString);
             var recognitionResult = ResponseContentToEntities(responseContent);
             return recognitionResult;
@@ -130,8 +113,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.NerTAUtility
                 {
                     var entity = new Entity()
                     {
-                        Category = Mapper.CategoryMapping(_mapping, responseEntity.Category, responseEntity.SubCategory),
-                        SubCategory = Mapper.SubCategoryMapping(responseEntity.Category, responseEntity.SubCategory),
+                        Category = responseEntity.Category,
+                        SubCategory = responseEntity.SubCategory,
                         Text = responseEntity.Text,
                         Offset = responseEntity.Offset,
                         Length = responseEntity.Length,

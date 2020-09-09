@@ -18,30 +18,15 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
     public class NerTAProcessor : IAnonymizerProcessor
     {
         private INamedEntityRecognizer _namedEntityRecognizer { get; set; }
-        private MultithreadingConfiguration multithreading { get; set; }
 
-        public NerTAProcessor(ProcessorConfiguration processorConfiguration)
+        public NerTAProcessor(RecognizerApi recognizerApi)
         {
-            var type = processorConfiguration.recognizerConfiguration.Type;
+            var type = recognizerApi.Type;
             _namedEntityRecognizer = type switch
             {
-                RecognizerType.MicrosoftNer => new TextAnalyticRecognizer(processorConfiguration.recognizerConfiguration),
+                RecognizerType.MicrosoftNer => new TextAnalyticRecognizer(recognizerApi),
                 _ => throw new NotImplementedException($"The named entity recognition method is not supported: {type}"),
             };
-            multithreading = processorConfiguration.Multithreading;
-        }
-
-        public static NerTAProcessor Create()
-        {
-            var configFilePath = "TA-config.json";
-            var processorConfiguration = LoadConfig(configFilePath);
-            return new NerTAProcessor(processorConfiguration);
-        }
-
-        private static ProcessorConfiguration LoadConfig(string configFilePath)
-        {
-            var content = File.ReadAllText(configFilePath);
-            return JsonConvert.DeserializeObject<ProcessorConfiguration>(content);
         }
 
         public ProcessResult Process(ElementNode node, ProcessContext context = null, Dictionary<string, object> settings = null)
@@ -69,46 +54,16 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
         public Dictionary<string, List<Entity>> GetRecognitionResults(string documentId, string text)
         {
             var segments = SegmentUtility.SegmentDocument(documentId, text, _namedEntityRecognizer.GetMaxLength());
-            List<List<Entity>> segmentRecognitionResults;
-            if (multithreading.Enable)
+            var segmentRecognitionResults = new List<List<Entity>>();
+            foreach (var segment in segments)
             {
-                segmentRecognitionResults = MultithreadingProcess(segments, _namedEntityRecognizer, multithreading.Threads);
-            }
-            else
-            {
-                segmentRecognitionResults = SinglethreadingProcess(segments, _namedEntityRecognizer);
+                segmentRecognitionResults.Add(_namedEntityRecognizer.ProcessSegment(segment));
+                Console.WriteLine("Finished: {0} {1}", segment.DocumentId, segment.Offset);
             }
             // Merge results
             var recognitionResults = SegmentUtility.MergeSegmentRecognitionResults(segments, segmentRecognitionResults);
 
             return recognitionResults;
-        }
-
-        public List<List<Entity>> MultithreadingProcess(List<Segment> segments, INamedEntityRecognizer processor, int threadNumber)
-        {
-            var segmentRecognitionResults = new List<Entity>[segments.Count];
-            Parallel.For(
-                0,
-                segments.Count,
-                new ParallelOptions { MaxDegreeOfParallelism = threadNumber },
-                i => {
-                    var segment = segments[i];
-                    segmentRecognitionResults[i] = processor.ProcessSegment(segment);
-                    Console.WriteLine("Finished: {0} {1}", segment.DocumentId, segment.Offset);
-                }
-            );
-            return segmentRecognitionResults.OfType<List<Entity>>().ToList();
-        }
-
-        public List<List<Entity>> SinglethreadingProcess(List<Segment> segments, INamedEntityRecognizer processor)
-        {
-            var segmentRecognitionResults = new List<List<Entity>>();
-            foreach (var segment in segments)
-            {
-                segmentRecognitionResults.Add(processor.ProcessSegment(segment));
-                Console.WriteLine("Finished: {0} {1}", segment.DocumentId, segment.Offset);
-            }
-            return segmentRecognitionResults;
         }
 
         private string ProcessEntities(string originText, IEnumerable<Entity> textEntities)
