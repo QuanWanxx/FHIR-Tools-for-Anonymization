@@ -48,7 +48,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.NerTAUtility
             }
             // Merge results
             var recognitionResults = SegmentUtility.MergeSegmentRecognitionResults(segments, segmentRecognitionResults);
-
+            recognitionResults = EntityProcessUtility.ProcessEntities(recognitionResults);
             return recognitionResults;
         }
 

@@ -72,6 +72,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utility\DateTimeUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\EncryptUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\HtmlTextUtility.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utility\NerTAUtility\EntityProcessUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\NerTAUtility\INamedEntityRecognizer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\NerTAUtility\SegmentUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\NerTAUtility\TextAnalyticRecognizer.cs" />

@@ -60,10 +60,6 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             var startIndex = 0;
             foreach (var entity in textEntities)
             {
-                if (entity.Offset <= startIndex)
-                {
-                    continue;
-                }
                 Console.WriteLine("{0, -18}: {1}", $"[{entity.Category}]", entity.Text);
                 result.Append(text.SubstringByTextElements(startIndex, entity.Offset - startIndex));
                 result.Append($"[{entity.Category.ToUpperInvariant()}]");
