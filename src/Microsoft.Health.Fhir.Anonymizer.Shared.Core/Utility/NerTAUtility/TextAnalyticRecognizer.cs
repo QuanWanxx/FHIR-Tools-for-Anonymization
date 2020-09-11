@@ -19,7 +19,6 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.NerTAUtility
         // Class members for HTTP requests
         private readonly string _version = "v31preview1";
         private readonly int _maxLength = 5000; // byte
-        private readonly int _maxRate = 200; // times/s
         private readonly HttpClient _client = new HttpClient();
         private static readonly int _maxNumberOfRetries = 6;
         protected static readonly HttpStatusCode[] _httpStatusCodesForRetrying = {
@@ -38,22 +37,37 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.NerTAUtility
             _client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", recognizerApi.Key);
         }
 
-        public List<Entity> ProcessSegment(Segment segment)
+        public List<Entity> RecognizeText(string text)
+        {
+            var segments = SegmentUtility.SegmentText(text, _maxLength);
+            var segmentRecognitionResults = new List<List<Entity>>();
+            foreach (var segment in segments)
+            {
+                segmentRecognitionResults.Add(RecognizeSegment(segment));
+                // Console.WriteLine("Finished: {0} {1}", segment.DocumentId, segment.Offset);
+            }
+            // Merge results
+            var recognitionResults = SegmentUtility.MergeSegmentRecognitionResults(segments, segmentRecognitionResults);
+
+            return recognitionResults;
+        }
+
+        public List<Entity> RecognizeSegment(Segment segment)
         {
             string responseString = GetResponse(segment.Text).Result;
             var responseContent = JsonConvert.DeserializeObject<MicrosoftResponseContent>(responseString);
             var recognitionResult = ResponseContentToEntities(responseContent);
+
+            //TODO : Check the inmatched issue and remove this empty return
+            foreach (var entity in recognitionResult)
+            {
+                if (!entity.Text.Equals(segment.Text.Substring(entity.Offset, entity.Length)))
+                {
+                    //Console.WriteLine("{0} | {1}", segment.Text.Substring(entity.Offset, entity.Length), entity.Text);
+                    return new List<Entity>();
+                }
+            }
             return recognitionResult;
-        }
-
-        public int GetMaxLength()
-        {
-            return _maxLength;
-        }
-
-        public int GetMaxRate()
-        {
-            return _maxRate;
         }
 
         private HttpRequestMessage CreateRequestMessage(string requestText)

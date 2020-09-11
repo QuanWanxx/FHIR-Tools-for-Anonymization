@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility
@@ -19,9 +20,9 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility
             {
                 if (!node.HasChildNodes)
                 {
-                    sb.Append(new string(' ', node.InnerStartIndex - startIndex));
+                    sb.Append(new string(' ', node.StreamPosition - startIndex));
                     sb.Append(node.InnerText);
-                    startIndex = node.InnerStartIndex + node.InnerLength;
+                    startIndex = node.StreamPosition + node.InnerLength;
                 }
             }
             return sb.ToString();

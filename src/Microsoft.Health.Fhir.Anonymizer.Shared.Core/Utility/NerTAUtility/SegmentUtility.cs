@@ -6,7 +6,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.NerTAUtility
 {
     public class SegmentUtility
     {
-        public static List<Segment> SegmentDocument(string documentId, string text, int maxSegmentLength)
+        public static List<Segment> SegmentText(string text, int maxSegmentLength)
         {
             var segments = new List<Segment>();
             int offset = 0;
@@ -28,7 +28,6 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.NerTAUtility
                 }
                 segments.Add(new Segment()
                 {
-                    DocumentId = documentId,
                     Text = segmentText,
                     Offset = offset
                 });
@@ -47,26 +46,17 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.NerTAUtility
             }.Max() + 1;
         }
 
-        public static Dictionary<string, List<Entity>> MergeSegmentRecognitionResults(List<Segment> segments, List<List<Entity>> segmentRecognitionResults)
+        public static List<Entity> MergeSegmentRecognitionResults(List<Segment> segments, List<List<Entity>> segmentRecognitionResults)
         {
-            var recognitionResults = new Dictionary<string, List<Entity>>();
-            var entities = new List<Entity>();
-            var documentId = segments.FirstOrDefault()?.DocumentId;
+            var recognitionResults = new List<Entity>();
             for (int i = 0; i < segments.Count; i++)
             {
-                if (segments[i].DocumentId != documentId)
-                {
-                    recognitionResults[documentId] = entities;
-                    documentId = segments[i].DocumentId;
-                    entities = new List<Entity>();
-                }
                 foreach (var entity in segmentRecognitionResults[i])
                 {
                     entity.Offset += segments[i].Offset;
-                    entities.Add(entity);
+                    recognitionResults.Add(entity);
                 }
             }
-            recognitionResults[documentId] = entities;
             return recognitionResults;
         }
     }

@@ -40,29 +40,14 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             var originTextStripTags = HtmlTextUtility.StripTags(originText);
             // Console.WriteLine($"{originText.Length}, {originTextStripTags.Length}");
 
-            var recognitionResults = GetRecognitionResults(documentId, originText);
-            node.Value = ProcessEntities(originText, recognitionResults[documentId]);
+            var recognitionResult = _namedEntityRecognizer.RecognizeText(originTextStripTags);
+            node.Value = ProcessEntities(originText, originTextStripTags, recognitionResult);
 
             processResult.AddProcessRecord(AnonymizationOperations.Masked, node);
             return new ProcessResult();
         }
 
-        public Dictionary<string, List<Entity>> GetRecognitionResults(string documentId, string text)
-        {
-            var segments = SegmentUtility.SegmentDocument(documentId, text, _namedEntityRecognizer.GetMaxLength());
-            var segmentRecognitionResults = new List<List<Entity>>();
-            foreach (var segment in segments)
-            {
-                segmentRecognitionResults.Add(_namedEntityRecognizer.ProcessSegment(segment));
-                Console.WriteLine("Finished: {0} {1}", segment.DocumentId, segment.Offset);
-            }
-            // Merge results
-            var recognitionResults = SegmentUtility.MergeSegmentRecognitionResults(segments, segmentRecognitionResults);
-
-            return recognitionResults;
-        }
-
-        private string ProcessEntities(string originText, IEnumerable<Entity> textEntities)
+        private string ProcessEntities(string originText, string originTextStripTags, IEnumerable<Entity> textEntities)
         {
             if (string.IsNullOrWhiteSpace(originText))
             {
@@ -75,7 +60,11 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             var startIndex = 0;
             foreach (var entity in textEntities)
             {
-                Console.WriteLine($"{entity.Text}, [{entity.Category}]");
+                if (entity.Offset <= startIndex)
+                {
+                    continue;
+                }
+                Console.WriteLine("{0, -18}: {1}", $"[{entity.Category}]", entity.Text);
                 result.Append(text.SubstringByTextElements(startIndex, entity.Offset - startIndex));
                 result.Append($"[{entity.Category.ToUpperInvariant()}]");
                 startIndex = entity.Offset + entity.Length;
@@ -84,7 +73,11 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             {
                 result.Append(text.SubstringByTextElements(startIndex));
             }
-
+            
+            Console.WriteLine(originText);
+            Console.WriteLine(result.ToString());
+            Console.WriteLine(new string('-', 100));
+            Console.WriteLine();
             return result.ToString();
         }
     }
