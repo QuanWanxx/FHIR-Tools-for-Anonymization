@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using System.Web;
 using Microsoft.Health.Fhir.Anonymizer.Core.AnonymizerConfigurations.TextAnalytics;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models.TextAnalytics;
@@ -32,10 +33,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             {
                 return processResult;
             }
-            // TODO: How to handle the documentId
-            var documentId = "Patient";
-            var originText = node.Value.ToString();
-
+            var originText = HttpUtility.HtmlDecode(node.Value.ToString());
             // TODO: Whether to use textStripTags as the input of processor
             var originTextStripTags = HtmlTextUtility.StripTags(originText);
             // Console.WriteLine($"{originText.Length}, {originTextStripTags.Length}");
@@ -69,7 +67,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             {
                 result.Append(text.SubstringByTextElements(startIndex));
             }
-            
+            Console.WriteLine(originTextStripTags);
             Console.WriteLine(originText);
             Console.WriteLine(result.ToString());
             Console.WriteLine(new string('-', 100));

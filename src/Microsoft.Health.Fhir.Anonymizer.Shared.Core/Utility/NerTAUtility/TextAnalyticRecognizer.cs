@@ -58,12 +58,12 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.NerTAUtility
             var responseContent = JsonConvert.DeserializeObject<MicrosoftResponseContent>(responseString);
             var recognitionResult = ResponseContentToEntities(responseContent);
 
-            //TODO : Check the inmatched issue and remove this empty return
+            //Check the inmatched issue
             foreach (var entity in recognitionResult)
             {
                 if (!entity.Text.Equals(segment.Text.Substring(entity.Offset, entity.Length)))
                 {
-                    //Console.WriteLine("{0} | {1}", segment.Text.Substring(entity.Offset, entity.Length), entity.Text);
+                    Console.WriteLine("Warning! in-matched entity: {0} | {1}", segment.Text.Substring(entity.Offset, entity.Length), entity.Text);
                     return new List<Entity>();
                 }
             }
