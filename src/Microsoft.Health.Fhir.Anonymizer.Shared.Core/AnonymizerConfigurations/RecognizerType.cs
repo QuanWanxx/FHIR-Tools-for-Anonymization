@@ -3,7 +3,6 @@
     public enum RecognizerType
     {
         MicrosoftNer,
-        GoogleNer,
-        AmazonNer
+        // StructBased
     }
 }

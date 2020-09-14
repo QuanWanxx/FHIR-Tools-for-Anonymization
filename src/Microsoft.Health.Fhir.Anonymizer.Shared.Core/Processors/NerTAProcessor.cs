@@ -36,16 +36,15 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             var originText = HttpUtility.HtmlDecode(node.Value.ToString());
             // TODO: Whether to use textStripTags as the input of processor
             var originTextStripTags = HtmlTextUtility.StripTags(originText);
-            // Console.WriteLine($"{originText.Length}, {originTextStripTags.Length}");
 
             var recognitionResult = _namedEntityRecognizer.RecognizeText(originTextStripTags);
-            node.Value = ProcessEntities(originText, originTextStripTags, recognitionResult);
+            node.Value = ProcessEntities(originText, recognitionResult);
 
             processResult.AddProcessRecord(AnonymizationOperations.Masked, node);
             return new ProcessResult();
         }
 
-        private string ProcessEntities(string originText, string originTextStripTags, IEnumerable<Entity> textEntities)
+        private string ProcessEntities(string originText, IEnumerable<Entity> textEntities)
         {
             if (string.IsNullOrWhiteSpace(originText))
             {
@@ -58,6 +57,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             var startIndex = 0;
             foreach (var entity in textEntities)
             {
+                // TODO: Console just to show the recognization result, will be removed
                 Console.WriteLine("{0, -18}: {1}", $"[{entity.Category}]", entity.Text);
                 result.Append(text.SubstringByTextElements(startIndex, entity.Offset - startIndex));
                 result.Append($"[{entity.Category.ToUpperInvariant()}]");
@@ -67,7 +67,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             {
                 result.Append(text.SubstringByTextElements(startIndex));
             }
-            Console.WriteLine(originTextStripTags);
+            // TODO: Console just to show the recognization result, will be removed
             Console.WriteLine(originText);
             Console.WriteLine(result.ToString());
             Console.WriteLine(new string('-', 100));

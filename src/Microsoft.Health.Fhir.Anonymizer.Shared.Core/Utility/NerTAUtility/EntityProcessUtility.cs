@@ -4,6 +4,9 @@ using Microsoft.Health.Fhir.Anonymizer.Core.Models.TextAnalytics;
 
 namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.NerTAUtility
 {
+    // Used to handle the overlap entities
+    // The task is similiar to an task  https://leetcode.com/problems/the-skyline-problem/
+    // Solution refers to the discussion under this problem.
     class EntityProcessUtility
     {
         struct Event
@@ -20,6 +23,10 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.NerTAUtility
             }
         }
 
+        // Process overlap entities
+        // E.g.
+        // Raw entities: {("MS 100 University", "ORG", 0.2), ("100", "AGE", 0.5)}
+        // Processed entities: {("MS ", "ORG", 0.2), ("100", "AGE", 0.5), (" University", "ORG", 0.2)}
         public static List<Entity> ProcessEntities(List<Entity> entities)
         {
             // Get the entering and leaving events for entities
@@ -70,7 +77,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.NerTAUtility
                 }
             }
 
-            // Generate the processed entities result
+            // Generate the processed entities
             var result = new List<Entity>();
             for (int i = 1; i < boundaries.Count; i++)
             {
@@ -82,7 +89,6 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.NerTAUtility
                 var start = boundaries[i - 1].Item1;
                 var end = boundaries[i].Item1;
                 var originOffset = entities[index].Offset;
-                // ["LOC", "Beijing", 10, 7, 0.2]
                 result.Add(new Entity()
                 {
                     Category = entities[index].Category,

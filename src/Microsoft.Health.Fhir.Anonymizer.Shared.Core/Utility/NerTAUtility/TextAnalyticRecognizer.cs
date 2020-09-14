@@ -14,10 +14,10 @@ using Polly;
 
 namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.NerTAUtility
 {
+    // API version: v3.1-preview.1
     public class TextAnalyticRecognizer : INamedEntityRecognizer
     {
         // Class members for HTTP requests
-        private readonly string _version = "v31preview1";
         private readonly int _maxLength = 5000; // byte
         private readonly HttpClient _client = new HttpClient();
         private static readonly int _maxNumberOfRetries = 6;
@@ -44,7 +44,6 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.NerTAUtility
             foreach (var segment in segments)
             {
                 segmentRecognitionResults.Add(RecognizeSegment(segment));
-                // Console.WriteLine("Finished: {0} {1}", segment.DocumentId, segment.Offset);
             }
             // Merge results
             var recognitionResults = SegmentUtility.MergeSegmentRecognitionResults(segments, segmentRecognitionResults);
@@ -58,7 +57,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.NerTAUtility
             var responseContent = JsonConvert.DeserializeObject<MicrosoftResponseContent>(responseString);
             var recognitionResult = ResponseContentToEntities(responseContent);
 
-            //Check the inmatched issue
+            //Check the in-matched issue
             foreach (var entity in recognitionResult)
             {
                 if (!entity.Text.Equals(segment.Text.Substring(entity.Offset, entity.Length)))
