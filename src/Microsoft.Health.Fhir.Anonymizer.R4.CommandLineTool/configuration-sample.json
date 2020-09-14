@@ -1,6 +1,22 @@
 {
   "fhirVersion": "R4",
   "fhirPathRules": [
+  	{
+	  "path": "nodesByType('Narrative').div",
+	  "method": "inspire",
+	  "match": [
+		"nodesByType('HumanName')",
+		"nodesByType('ContactPoint')"
+	  ]
+	},
+	
+	{
+	  "path": "Condition.onset | Condition.abatement as Age",
+	  "method": "perturb",
+	  "span": 6,
+	  "rangeType": "fixed",
+	  "roundTo": 0
+	},
     {"path": "nodesByType('Extension')", "method": "redact"},
 
     {"path": "Organization.identifier", "method": "keep"},
