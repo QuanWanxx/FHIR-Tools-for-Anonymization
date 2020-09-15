@@ -49,7 +49,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Processors\RedactProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Processors\Settings\GeneralizeSetting.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Processors\Settings\GeneralizeOtherValuesOperation.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Processors\Settings\InspireMatchSetting.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Processors\Settings\InspireSetting.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Processors\Settings\PerturbRangeType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Processors\Settings\PerturbSetting.cs" />

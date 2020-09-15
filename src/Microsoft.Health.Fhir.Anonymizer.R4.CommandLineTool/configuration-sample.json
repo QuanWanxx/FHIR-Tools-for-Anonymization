@@ -4,9 +4,13 @@
   	{
 	  "path": "nodesByType('Narrative').div",
 	  "method": "inspire",
-	  "match": [
+	  "expressions": [
 		"nodesByType('HumanName')",
-		"nodesByType('ContactPoint')"
+		"nodesByType('ContactPoint')",
+		"nodesByType('Date')",
+		"nodesByType('Datetime')",
+		"nodesByType('Address')",
+		"nodesByType('Identifier')",
 	  ]
 	},
 	
@@ -27,8 +31,8 @@
     {"path": "nodesByType('HumanName').use", "method": "keep"},
     {"path": "nodesByType('Address').country", "method": "keep"},
     {"path": "nodesByType('Address').state", "method": "keep"},
-
     {"path": "Resource.id", "method": "cryptoHash"},
+
     {"path": "Bundle.entry.fullUrl", "method": "redact"},
     {"path": "Bundle.entry.request.url", "method": "redact"},
     {"path": "Bundle.entry.response.location", "method":"redact"},

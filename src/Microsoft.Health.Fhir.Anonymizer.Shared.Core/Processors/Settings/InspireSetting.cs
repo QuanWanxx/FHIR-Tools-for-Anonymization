@@ -10,17 +10,17 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors.Settings
 {
     public class InspireSetting
     {
-        public List<string> Match { get; set; }
+        public List<string> Expressions { get; set; }
 
         public static InspireSetting CreateFromRuleSettings(Dictionary<string, object> ruleSettings)
         {
             EnsureArg.IsNotNull(ruleSettings);
 
-            var matchString = ruleSettings.GetValueOrDefault("match")?.ToString();
-            var match = JsonConvert.DeserializeObject<List<string>>(matchString);
+            var expressionsString = ruleSettings.GetValueOrDefault("expressions")?.ToString();
+            var expressions = JsonConvert.DeserializeObject<List<string>>(expressionsString);
             return new InspireSetting
             {
-                Match = match
+                Expressions = expressions
             };
         }
 

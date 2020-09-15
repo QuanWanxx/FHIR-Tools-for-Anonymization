@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Text;
 using EnsureThat;
+using Hl7.FhirPath;
 using Hl7.Fhir.ElementModel;
 using Hl7.Fhir.Model;
 using MathNet.Numerics.Distributions;
 using Microsoft.Health.Fhir.Anonymizer.Core;
+using Microsoft.Health.Fhir.Anonymizer.Core.AnonymizerConfigurations;
 using Microsoft.Health.Fhir.Anonymizer.Core.Extensions;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models;
 using Microsoft.Health.Fhir.Anonymizer.Core.Processors.Settings;
@@ -20,85 +24,73 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             EnsureArg.IsNotNull(context?.VisitedNodes);
             EnsureArg.IsNotNull(settings);
 
+            var processResult = new ProcessResult();
+            if (string.IsNullOrEmpty(node?.Value?.ToString()))
+            {
+                return processResult;
+            }
 
             var inspireSetting = InspireSetting.CreateFromRuleSettings(settings);
+            var resourceNode = node;
+            while (!resourceNode.IsFhirResource())
+            {
+                resourceNode = resourceNode.Parent;
+            }
 
-            return new ProcessResult();
+            var freeText = new StringBuilder(node.Value.ToString());
+            foreach (var ruleExpression in inspireSetting.Expressions)
+            {
+                var matchNodes = resourceNode.Select(ruleExpression).Cast<ElementNode>();
+                foreach (var matchNode in matchNodes)
+                {
+                    MatchAndReplaceRecursive(matchNode, freeText);
+                }
+            }
+
+            Console.WriteLine(node.Value.ToString());
+            Console.WriteLine(freeText);
+            Console.WriteLine(new string('-', 100));
+            Console.WriteLine();
+
+            node.Value = freeText.ToString();
+            processResult.AddProcessRecord(AnonymizationOperations.Masked, node);
+            return processResult;
         }
 
-        /*
-       public override void MatchStructText(ElementNode node)
-       {
+        private void MatchAndReplaceRecursive(ElementNode node, StringBuilder freeText)
+        {
+            var childs = node.Children().Cast<ElementNode>();
+            // dfs
+            if (childs.Any())
+            {
+                foreach (var child in childs)
+                {
+                    // Avoid the fhirResource Node
+                    if (child.IsFhirResource())
+                    {
+                        return;
+                    }
+                    MatchAndReplaceRecursive(child, freeText);
+                }
+            }
+            // Is a leaf
+            else
+            {
+                if (node.InstanceType.Equals("string") || node.InstanceType.Equals("date") || node.InstanceType.Equals("dateTime"))
+                {
+                    var combineName = $"{node.Parent.Name}.{node.Name}";
+                    // TODO: Here Converter to string just for print the replace information, will be removed after finishing testing
+                    var freeTextString = freeText.ToString();
+                    if (freeTextString.IndexOf(node.Value.ToString()) > 0)
+                    {
+                        Console.WriteLine("{0, -15} {1}: , {2}", $"[{combineName}]", node.InstanceType, node.Value.ToString());
+                    }
 
-           if (node.IsFhirResource())
-           {
-               // Collect sensitive struct data
-               var structData = new List<Tuple<string, string, string>>();
-               string typeString = node.InstanceType;
-               IEnumerable<AnonymizationFhirPathRule> resourceSpecificAndGeneralRules = GetRulesByType(typeString);
-
-               foreach (var rule in resourceSpecificAndGeneralRules)
-               {
-                   string method = rule.Method.ToUpperInvariant();
-                   // Only match the entity with "redact" method in structed data 
-                   if (method.Equals("KEEP")) // KEEP
-                   {
-                       continue;
-                   }
-
-                   var matchNodes = node.Select(rule.Expression).Cast<ElementNode>();
-                   foreach (var matchNode in matchNodes)
-                   {
-                       CollectStructDataRecursive(matchNode, structData);
-                   }
-               }
-
-               // Match Text
-               var experssion = "nodesByType('Narrative').div";
-               var freeTextNodes = node.Select(experssion).Cast<ElementNode>();
-               foreach (var freeTextNode in freeTextNodes)
-               {
-                   MatchAndReplace(freeTextNode, structData);
-               }
-           }
-       }
-
-       private void CollectStructDataRecursive(ElementNode node, List<Tuple<string, string, string>> structData)
-       {
-           var childs = node.Children().Cast<ElementNode>();
-           // dfs
-           if (childs.Any())
-           {
-               foreach (var child in childs)
-               {
-                   if (child.IsFhirResource())
-                   {
-                       return;
-                   }
-                   CollectStructDataRecursive(child, structData);
-               }
-           }
-           // Is a leaf
-           else
-           {
-               structData.Add(Tuple.Create(node.Name, node.InstanceType, node.Value.ToString()));
-           }
-           return;
-       }
-
-       private void MatchAndReplace(ElementNode node, List<Tuple<string, string, string>> structData)
-       {
-           var freeText = node.Value.ToString();
-           foreach (var content in structData)
-           {
-               if (freeText.IndexOf(content.Item3) >= 0)
-               {
-                   freeText = freeText.Replace(content.Item3, $"[{content.Item1}]");
-                   Console.WriteLine($"[{content.Item3}] replaced with [{content.Item1}]");
-               }
-           }
-           node.Value = freeText;
-       }
-   */
+                    
+                    freeText.Replace(node.Value.ToString(), $"[{combineName}]");
+                }
+            }
+            return;
+        }
     }
 }
