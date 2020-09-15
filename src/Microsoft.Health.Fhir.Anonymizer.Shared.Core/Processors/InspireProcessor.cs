@@ -6,10 +6,6 @@ using System.Text;
 using EnsureThat;
 using Hl7.FhirPath;
 using Hl7.Fhir.ElementModel;
-using Hl7.Fhir.Model;
-using MathNet.Numerics.Distributions;
-using Microsoft.Health.Fhir.Anonymizer.Core;
-using Microsoft.Health.Fhir.Anonymizer.Core.AnonymizerConfigurations;
 using Microsoft.Health.Fhir.Anonymizer.Core.Extensions;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models;
 using Microsoft.Health.Fhir.Anonymizer.Core.Processors.Settings;
@@ -85,7 +81,6 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
                     {
                         Console.WriteLine("{0, -15} {1}: , {2}", $"[{combineName}]", node.InstanceType, node.Value.ToString());
                     }
-
                     
                     freeText.Replace(node.Value.ToString(), $"[{combineName}]");
                 }
