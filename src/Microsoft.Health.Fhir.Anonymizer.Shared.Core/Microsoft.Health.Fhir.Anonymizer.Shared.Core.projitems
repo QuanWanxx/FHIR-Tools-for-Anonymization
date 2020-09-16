@@ -31,6 +31,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\ProcessResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ProcessContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\SecurityLabels.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Entity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PartitionedExecution\BatchAnonymizeProgressDetail.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PartitionedExecution\FhirEnumerableReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PartitionedExecution\FhirPartitionedExecutor.cs" />
@@ -45,6 +46,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Processors\GeneralizeProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Processors\IAnonymizerProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Processors\KeepProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Processors\RecognizersTextProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Processors\PerturbProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Processors\RedactProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Processors\Settings\GeneralizeSetting.cs" />
@@ -55,6 +57,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Processors\Settings\SubstituteSetting.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Processors\SubstituteProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\CryptoHashUtility.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utility\HtmlTextUtility.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utility\EntityProcessUtility.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utility\INamedEntityRecognizer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utility\TextRecognizer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\DateTimeUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\EncryptUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\PostalCodeUtility.cs" />

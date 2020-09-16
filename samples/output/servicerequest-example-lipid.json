@@ -1,0 +1,125 @@
+{
+  "resourceType": "ServiceRequest",
+  "id": "0d43500eebc9c81a6ffc0957c191c8fa79652d5a6b0d80a0000116322c603afe",
+  "meta": {
+    "security": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+        "code": "REDACTED",
+        "display": "redacted"
+      },
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+        "code": "CRYTOHASH",
+        "display": "cryptographic hash function"
+      },
+      {
+        "code": "PERTURBED",
+        "display": "exact value is replaced with another exact value"
+      }
+    ],
+    "tag": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason"
+      }
+    ]
+  },
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: lipid</p><p><b>contained</b>: , </p><p><b>identifier</b>: Placer = [PHONENUMBER]</p><p><b>status</b>: active</p><p><b>intent</b>: original-order</p><p><b>code</b>: Lipid Panel <span>(Details : {[URL] code 'LIPID' = 'LIPID)</span></p><p><b>subject</b>: <a>Patient/example</a></p><p><b>encounter</b>: <a>Encounter/example</a></p><p><b>occurrence</b>: [DATETIMEV2.DATETIME]</p><p><b>requester</b>: <a>Practitioner/example</a></p><p><b>performer</b>: <a>Practitioner/f202</a></p><p><b>reasonCode</b>: Fam hx-ischem heart dis <span>(Details : {ICD-9 code 'V173' = 'V173', given as 'Fam hx-ischem heart dis'})</span></p><p><b>supportingInfo</b>: Fasting status. Generated Summary: id: fasting; status: final; Fasting status - Reported <span>(Details : {LOINC code '49541-6' = 'Fasting status - Reported', given as 'Fasting status - Reported'})</span>; Yes <span>(Details : {[URL] code 'Y' = 'Yes', given as 'Yes'})</span></p><p><b>specimen</b>: Serum specimen. Generated Summary: id: serum; [PHONENUMBER]; Serum sample <span>(Details : {SNOMED CT code '[PHONENUMBER]' = 'Serum specimen', given as 'Serum sample'})</span></p><p><b>note</b>: patient is afraid of needles</p></div>"
+  },
+  "contained": [
+    {
+      "resourceType": "Observation",
+      "id": "ce6147c5886d928ea8c9fede4d31eb15e94e2b41b2b3ad35cefe5d71cfbd5467",
+      "status": "final",
+      "code": {
+        "coding": [
+          {
+            "system": "http://loinc.org"
+          }
+        ]
+      },
+      "subject": {
+        "reference": "Patient/77634fffb1db678e068db495db919de6bbeb4d6eb526022bca90c73fb9b3ce87"
+      }
+    },
+    {
+      "resourceType": "Specimen",
+      "id": "ae8de86ce16c8f6d2bb5b8a33c162bfaf48c90a821d6a799e566f8ae60f70e8a",
+      "identifier": [
+        {
+          "system": "http://acme.org/specimens"
+        }
+      ],
+      "type": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct"
+          }
+        ]
+      },
+      "subject": {
+        "reference": "Patient/77634fffb1db678e068db495db919de6bbeb4d6eb526022bca90c73fb9b3ce87"
+      },
+      "collection": {
+        "collectedDateTime": "2015-10-04T00:00:00Z"
+      }
+    }
+  ],
+  "identifier": [
+    {
+      "type": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+          }
+        ]
+      },
+      "system": "urn:oid:1.3.4.5.6.7"
+    }
+  ],
+  "status": "active",
+  "intent": "original-order",
+  "code": {
+    "coding": [
+      {
+        "system": "http://acme.org/tests"
+      }
+    ]
+  },
+  "subject": {
+    "reference": "Patient/77634fffb1db678e068db495db919de6bbeb4d6eb526022bca90c73fb9b3ce87"
+  },
+  "encounter": {
+    "reference": "Encounter/77634fffb1db678e068db495db919de6bbeb4d6eb526022bca90c73fb9b3ce87"
+  },
+  "occurrenceDateTime": "2013-06-20T00:00:00-07:00",
+  "requester": {
+    "reference": "Practitioner/77634fffb1db678e068db495db919de6bbeb4d6eb526022bca90c73fb9b3ce87"
+  },
+  "performer": [
+    {
+      "reference": "Practitioner/175fab6100d3c601868b249c86b78f6fbe65d9f6314a58954e73c4c31a3a8561"
+    }
+  ],
+  "reasonCode": [
+    {
+      "coding": [
+        {
+          "system": "http://hl7.org/fhir/sid/icd-9"
+        }
+      ]
+    }
+  ],
+  "supportingInfo": [
+    {
+      "reference": "#ce6147c5886d928ea8c9fede4d31eb15e94e2b41b2b3ad35cefe5d71cfbd5467"
+    }
+  ],
+  "specimen": [
+    {
+      "reference": "#ae8de86ce16c8f6d2bb5b8a33c162bfaf48c90a821d6a799e566f8ae60f70e8a"
+    }
+  ]
+}

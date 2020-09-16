@@ -1,0 +1,645 @@
+{
+  "resourceType": "Bundle",
+  "id": "7c4b9beb07027f7b5619c5e4bfc0a71040b8d4b72865370e85c49b1433055521",
+  "meta": {
+    "lastUpdated": "2012-05-29T00:00:00+00:00",
+    "security": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+        "code": "REDACTED",
+        "display": "redacted"
+      },
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+        "code": "CRYTOHASH",
+        "display": "cryptographic hash function"
+      },
+      {
+        "code": "PERTURBED",
+        "display": "exact value is replaced with another exact value"
+      }
+    ],
+    "tag": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason"
+      }
+    ]
+  },
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "872c7c5eeb1b38d31a0a71b88856a3011684404d20c45280d20d98a876d394a5",
+        "meta": {
+          "lastUpdated": "2012-05-29T00:00:00+00:00",
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+              "code": "REDACTED",
+              "display": "redacted"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+              "code": "CRYTOHASH",
+              "display": "cryptographic hash function"
+            },
+            {
+              "code": "PERTURBED",
+              "display": "exact value is replaced with another exact value"
+            }
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Everywoman, Eve. SSN:\n            [PHONENUMBER]</div>"
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://hl7.org/fhir/sid/us-ssn"
+          }
+        ],
+        "active": true,
+        "name": [
+          {
+            "use": "official"
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1973-05-31",
+        "managingOrganization": {
+          "reference": "Organization/3a97dc1fc36fd9bf8d512fdcea683c1bd5c5364488db3e52118d2b923021a909"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "8743c1909e7cf2e3c0fdec60df171b85fc5ffd75e9ab3cb3847f7862fc5f7cb1",
+        "meta": {
+          "lastUpdated": "2012-05-29T00:00:00+00:00",
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+              "code": "REDACTED",
+              "display": "redacted"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+              "code": "CRYTOHASH",
+              "display": "cryptographic hash function"
+            },
+            {
+              "code": "PERTURBED",
+              "display": "exact value is replaced with another exact value"
+            }
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Everyman, Adam. SSN:\n            [PHONENUMBER]</div>"
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://hl7.org/fhir/sid/us-ssn"
+          }
+        ],
+        "active": true,
+        "name": [
+          {
+            "use": "official"
+          }
+        ],
+        "gender": "male",
+        "managingOrganization": {
+          "reference": "Organization/3a97dc1fc36fd9bf8d512fdcea683c1bd5c5364488db3e52118d2b923021a909"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "67c153f4b2da4ea77a3d019a370c14b4a99fb5dd41fd6e8f0c3164557dba5694",
+        "meta": {
+          "lastUpdated": "2012-05-29T00:00:00+00:00",
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+              "code": "REDACTED",
+              "display": "redacted"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+              "code": "CRYTOHASH",
+              "display": "cryptographic hash function"
+            },
+            {
+              "code": "PERTURBED",
+              "display": "exact value is replaced with another exact value"
+            }
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Kidd, Kari. SSN:\n            [PHONENUMBER]</div>"
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://hl7.org/fhir/sid/us-ssn"
+          }
+        ],
+        "active": true,
+        "name": [
+          {
+            "use": "official"
+          }
+        ],
+        "gender": "female",
+        "managingOrganization": {
+          "reference": "Organization/3a97dc1fc36fd9bf8d512fdcea683c1bd5c5364488db3e52118d2b923021a909"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "7f3507a5e0f374a577ae946b76d6d6516e3b39a150d9fa2f55903edff48144a6",
+        "meta": {
+          "lastUpdated": "2012-05-29T00:00:00+00:00",
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+              "code": "REDACTED",
+              "display": "redacted"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+              "code": "CRYTOHASH",
+              "display": "cryptographic hash function"
+            },
+            {
+              "code": "PERTURBED",
+              "display": "exact value is replaced with another exact value"
+            }
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Nuclear, Nancy. SSN:\n            [PHONENUMBER]</div>"
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://hl7.org/fhir/sid/us-ssn"
+          }
+        ],
+        "active": true,
+        "name": [
+          {
+            "use": "official"
+          }
+        ],
+        "gender": "female",
+        "managingOrganization": {
+          "reference": "Organization/3a97dc1fc36fd9bf8d512fdcea683c1bd5c5364488db3e52118d2b923021a909"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "f301dc3452df70d679a4d401f4fca5d32960c4ba361f4d0b4e049891c30da434",
+        "meta": {
+          "lastUpdated": "2012-05-29T00:00:00+00:00",
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+              "code": "REDACTED",
+              "display": "redacted"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+              "code": "CRYTOHASH",
+              "display": "cryptographic hash function"
+            },
+            {
+              "code": "PERTURBED",
+              "display": "exact value is replaced with another exact value"
+            }
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Nuclear, Neville. SSN:\n            [PHONENUMBER]</div>"
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://hl7.org/fhir/sid/us-ssn"
+          }
+        ],
+        "active": true,
+        "name": [
+          {
+            "use": "official"
+          }
+        ],
+        "gender": "male",
+        "managingOrganization": {
+          "reference": "Organization/3a97dc1fc36fd9bf8d512fdcea683c1bd5c5364488db3e52118d2b923021a909"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "bd822580a7afeec3d009b0146180a4c260c6c1765855c62ca2d4790d179ec073",
+        "meta": {
+          "lastUpdated": "2012-05-29T00:00:00+00:00",
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+              "code": "REDACTED",
+              "display": "redacted"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+              "code": "CRYTOHASH",
+              "display": "cryptographic hash function"
+            },
+            {
+              "code": "PERTURBED",
+              "display": "exact value is replaced with another exact value"
+            }
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Nuclear, Ned. SSN:\n            [PHONENUMBER]</div>"
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://hl7.org/fhir/sid/us-ssn"
+          }
+        ],
+        "active": true,
+        "name": [
+          {
+            "use": "official"
+          }
+        ],
+        "gender": "male",
+        "managingOrganization": {
+          "reference": "Organization/3a97dc1fc36fd9bf8d512fdcea683c1bd5c5364488db3e52118d2b923021a909"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "c15ed2cb729ee861ebf63149af97eeb4c19f81af6d1fd7da6b73597b84b9df31",
+        "meta": {
+          "lastUpdated": "2012-05-29T00:00:00+00:00",
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+              "code": "REDACTED",
+              "display": "redacted"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+              "code": "CRYTOHASH",
+              "display": "cryptographic hash function"
+            },
+            {
+              "code": "PERTURBED",
+              "display": "exact value is replaced with another exact value"
+            }
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Nuclear, Nelda. SSN:\n            [PHONENUMBER]</div>"
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://hl7.org/fhir/sid/us-ssn"
+          }
+        ],
+        "active": true,
+        "name": [
+          {
+            "use": "official"
+          }
+        ],
+        "gender": "female",
+        "managingOrganization": {
+          "reference": "Organization/3a97dc1fc36fd9bf8d512fdcea683c1bd5c5364488db3e52118d2b923021a909"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "bbe622f915af97c39b47e4e2c4c5cf24ba86a0d49e7c35a6a2f05425c915688c",
+        "meta": {
+          "lastUpdated": "2012-05-29T00:00:00+00:00",
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+              "code": "REDACTED",
+              "display": "redacted"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+              "code": "CRYTOHASH",
+              "display": "cryptographic hash function"
+            },
+            {
+              "code": "PERTURBED",
+              "display": "exact value is replaced with another exact value"
+            }
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Mum, Martha. SSN:\n            [PHONENUMBER]</div>"
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://hl7.org/fhir/sid/us-ssn"
+          }
+        ],
+        "active": true,
+        "name": [
+          {
+            "use": "official"
+          }
+        ],
+        "gender": "female",
+        "managingOrganization": {
+          "reference": "Organization/3a97dc1fc36fd9bf8d512fdcea683c1bd5c5364488db3e52118d2b923021a909"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "7e636641269a4e47c98c9f7156bf83734bdfc810374ed6b5bbc61cd1a1f20512",
+        "meta": {
+          "lastUpdated": "2012-05-29T00:00:00+00:00",
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+              "code": "REDACTED",
+              "display": "redacted"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+              "code": "CRYTOHASH",
+              "display": "cryptographic hash function"
+            },
+            {
+              "code": "PERTURBED",
+              "display": "exact value is replaced with another exact value"
+            }
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Sons, Stuart. SSN:\n            [PHONENUMBER]</div>"
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://hl7.org/fhir/sid/us-ssn"
+          }
+        ],
+        "active": true,
+        "name": [
+          {
+            "use": "official"
+          }
+        ],
+        "gender": "other",
+        "deceasedDateTime": "2002-08-24",
+        "managingOrganization": {
+          "reference": "Organization/3a97dc1fc36fd9bf8d512fdcea683c1bd5c5364488db3e52118d2b923021a909"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "f4b6c0ae1cee4b275fae0973b3366f376f9c9dfcdffc550720201f60539536b1",
+        "meta": {
+          "lastUpdated": "2012-05-29T00:00:00+00:00",
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+              "code": "REDACTED",
+              "display": "redacted"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+              "code": "CRYTOHASH",
+              "display": "cryptographic hash function"
+            },
+            {
+              "code": "PERTURBED",
+              "display": "exact value is replaced with another exact value"
+            }
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Betterhalf, Boris. SSN:\n            [PHONENUMBER]</div>"
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://hl7.org/fhir/sid/us-ssn"
+          }
+        ],
+        "active": true,
+        "name": [
+          {
+            "use": "official"
+          }
+        ],
+        "gender": "male",
+        "managingOrganization": {
+          "reference": "Organization/3a97dc1fc36fd9bf8d512fdcea683c1bd5c5364488db3e52118d2b923021a909"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "40a38c069d9d422f632a22e6c0f146fed5cc43609f3293066a53e5967dcd1dc8",
+        "meta": {
+          "lastUpdated": "2012-05-29T00:00:00+00:00",
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+              "code": "REDACTED",
+              "display": "redacted"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+              "code": "CRYTOHASH",
+              "display": "cryptographic hash function"
+            },
+            {
+              "code": "PERTURBED",
+              "display": "exact value is replaced with another exact value"
+            }
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Relative, Ralph. SSN:\n            [PHONENUMBER]</div>"
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://hl7.org/fhir/sid/us-ssn"
+          }
+        ],
+        "active": true,
+        "name": [
+          {
+            "use": "official"
+          }
+        ],
+        "gender": "male",
+        "managingOrganization": {
+          "reference": "Organization/3a97dc1fc36fd9bf8d512fdcea683c1bd5c5364488db3e52118d2b923021a909"
+        }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "0b54028cba2b2eca1b6c3ec36d93664dd3a44e2e3da647f4b6b322b3ca42a7a4",
+        "meta": {
+          "lastUpdated": "2012-05-29T00:00:00+00:00",
+          "security": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+              "code": "REDACTED",
+              "display": "redacted"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+              "code": "CRYTOHASH",
+              "display": "cryptographic hash function"
+            },
+            {
+              "code": "PERTURBED",
+              "display": "exact value is replaced with another exact value"
+            }
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Contact, Carrie. SSN:\n            [PHONENUMBER]</div>"
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://hl7.org/fhir/sid/us-ssn"
+          }
+        ],
+        "active": true,
+        "name": [
+          {
+            "use": "official"
+          }
+        ],
+        "gender": "female",
+        "managingOrganization": {
+          "reference": "Organization/3a97dc1fc36fd9bf8d512fdcea683c1bd5c5364488db3e52118d2b923021a909"
+        }
+      }
+    }
+  ]
+}

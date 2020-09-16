@@ -1,0 +1,150 @@
+{
+  "resourceType": "Immunization",
+  "id": "612df63f1af3ecef8f3b87e62ee712cad4d609fcde3e7ae5827b5cf17ad529a8",
+  "meta": {
+    "security": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+        "code": "REDACTED",
+        "display": "redacted"
+      },
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+        "code": "CRYTOHASH",
+        "display": "cryptographic hash function"
+      },
+      {
+        "code": "PERTURBED",
+        "display": "exact value is replaced with another exact value"
+      }
+    ],
+    "tag": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason"
+      }
+    ]
+  },
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: protocol</p><p><b>identifier</b>: urn:oid:[IP].4.1.21367.[DATETIMEV2.DATE].1234</p><p><b>status</b>: completed</p><p><b>vaccineCode</b>: Twinrix (HepA/HepB) <span>(Details : {[URL] code '104' = 'Hep A-Hep B)</span></p><p><b>patient</b>: <a>Patient/example</a></p><p><b>encounter</b>: <a>Encounter/example</a></p><p><b>occurrence</b>: [DATETIMEV2.DATE]</p><p><b>primarySource</b>: true</p><p><b>location</b>: <a>Location/1</a></p><p><b>manufacturer</b>: <a>Organization/hl7</a></p><p><b>lotNumber</b>: PT123F</p><p><b>expirationDate</b>: [DATETIMEV2.DATE]</p><p><b>site</b>: left arm <span>(Details : {[URL] code 'LA' = 'left arm', given as 'left arm'})</span></p><p><b>route</b>: Injection, intramuscular <span>(Details : {[URL] code 'IM' = 'Injection, intramuscular', given as 'Injection, intramuscular'})</span></p><p><b>doseQuantity</b>: 5 mg<span> (Details: UCUM code mg = 'mg')</span></p><blockquote><p><b>performer</b></p><p><b>function</b>: Ordering Provider <span>(Details : {[URL] code 'OP' = 'Ordering Provider)</span></p><p><b>actor</b>: <a>Practitioner/example</a></p></blockquote><blockquote><p><b>performer</b></p><p><b>function</b>: Administering Provider <span>(Details : {[URL] code 'AP' = 'Administering Provider)</span></p><p><b>actor</b>: <a>Practitioner/example</a></p></blockquote><p><b>isSubpotent</b>: false</p><p><b>programEligibility</b>: Not Eligible <span>(Details : {[URL] code 'ineligible' = 'Not Eligible)</span></p><p><b>fundingSource</b>: Private <span>(Details : {[URL] code 'private' = 'Private)</span></p><blockquote><p><b>protocolApplied</b></p><p><b>series</b>: 2-dose</p><p><b>targetDisease</b>: Viral hepatitis, type A <span>(Details : {SNOMED CT code '[PHONENUMBER]' = 'Viral hepatitis, type A)</span></p><p><b>doseNumber</b>: 1</p></blockquote><blockquote><p><b>protocolApplied</b></p><p><b>series</b>: 3-dose</p><p><b>targetDisease</b>: Type B viral hepatitis <span>(Details : {SNOMED CT code '[PHONENUMBER]' = 'Type B viral hepatitis)</span></p><p><b>doseNumber</b>: 2</p></blockquote></div>"
+  },
+  "identifier": [
+    {
+      "system": "urn:ietf:rfc:3986"
+    }
+  ],
+  "status": "completed",
+  "vaccineCode": {
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/sid/cvx"
+      }
+    ]
+  },
+  "patient": {
+    "reference": "Patient/77634fffb1db678e068db495db919de6bbeb4d6eb526022bca90c73fb9b3ce87"
+  },
+  "encounter": {
+    "reference": "Encounter/77634fffb1db678e068db495db919de6bbeb4d6eb526022bca90c73fb9b3ce87"
+  },
+  "occurrenceDateTime": "2018",
+  "primarySource": true,
+  "location": {
+    "reference": "Location/872c7c5eeb1b38d31a0a71b88856a3011684404d20c45280d20d98a876d394a5"
+  },
+  "manufacturer": {
+    "reference": "Organization/3a97dc1fc36fd9bf8d512fdcea683c1bd5c5364488db3e52118d2b923021a909"
+  },
+  "lotNumber": "PT123F",
+  "expirationDate": "2018-11-05",
+  "site": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ActSite"
+      }
+    ]
+  },
+  "route": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-RouteOfAdministration"
+      }
+    ]
+  },
+  "doseQuantity": {
+    "value": 5,
+    "system": "http://unitsofmeasure.org",
+    "code": "mg"
+  },
+  "performer": [
+    {
+      "function": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/v2-0443"
+          }
+        ]
+      },
+      "actor": {
+        "reference": "Practitioner/77634fffb1db678e068db495db919de6bbeb4d6eb526022bca90c73fb9b3ce87"
+      }
+    },
+    {
+      "function": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/v2-0443"
+          }
+        ]
+      },
+      "actor": {
+        "reference": "Practitioner/77634fffb1db678e068db495db919de6bbeb4d6eb526022bca90c73fb9b3ce87"
+      }
+    }
+  ],
+  "isSubpotent": false,
+  "programEligibility": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/immunization-program-eligibility"
+        }
+      ]
+    }
+  ],
+  "fundingSource": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/immunization-funding-source"
+      }
+    ]
+  },
+  "protocolApplied": [
+    {
+      "series": "2-dose",
+      "targetDisease": [
+        {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct"
+            }
+          ]
+        }
+      ],
+      "doseNumberPositiveInt": 1
+    },
+    {
+      "series": "3-dose",
+      "targetDisease": [
+        {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct"
+            }
+          ]
+        }
+      ],
+      "doseNumberPositiveInt": 2
+    }
+  ]
+}

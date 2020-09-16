@@ -1,0 +1,60 @@
+{
+  "resourceType": "Procedure",
+  "id": "1b44b7a93ceae5a64ee6bd3a94d53bf45a7699bb58cb2f13e86d981903968e95",
+  "meta": {
+    "security": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+        "code": "REDACTED",
+        "display": "redacted"
+      },
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+        "code": "CRYTOHASH",
+        "display": "cryptographic hash function"
+      }
+    ],
+    "tag": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason"
+      }
+    ]
+  },
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: example-implant</p><p><b>status</b>: completed</p><p><b>code</b>: Implant Pacemaker <span>(Details : {SNOMED CT code '[PHONENUMBER]' = 'Insertion of intracardiac pacemaker', given as 'Insertion of intracardiac pacemaker (procedure)'})</span></p><p><b>subject</b>: <a>Patient/example</a></p><p><b>performed</b>: [DATETIMEV2.DATE]</p><h3>Performers</h3><table><tr><td>-</td><td><b>Actor</b></td></tr><tr><td>*</td><td><a>Dr Cecil Surgeon</a></td></tr></table><p><b>reasonCode</b>: Bradycardia <span>(Details )</span></p><p><b>followUp</b>: ROS [DATETIMEV2.DURATION]  - 2013-04-10 <span>(Details )</span></p><p><b>note</b>: Routine Appendectomy. Appendix was inflamed and in retro-caecal position</p><h3>FocalDevices</h3><table><tr><td>-</td><td><b>Action</b></td><td><b>Manipulated</b></td></tr><tr><td>*</td><td>Implanted <span>(Details : {[URL] code 'implanted' = 'Implanted)</span></td><td><a>Device/example-pacemaker</a></td></tr></table></div>"
+  },
+  "status": "completed",
+  "code": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct"
+      }
+    ]
+  },
+  "subject": {
+    "reference": "Patient/77634fffb1db678e068db495db919de6bbeb4d6eb526022bca90c73fb9b3ce87"
+  },
+  "performedDateTime": "2015",
+  "performer": [
+    {
+      "actor": {
+        "reference": "Practitioner/77634fffb1db678e068db495db919de6bbeb4d6eb526022bca90c73fb9b3ce87"
+      }
+    }
+  ],
+  "focalDevice": [
+    {
+      "action": {
+        "coding": [
+          {
+            "system": "http://hl7.org/fhir/device-action"
+          }
+        ]
+      },
+      "manipulated": {
+        "reference": "Device/edf805beda81dd8397c44fc132836b6bbab803d80204f3ebbb4994320419e9db"
+      }
+    }
+  ]
+}

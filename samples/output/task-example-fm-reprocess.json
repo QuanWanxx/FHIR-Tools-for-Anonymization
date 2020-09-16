@@ -1,0 +1,100 @@
+{
+  "resourceType": "Task",
+  "id": "7865efdca9c0d66fa8fa10ea2bac25f5811e3e1df6821e6aa7f211857cf0d7cd",
+  "meta": {
+    "security": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+        "code": "REDACTED",
+        "display": "redacted"
+      },
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+        "code": "CRYTOHASH",
+        "display": "cryptographic hash function"
+      },
+      {
+        "code": "PERTURBED",
+        "display": "exact value is replaced with another exact value"
+      }
+    ],
+    "tag": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason"
+      }
+    ]
+  },
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n\t\t\t<p>\n\t\t\t\t<b> Generated Narrative with Details</b>\n\t\t\t</p>\n\t\t</div>"
+  },
+  "identifier": [
+    {
+      "use": "official",
+      "system": "http:/happyvalley.com/task"
+    }
+  ],
+  "status": "requested",
+  "intent": "order",
+  "priority": "stat",
+  "code": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/financialtaskcode"
+      }
+    ]
+  },
+  "focus": {
+    "identifier": {
+      "system": "http://happyvalley.com/claim"
+    }
+  },
+  "authoredOn": "2018-09-08T00:00:00+10:00",
+  "lastModified": "2018-09-08T00:00:00+10:00",
+  "requester": {
+    "reference": "Organization/77634fffb1db678e068db495db919de6bbeb4d6eb526022bca90c73fb9b3ce87"
+  },
+  "owner": {
+    "identifier": {
+      "system": "http://nationalinsurers.com/identifiers"
+    }
+  },
+  "input": [
+    {
+      "type": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/financialtaskinputtype"
+          }
+        ]
+      }
+    },
+    {
+      "type": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/financialtaskinputtype"
+          }
+        ]
+      }
+    },
+    {
+      "type": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/financialtaskinputtype"
+          }
+        ]
+      }
+    },
+    {
+      "type": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/financialtaskinputtype"
+          }
+        ]
+      }
+    }
+  ]
+}

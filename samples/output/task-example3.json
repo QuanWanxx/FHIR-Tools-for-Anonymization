@@ -1,0 +1,47 @@
+{
+  "resourceType": "Task",
+  "id": "0dad5289793914b60209b7c04de7e36d374a8cf832be6658046a3eed1cbf3cf7",
+  "meta": {
+    "security": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+        "code": "REDACTED",
+        "display": "redacted"
+      },
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+        "code": "CRYTOHASH",
+        "display": "cryptographic hash function"
+      },
+      {
+        "code": "PERTURBED",
+        "display": "exact value is replaced with another exact value"
+      }
+    ],
+    "tag": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason"
+      }
+    ]
+  },
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: example3</p><p><b>status</b>: draft</p><p><b>intent</b>: order</p><p><b>code</b>: Refill Request <span>(Details )</span></p><p><b>focus</b>: <a>MedicationRequest/medrx002</a></p><p><b>for</b>: <a>Patient/f001</a></p><p><b>authoredOn</b>: [DATETIMEV2.DATETIME]</p><p><b>lastModified</b>: [DATETIMEV2.DATETIME]</p><p><b>requester</b>: <a>Patient/example</a></p><p><b>owner</b>: <a>Practitioner/example</a></p></div>"
+  },
+  "status": "draft",
+  "intent": "order",
+  "focus": {
+    "reference": "MedicationRequest/1d5cad57b5cb6be1c116ddf36072b24129e1d39ab69786821124669a848f161c"
+  },
+  "for": {
+    "reference": "Patient/43461602ec1bc9bfb9f5208503982397fa8dc515d9e187dd1dedff93aa153295"
+  },
+  "authoredOn": "2016-02-14T00:00:00-04:00",
+  "lastModified": "2016-02-14T00:00:00-04:00",
+  "requester": {
+    "reference": "Patient/77634fffb1db678e068db495db919de6bbeb4d6eb526022bca90c73fb9b3ce87"
+  },
+  "owner": {
+    "reference": "Practitioner/77634fffb1db678e068db495db919de6bbeb4d6eb526022bca90c73fb9b3ce87"
+  }
+}

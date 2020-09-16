@@ -1,0 +1,173 @@
+{
+  "resourceType": "RiskAssessment",
+  "id": "baaa9cf02edd87e04f810a14bb2d42bed551077fd1241eced8e3cc03cdad5505",
+  "meta": {
+    "security": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+        "code": "REDACTED",
+        "display": "redacted"
+      },
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+        "code": "CRYTOHASH",
+        "display": "cryptographic hash function"
+      },
+      {
+        "code": "PERTURBED",
+        "display": "exact value is replaced with another exact value"
+      }
+    ],
+    "tag": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason"
+      }
+    ]
+  },
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n      <p>Probability of developing breast cancer before the age indicated:</p>\n      <table>\n        <thead>\n          <tr>\n            <th>Age</th>\n            <th>Probability (%)</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td>current-53</td>\n            <td>0.0168</td>\n          </tr>\n          <tr>\n            <td>54-57</td>\n            <td>0.0368</td>\n          </tr>\n          <tr>\n            <td>58-62</td>\n            <td>0.0594</td>\n          </tr>\n          <tr>\n            <td>63-67</td>\n            <td>0.0838</td>\n          </tr>\n          <tr>\n            <td>68-72</td>\n            <td>0.1089</td>\n          </tr>\n          <tr>\n            <td>73-77</td>\n            <td>0.1327</td>\n          </tr>\n          <tr>\n            <td>78-82</td>\n            <td>0.[DATETIMEV2.DATERANGE]</td>\n          </tr>\n          <tr>\n            <td>83-87</td>\n            <td>0.[DATETIMEV2.DATERANGE]</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>"
+  },
+  "status": "final",
+  "subject": {
+    "reference": "Patient/7c4b9beb07027f7b5619c5e4bfc0a71040b8d4b72865370e85c49b1433055521"
+  },
+  "occurrenceDateTime": "2005-12-15T00:00:00Z",
+  "basis": [
+    {
+      "reference": "List/758a304eae2a7f8c7810f9097b116c7e1cce9e11e498dbc37c8120fa3acb8c9f"
+    }
+  ],
+  "prediction": [
+    {
+      "probabilityDecimal": 0.000168,
+      "whenRange": {
+        "high": {
+          "value": 53,
+          "unit": "years",
+          "system": "http://unitsofmeasure.org",
+          "code": "a"
+        }
+      }
+    },
+    {
+      "probabilityDecimal": 0.000368,
+      "whenRange": {
+        "low": {
+          "value": 54,
+          "unit": "years",
+          "system": "http://unitsofmeasure.org",
+          "code": "a"
+        },
+        "high": {
+          "value": 57,
+          "unit": "years",
+          "system": "http://unitsofmeasure.org",
+          "code": "a"
+        }
+      }
+    },
+    {
+      "probabilityDecimal": 0.000594,
+      "whenRange": {
+        "low": {
+          "value": 58,
+          "unit": "years",
+          "system": "http://unitsofmeasure.org",
+          "code": "a"
+        },
+        "high": {
+          "value": 62,
+          "unit": "years",
+          "system": "http://unitsofmeasure.org",
+          "code": "a"
+        }
+      }
+    },
+    {
+      "probabilityDecimal": 0.000838,
+      "whenRange": {
+        "low": {
+          "value": 63,
+          "unit": "years",
+          "system": "http://unitsofmeasure.org",
+          "code": "a"
+        },
+        "high": {
+          "value": 67,
+          "unit": "years",
+          "system": "http://unitsofmeasure.org",
+          "code": "a"
+        }
+      }
+    },
+    {
+      "probabilityDecimal": 0.001089,
+      "whenRange": {
+        "low": {
+          "value": 68,
+          "unit": "years",
+          "system": "http://unitsofmeasure.org",
+          "code": "a"
+        },
+        "high": {
+          "value": 72,
+          "unit": "years",
+          "system": "http://unitsofmeasure.org",
+          "code": "a"
+        }
+      }
+    },
+    {
+      "probabilityDecimal": 0.001327,
+      "whenRange": {
+        "low": {
+          "value": 73,
+          "unit": "years",
+          "system": "http://unitsofmeasure.org",
+          "code": "a"
+        },
+        "high": {
+          "value": 77,
+          "unit": "years",
+          "system": "http://unitsofmeasure.org",
+          "code": "a"
+        }
+      }
+    },
+    {
+      "probabilityDecimal": 0.001530,
+      "whenRange": {
+        "low": {
+          "value": 78,
+          "unit": "years",
+          "system": "http://unitsofmeasure.org",
+          "code": "a"
+        },
+        "high": {
+          "value": 82,
+          "unit": "years",
+          "system": "http://unitsofmeasure.org",
+          "code": "a"
+        }
+      }
+    },
+    {
+      "probabilityDecimal": 0.001663,
+      "whenRange": {
+        "low": {
+          "value": 83,
+          "unit": "years",
+          "system": "http://unitsofmeasure.org",
+          "code": "a"
+        },
+        "high": {
+          "value": 88,
+          "unit": "years",
+          "system": "http://unitsofmeasure.org",
+          "code": "a"
+        }
+      }
+    }
+  ]
+}

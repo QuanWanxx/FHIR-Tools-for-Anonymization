@@ -1,0 +1,110 @@
+{
+  "resourceType": "CarePlan",
+  "id": "f628aaaa71b6666b0c63d2f7e68950cadfeb54052c1e1ed55bc1b1a21ad82cb3",
+  "meta": {
+    "security": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+        "code": "REDACTED",
+        "display": "redacted"
+      },
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+        "code": "CRYTOHASH",
+        "display": "cryptographic hash function"
+      },
+      {
+        "code": "PERTURBED",
+        "display": "exact value is replaced with another exact value"
+      }
+    ],
+    "tag": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason"
+      }
+    ]
+  },
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: f003</p><p><b>contained</b>: , </p><p><b>identifier</b>: CP3953 (OFFICIAL)</p><p><b>status</b>: completed</p><p><b>intent</b>: plan</p><p><b>subject</b>: <a>P. van de Heuvel</a></p><p><b>period</b>: [DATETIMEV2.DATETIME] --[DATETIMEV2.DATETIMERANGE]</p><p><b>careTeam</b>: id: careteam</p><p><b>addresses</b>: <a>?????</a></p><p><b>goal</b>: id: goal; lifecycleStatus: completed; Achieved <span>(Details : {[URL] code 'achieved' = 'Achieved', given as 'Achieved'})</span>; Retropharyngeal abscess removal <span>(Details )</span>; Annotation: goal accomplished without complications</p><blockquote><p><b>activity</b></p><h3>Details</h3><table><tr><td>-</td><td><b>Kind</b></td><td><b>Code</b></td><td><b>Status</b></td><td><b>DoNotPerform</b></td><td><b>Scheduled[x]</b></td><td><b>Performer</b></td></tr><tr><td>*</td><td>ServiceRequest</td><td>Incision of retropharyngeal abscess <span>(Details : {SNOMED CT code '[PHONENUMBER]' = 'Incision of retropharyngeal abscess', given as 'Incision of retropharyngeal abscess'})</span></td><td>completed</td><td>true</td><td>[DATETIMEV2.DATETIME]+[DATETIMEV2.TIME]</td><td><a>E.M. van den broek</a></td></tr></table></blockquote></div>"
+  },
+  "contained": [
+    {
+      "resourceType": "CareTeam",
+      "id": "e41e6f72ae829ae94a45a755cd251d498d3552f0367bf1d56d7753edd2339389",
+      "participant": [
+        {
+          "member": {
+            "reference": "Practitioner/43461602ec1bc9bfb9f5208503982397fa8dc515d9e187dd1dedff93aa153295"
+          }
+        }
+      ]
+    },
+    {
+      "resourceType": "Goal",
+      "id": "8cc17225aea29c39c327346cbf02778d3a6bb35df7220937e53104db2cb7ce2d",
+      "lifecycleStatus": "completed",
+      "achievementStatus": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/goal-achievement"
+          }
+        ]
+      },
+      "subject": {
+        "reference": "Patient/43461602ec1bc9bfb9f5208503982397fa8dc515d9e187dd1dedff93aa153295"
+      }
+    }
+  ],
+  "identifier": [
+    {
+      "use": "official",
+      "system": "http://www.bmc.nl/zorgportal/identifiers/careplans"
+    }
+  ],
+  "status": "completed",
+  "intent": "plan",
+  "subject": {
+    "reference": "Patient/43461602ec1bc9bfb9f5208503982397fa8dc515d9e187dd1dedff93aa153295"
+  },
+  "period": {
+    "start": "2013-04-03T00:00:00+01:00",
+    "end": "2013-04-03T00:00:00+01:00"
+  },
+  "careTeam": [
+    {
+      "reference": "#e41e6f72ae829ae94a45a755cd251d498d3552f0367bf1d56d7753edd2339389"
+    }
+  ],
+  "addresses": [
+    {
+      "reference": "Condition/04f900f4bc4ade45207538825f64eed845c11bb9155b353216302fd1eda7f0a2"
+    }
+  ],
+  "goal": [
+    {
+      "reference": "#8cc17225aea29c39c327346cbf02778d3a6bb35df7220937e53104db2cb7ce2d"
+    }
+  ],
+  "activity": [
+    {
+      "detail": {
+        "kind": "ServiceRequest",
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct"
+            }
+          ]
+        },
+        "status": "completed",
+        "doNotPerform": true,
+        "performer": [
+          {
+            "reference": "Practitioner/43461602ec1bc9bfb9f5208503982397fa8dc515d9e187dd1dedff93aa153295"
+          }
+        ]
+      }
+    }
+  ]
+}

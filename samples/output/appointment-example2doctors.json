@@ -1,0 +1,92 @@
+{
+  "resourceType": "Appointment",
+  "id": "0747ce0f170574212fc96be9300a434dd83d107cdc073ec1aa1a732a0e315e63",
+  "meta": {
+    "security": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+        "code": "REDACTED",
+        "display": "redacted"
+      },
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+        "code": "CRYTOHASH",
+        "display": "cryptographic hash function"
+      },
+      {
+        "code": "PERTURBED",
+        "display": "exact value is replaced with another exact value"
+      }
+    ],
+    "tag": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason"
+      }
+    ]
+  },
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Brian MRI results discussion</div>"
+  },
+  "status": "booked",
+  "serviceCategory": [
+    {
+      "coding": [
+        {
+          "system": "http://example.org/service-category"
+        }
+      ]
+    }
+  ],
+  "specialty": [
+    {
+      "coding": [
+        {
+          "system": "http://snomed.info/sct"
+        }
+      ]
+    }
+  ],
+  "appointmentType": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v2-0276"
+      }
+    ]
+  },
+  "priority": 5,
+  "supportingInformation": [
+    {
+      "reference": "DiagnosticReport/b68266cf40073b2e06d566e8d4ee8d1402c72ea1766f074a9faaddda7d9fe901"
+    }
+  ],
+  "start": "2013-12-19T00:00:00+00:00",
+  "end": "2013-12-19T00:00:00+00:00",
+  "participant": [
+    {
+      "actor": {
+        "reference": "Patient/77634fffb1db678e068db495db919de6bbeb4d6eb526022bca90c73fb9b3ce87"
+      },
+      "required": "information-only",
+      "status": "accepted"
+    },
+    {
+      "actor": {
+        "reference": "Practitioner/77634fffb1db678e068db495db919de6bbeb4d6eb526022bca90c73fb9b3ce87"
+      },
+      "required": "required",
+      "status": "accepted"
+    },
+    {
+      "actor": {
+        "reference": "Practitioner/175fab6100d3c601868b249c86b78f6fbe65d9f6314a58954e73c4c31a3a8561"
+      },
+      "required": "required",
+      "status": "accepted"
+    },
+    {
+      "required": "information-only",
+      "status": "accepted"
+    }
+  ]
+}
