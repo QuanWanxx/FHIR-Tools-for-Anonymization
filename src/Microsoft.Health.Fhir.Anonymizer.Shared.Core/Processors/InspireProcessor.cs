@@ -50,7 +50,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
                 var matchNodes = resourceNode.Select(ruleExpression).Cast<ElementNode>();
                 foreach (var matchNode in matchNodes)
                 {
-                    CollectStructDataRecursive(matchNode, structDataList);
+                    CollectStructDataRecursive(matchNode, structDataList, inspireSetting);
                 }
             }
             // TODO: Maybe use EntityProcessUtility in TA_processor branch
@@ -74,13 +74,12 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             return processResult;
         }
 
-        private void CollectStructDataRecursive(ElementNode node, List<StructData> structDataList)
+        private void CollectStructDataRecursive(ElementNode node, List<StructData> structDataList, InspireSetting inspireSetting)
         {
             var childs = node.Children().Cast<ElementNode>();
             if (node.Value != null)
             {
-                if (node.InstanceType.Equals("string") || node.InstanceType.Equals("date")
-                    || node.InstanceType.Equals("dateTime") || node.InstanceType.Equals("instant"))
+                if (inspireSetting.MathTypes.Contains(node.InstanceType))
                 {
                     structDataList.Add(new StructData()
                     {
@@ -100,7 +99,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
                     {
                         return;
                     }
-                    CollectStructDataRecursive(child, structDataList);
+                    CollectStructDataRecursive(child, structDataList, inspireSetting);
                 }
             }
             return;
@@ -112,7 +111,6 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             {
                 // TODO: Here Converter to string just for print the replace information, will be removed after finishing testing
                 var freeTextString = text.ToString();
-                Console.WriteLine(text);
                 if (freeTextString.IndexOf(structData.Text) > 0)
                 {
                     _printInfo.AppendLine($"{$"[{structData.Category}]",-15} {structData.InstanceType}: {structData.Text}");

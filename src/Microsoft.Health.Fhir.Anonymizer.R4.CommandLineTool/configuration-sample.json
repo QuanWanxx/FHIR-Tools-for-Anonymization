@@ -11,6 +11,12 @@
 		"nodesByType('Datetime')",
 		"nodesByType('Address')",
 		"nodesByType('Identifier')",
+	  ],
+	  "matchTypes": [
+		"string",
+		"date",
+		"dateTime",
+		"instant"
 	  ]
 	},
 	

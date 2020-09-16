@@ -11,19 +11,19 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors.Settings
     public class InspireSetting
     {
         public List<string> Expressions { get; set; }
+        public List<string> MathTypes { get; set; }
 
         public static InspireSetting CreateFromRuleSettings(Dictionary<string, object> ruleSettings)
         {
             EnsureArg.IsNotNull(ruleSettings);
 
             var expressionsString = ruleSettings.GetValueOrDefault("expressions")?.ToString();
-            var expressions = JsonConvert.DeserializeObject<List<string>>(expressionsString);
+            var matchTypesString = ruleSettings.GetValueOrDefault("matchTypes")?.ToString();
             return new InspireSetting
             {
-                Expressions = expressions
+                Expressions = JsonConvert.DeserializeObject<List<string>>(expressionsString),
+                MathTypes = JsonConvert.DeserializeObject<List<string>>(matchTypesString),
             };
         }
-
-        
     }
 }
