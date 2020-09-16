@@ -15,6 +15,13 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
 {
     public class InspireProcessor : IAnonymizerProcessor
     {
+        struct StructData
+        {
+            public string Text { get; set; }
+            public string Category { get; set; }
+            public string InstanceType { get; set; }
+        };
+
         private StringBuilder _printInfo;
 
         public ProcessResult Process(ElementNode node, ProcessContext context = null, Dictionary<string, object> settings = null)
@@ -37,15 +44,25 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
                 resourceNode = resourceNode.Parent;
             }
 
-            var freeText = new StringBuilder(node.Value.ToString());
+            var structDataList = new List<StructData>();
             foreach (var ruleExpression in inspireSetting.Expressions)
             {
                 var matchNodes = resourceNode.Select(ruleExpression).Cast<ElementNode>();
                 foreach (var matchNode in matchNodes)
                 {
-                    MatchAndReplaceRecursive(matchNode, freeText);
+                    CollectStructDataRecursive(matchNode, structDataList);
                 }
             }
+            // TODO: Maybe use EntityProcessUtility in TA_processor branch
+            structDataList.Sort((t1, t2) =>
+            {
+                return t2.Text.Length.CompareTo(t1.Text.Length);
+            });
+
+            var freeText = new StringBuilder(node.Value.ToString());
+            MatchAndReplace(freeText, structDataList);
+
+            _printInfo.AppendLine(resourceNode.Name.ToString());
             _printInfo.AppendLine(node.Value.ToString());
             _printInfo.AppendLine(freeText.ToString());
             _printInfo.AppendLine(new string('-', 100));
@@ -57,9 +74,22 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             return processResult;
         }
 
-        private void MatchAndReplaceRecursive(ElementNode node, StringBuilder freeText)
+        private void CollectStructDataRecursive(ElementNode node, List<StructData> structDataList)
         {
             var childs = node.Children().Cast<ElementNode>();
+            if (node.Value != null)
+            {
+                if (node.InstanceType.Equals("string") || node.InstanceType.Equals("date")
+                    || node.InstanceType.Equals("dateTime") || node.InstanceType.Equals("instant"))
+                {
+                    structDataList.Add(new StructData()
+                    {
+                        Text = node.Value.ToString(),
+                        Category = $"{node.Parent.Name}.{node.Name}",
+                        InstanceType = node.InstanceType.ToString()
+                    });
+                }
+            }
             // dfs
             if (childs.Any())
             {
@@ -70,24 +100,24 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
                     {
                         return;
                     }
-                    MatchAndReplaceRecursive(child, freeText);
+                    CollectStructDataRecursive(child, structDataList);
                 }
             }
-            // Is a leaf
-            else
+            return;
+        }
+
+        private void MatchAndReplace(StringBuilder text, List<StructData> structDataList) 
+        {
+            foreach (var structData in structDataList)
             {
-                if (node.InstanceType.Equals("string") || node.InstanceType.Equals("date") || node.InstanceType.Equals("dateTime"))
+                // TODO: Here Converter to string just for print the replace information, will be removed after finishing testing
+                var freeTextString = text.ToString();
+                Console.WriteLine(text);
+                if (freeTextString.IndexOf(structData.Text) > 0)
                 {
-                    var combineName = $"{node.Parent.Name}.{node.Name}";
-                    // TODO: Here Converter to string just for print the replace information, will be removed after finishing testing
-                    var freeTextString = freeText.ToString();
-                    if (freeTextString.IndexOf(node.Value.ToString()) > 0)
-                    {
-                        _printInfo.AppendLine($"{$"[{combineName}]", -15} {node.InstanceType}: , {node.Value.ToString()}");
-                    }
-                    
-                    freeText.Replace(node.Value.ToString(), $"[{combineName}]");
+                    _printInfo.AppendLine($"{$"[{structData.Category}]",-15} {structData.InstanceType}: {structData.Text}");
                 }
+                text.Replace(structData.Text, $"[{structData.Category}]");
             }
             return;
         }
