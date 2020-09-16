@@ -24,6 +24,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
 
         private StringBuilder _printInfo;
 
+        private InspireSetting _inspireSetting;
+
         public ProcessResult Process(ElementNode node, ProcessContext context = null, Dictionary<string, object> settings = null)
         {
             EnsureArg.IsNotNull(node);
@@ -37,7 +39,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
                 return processResult;
             }
 
-            var inspireSetting = InspireSetting.CreateFromRuleSettings(settings);
+            _inspireSetting = InspireSetting.CreateFromRuleSettings(settings);
             var resourceNode = node;
             while (!resourceNode.IsFhirResource())
             {
@@ -45,14 +47,24 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             }
 
             var structDataList = new List<StructData>();
-            foreach (var ruleExpression in inspireSetting.Expressions)
+            // If no expressions in config, will collect all node under the source node.
+            // Notice: The value from pending processed node will not be collected in any cases.
+            if (_inspireSetting.Expressions.Count == 0)
             {
-                var matchNodes = resourceNode.Select(ruleExpression).Cast<ElementNode>();
-                foreach (var matchNode in matchNodes)
+                CollectStructDataRecursive(resourceNode, node, structDataList);
+            }
+            else
+            {
+                foreach (var ruleExpression in _inspireSetting.Expressions)
                 {
-                    CollectStructDataRecursive(matchNode, structDataList, inspireSetting);
+                    var matchNodes = resourceNode.Select(ruleExpression).Cast<ElementNode>();
+                    foreach (var matchNode in matchNodes)
+                    {
+                        CollectStructDataRecursive(matchNode, node, structDataList);
+                    }
                 }
             }
+
             // TODO: Maybe use EntityProcessUtility in TA_processor branch
             structDataList.Sort((t1, t2) =>
             {
@@ -74,17 +86,22 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             return processResult;
         }
 
-        private void CollectStructDataRecursive(ElementNode node, List<StructData> structDataList, InspireSetting inspireSetting)
+        private void CollectStructDataRecursive(ElementNode node, ElementNode processingNode, List<StructData> structDataList)
         {
             var childs = node.Children().Cast<ElementNode>();
+            if (node == processingNode)
+            {
+                return;
+            }
             if (node.Value != null)
             {
-                if (inspireSetting.MathTypes.Contains(node.InstanceType))
+                if (_inspireSetting.MathTypes.Contains(node.InstanceType))
                 {
+                    var combineName = node.Parent == null ? $"{node.Name}" : $"{node.Parent.Name}.{node.Name}";
                     structDataList.Add(new StructData()
                     {
                         Text = node.Value.ToString(),
-                        Category = $"{node.Parent.Name}.{node.Name}",
+                        Category = combineName,
                         InstanceType = node.InstanceType.ToString()
                     });
                 }
@@ -97,9 +114,10 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
                     // Avoid the fhirResource Node
                     if (child.IsFhirResource())
                     {
-                        return;
+                        // TODO: Not sure whether to ignore the resource Node, if ignore will cause some mis-matched issues
+                        //return;
                     }
-                    CollectStructDataRecursive(child, structDataList, inspireSetting);
+                    CollectStructDataRecursive(child, processingNode, structDataList);
                 }
             }
             return;
