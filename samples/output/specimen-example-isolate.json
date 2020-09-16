@@ -1,6 +1,6 @@
 {
   "resourceType": "Specimen",
-  "id": "b4c1d1d8574ae320698ddafdbb5176a3aa641ed78a3c5713751baefca612ffea",
+  "id": "8263b0291f90d117a1e58316591594d2acd2490adc1d364275574c058f5a7d64",
   "meta": {
     "security": [
       {
@@ -31,7 +31,7 @@
   "contained": [
     {
       "resourceType": "Specimen",
-      "id": "4aff33bba8528d2e554e059e256e6828a9cd07b6fcd3623d766f999476bffda2",
+      "id": "22335b9557efd9183a674942e0d803cff1d7c08047c7841ac6660c9b39a473c4",
       "accessionIdentifier": {
         "system": "http://lab.acme.org/specimens/2015"
       },
@@ -44,11 +44,11 @@
         ]
       },
       "subject": {
-        "reference": "Patient/77634fffb1db678e068db495db919de6bbeb4d6eb526022bca90c73fb9b3ce87"
+        "reference": "Patient/912f64647465fbd7888d185ecfe613a6bd99a1924355c661b35ec5b69f0b2c6e"
       },
-      "receivedTime": "2015-08-22T00:00:00Z",
+      "receivedTime": "2015-08-28T00:00:00Z",
       "collection": {
-        "collectedDateTime": "2011-08-22T00:00:00Z",
+        "collectedDateTime": "2011-08-28T00:00:00Z",
         "method": {
           "coding": [
             {
@@ -71,19 +71,19 @@
     ]
   },
   "subject": {
-    "reference": "Patient/77634fffb1db678e068db495db919de6bbeb4d6eb526022bca90c73fb9b3ce87"
+    "reference": "Patient/912f64647465fbd7888d185ecfe613a6bd99a1924355c661b35ec5b69f0b2c6e"
   },
-  "receivedTime": "2015-08-24T00:00:00Z",
+  "receivedTime": "2015-08-30T00:00:00Z",
   "parent": [
     {
-      "reference": "#4aff33bba8528d2e554e059e256e6828a9cd07b6fcd3623d766f999476bffda2"
+      "reference": "#22335b9557efd9183a674942e0d803cff1d7c08047c7841ac6660c9b39a473c4"
     }
   ],
   "collection": {
     "collector": {
-      "reference": "Practitioner/175fab6100d3c601868b249c86b78f6fbe65d9f6314a58954e73c4c31a3a8561"
+      "reference": "Practitioner/51692b7beac2696467f0bc7c21142a4630d5f06d7faace133a84f3209dc7de0b"
     },
-    "collectedDateTime": "2015-08-22T00:00:00Z",
+    "collectedDateTime": "2015-08-28T00:00:00Z",
     "method": {
       "coding": [
         {

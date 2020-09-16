@@ -13,6 +13,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
     {
         private INamedEntityRecognizer _namedEntityRecognizer { get; set; }
 
+        private StringBuilder _printInfo;
+
         public RecognizersTextProcessor()
         {
             _namedEntityRecognizer = new TextRecognizer();
@@ -38,6 +40,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
 
         private string ProcessEntities(string originText, IEnumerable<Entity> textEntities)
         {
+            _printInfo = new StringBuilder();
+
             if (string.IsNullOrWhiteSpace(originText))
             {
                 return originText;
@@ -50,7 +54,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             foreach (var entity in textEntities)
             {
                 // TODO: Console just to show the recognization result, will be removed
-                Console.WriteLine("{0, -18}: {1}", $"[{entity.Category}]", entity.Text);
+                _printInfo.AppendLine($"{$"[{entity.Category}]",-15}: {entity.Text}");
                 result.Append(text.SubstringByTextElements(startIndex, entity.Offset - startIndex));
                 result.Append($"[{entity.Category.ToUpperInvariant()}]");
                 startIndex = entity.Offset + entity.Length;
@@ -60,10 +64,12 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
                 result.Append(text.SubstringByTextElements(startIndex));
             }
             // TODO: Console just to show the recognization result, will be removed
-            Console.WriteLine(originText);
-            Console.WriteLine(result.ToString());
-            Console.WriteLine(new string('-', 100));
-            Console.WriteLine();
+            _printInfo.AppendLine(originText);
+            _printInfo.AppendLine(result.ToString());
+            _printInfo.AppendLine(new string('-', 100));
+            _printInfo.AppendLine();
+            Console.WriteLine(_printInfo);
+
             return result.ToString();
         }
     }
