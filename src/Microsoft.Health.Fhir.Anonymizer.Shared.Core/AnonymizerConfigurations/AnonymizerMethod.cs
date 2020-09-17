@@ -10,6 +10,6 @@
         Perturb,
         Keep,
         Generalize,
-        inspire
+        Inspect
     }
 }

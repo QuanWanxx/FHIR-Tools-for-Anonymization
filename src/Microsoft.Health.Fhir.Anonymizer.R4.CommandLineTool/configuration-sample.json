@@ -1,21 +1,9 @@
 {
   "fhirVersion": "R4",
   "fhirPathRules": [
-  	{
-	  "path": "nodesByType('Narrative').div",
-	  "method": "inspire",
-	  "expressions": [
-	  ],
-	  "matchTypes": [
-		"string",
-		"date",
-		"dateTime",
-		"instant"
-	  ]
-	},
 	{
 	  "path": "nodesByType('Narrative').div",
-	  "method": "inspire",
+	  "method": "inspect",
 	  "expressions": [
 		"nodesByType('HumanName')",
 		"nodesByType('ContactPoint')",
@@ -24,7 +12,24 @@
 		"nodesByType('Address')",
 		"nodesByType('Period')",
 		"nodesByType('Identifier')",
-		"nodesByType('BackboneElement')",
+		"nodesByType('Reference')",
+		
+	  ],
+	  "matchTypes": [
+		"string",
+		"date",
+		"time",
+		"dateTime",
+		"instant",
+		"url",
+		"uri"
+	  ]
+	},
+	
+	{
+	  "path": "nodesByType('Narrative').div",
+	  "method": "inspect",
+	  "expressions": [
 	  ],
 	  "matchTypes": [
 		"string",
@@ -33,6 +38,7 @@
 		"instant"
 	  ]
 	},
+
 
 	
 	{

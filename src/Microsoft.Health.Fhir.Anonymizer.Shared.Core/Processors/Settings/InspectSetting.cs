@@ -8,18 +8,18 @@ using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors.Settings
 {
-    public class InspireSetting
+    public class InspectSetting
     {
         public List<string> Expressions { get; set; }
         public List<string> MathTypes { get; set; }
 
-        public static InspireSetting CreateFromRuleSettings(Dictionary<string, object> ruleSettings)
+        public static InspectSetting CreateFromRuleSettings(Dictionary<string, object> ruleSettings)
         {
             EnsureArg.IsNotNull(ruleSettings);
 
             var expressionsString = ruleSettings.GetValueOrDefault("expressions")?.ToString();
             var matchTypesString = ruleSettings.GetValueOrDefault("matchTypes")?.ToString();
-            return new InspireSetting
+            return new InspectSetting
             {
                 Expressions = JsonConvert.DeserializeObject<List<string>>(expressionsString),
                 MathTypes = JsonConvert.DeserializeObject<List<string>>(matchTypesString),

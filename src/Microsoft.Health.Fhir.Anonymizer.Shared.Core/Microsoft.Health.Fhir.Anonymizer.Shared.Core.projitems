@@ -49,12 +49,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Processors\RedactProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Processors\Settings\GeneralizeSetting.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Processors\Settings\GeneralizeOtherValuesOperation.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Processors\Settings\InspireSetting.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Processors\Settings\InspectSetting.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Processors\Settings\PerturbRangeType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Processors\Settings\PerturbSetting.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Processors\Settings\RuleKeys.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Processors\Settings\SubstituteSetting.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Processors\InspireProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Processors\InspectProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Processors\SubstituteProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\CryptoHashUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\DateTimeUtility.cs" />

@@ -13,7 +13,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
 {
-    public class InspireProcessor : IAnonymizerProcessor
+    public class InspectProcessor : IAnonymizerProcessor
     {
         struct StructData
         {
@@ -24,7 +24,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
 
         private StringBuilder _printInfo;
 
-        private InspireSetting _inspireSetting;
+        private InspectSetting _inspectSetting;
 
         public ProcessResult Process(ElementNode node, ProcessContext context = null, Dictionary<string, object> settings = null)
         {
@@ -39,7 +39,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
                 return processResult;
             }
 
-            _inspireSetting = InspireSetting.CreateFromRuleSettings(settings);
+            _inspectSetting = InspectSetting.CreateFromRuleSettings(settings);
             var resourceNode = node;
             while (!resourceNode.IsFhirResource())
             {
@@ -49,13 +49,13 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             var structDataList = new List<StructData>();
             // If no expressions in config, will collect all node under the source node.
             // Notice: The value from pending processed node will not be collected in any cases.
-            if (_inspireSetting.Expressions.Count == 0)
+            if (_inspectSetting.Expressions.Count == 0)
             {
                 CollectStructDataRecursive(resourceNode, node, structDataList);
             }
             else
             {
-                foreach (var ruleExpression in _inspireSetting.Expressions)
+                foreach (var ruleExpression in _inspectSetting.Expressions)
                 {
                     var matchNodes = resourceNode.Select(ruleExpression).Cast<ElementNode>();
                     foreach (var matchNode in matchNodes)
@@ -95,7 +95,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             }
             if (node.Value != null)
             {
-                if (_inspireSetting.MathTypes.Contains(node.InstanceType))
+                if (_inspectSetting.MathTypes.Contains(node.InstanceType))
                 {
                     var combineName = node.Parent == null ? $"{node.Name}" : $"{node.Parent.Name}.{node.Name}";
                     structDataList.Add(new StructData()
@@ -106,6 +106,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
                     });
                 }
             }
+
             // dfs
             if (childs.Any())
             {
@@ -120,6 +121,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
                     CollectStructDataRecursive(child, processingNode, structDataList);
                 }
             }
+            
             return;
         }
 
