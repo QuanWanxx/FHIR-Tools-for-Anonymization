@@ -7,12 +7,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Health.Fhir.Anonymizer.Core.AnonymizerConfigurations.TextAnalytics;
-using Microsoft.Health.Fhir.Anonymizer.Core.Models.TextAnalytics;
-using Microsoft.Health.Fhir.Anonymizer.Core.Models.TextAnalytics.Html;
+using Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect;
+using Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect.Html;
 using Newtonsoft.Json;
 using Polly;
 
-namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.NerTAUtility
+namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
 {
     // API version: v3.1-preview.1
     public class TextAnalyticRecognizer : INamedEntityRecognizer
@@ -47,7 +47,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.NerTAUtility
             }
             // Merge results
             var recognitionResults = SegmentUtility.MergeSegmentRecognitionResults(segments, segmentRecognitionResults);
-            recognitionResults = EntityProcessUtility.ProcessEntities(recognitionResults);
+            recognitionResults = EntityProcessUtility.PreprocessEntities(recognitionResults);
             return recognitionResults;
         }
 

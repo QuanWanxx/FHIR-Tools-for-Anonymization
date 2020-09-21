@@ -13,6 +13,6 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
         public const string Encrypt = "ENCRYPT";
         public const string Substitute = "SUBSTITUTE";
         public const string Generalize = "GENERALIZE";
-        public const string Masked = "INSPECT";
+        public const string Inspect = "INSPECT";
     }
 }

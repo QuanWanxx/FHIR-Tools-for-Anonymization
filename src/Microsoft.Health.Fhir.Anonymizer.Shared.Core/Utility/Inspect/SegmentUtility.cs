@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Health.Fhir.Anonymizer.Core.Models.TextAnalytics;
+using Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect;
 
-namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.NerTAUtility
+namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
 {
     public class SegmentUtility
     {

@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Web;
 using EnsureThat;
 using Hl7.FhirPath;
 using Hl7.Fhir.ElementModel;
@@ -11,9 +12,11 @@ using Microsoft.Health.Fhir.Anonymizer.Core.Extensions;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect;
 using Microsoft.Health.Fhir.Anonymizer.Core.Processors.Settings;
+using Microsoft.Health.Fhir.Anonymizer.Core.Utility;
 using Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect;
 using Microsoft.Extensions.Primitives;
 using System.Threading;
+using Microsoft.Health.Fhir.Anonymizer.Core.AnonymizerConfigurations.TextAnalytics;
 
 namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
 {
@@ -26,16 +29,23 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             public string InstanceType { get; set; }
         };
 
+        private INamedEntityRecognizer _namedEntityRecognizer { get; set; }
+
         private StringBuilder _printInfo;
 
         private InspectSetting _inspectSetting;
+
+        public InspectProcessor(RecognizerApi recognizerApi)
+        {
+            _printInfo = new StringBuilder();
+            _namedEntityRecognizer = new TextAnalyticRecognizer(recognizerApi);
+        }
 
         public ProcessResult Process(ElementNode node, ProcessContext context = null, Dictionary<string, object> settings = null)
         {
             EnsureArg.IsNotNull(node);
             EnsureArg.IsNotNull(context?.VisitedNodes);
             EnsureArg.IsNotNull(settings);
-            _printInfo = new StringBuilder();
 
             var processResult = new ProcessResult();
             if (string.IsNullOrEmpty(node?.Value?.ToString()))
@@ -69,9 +79,15 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
                 }
             }
 
-            var entities = InspectEntities(node.Value.ToString(), structDataList);
-            entities = EntityProcessUtility.PreprocessEntities(entities);
-            var processedText = ProcessEntities(node.Value.ToString(), entities);
+            var entitiesStructMatch = InspectEntities(node.Value.ToString(), structDataList);
+            entitiesStructMatch = EntityProcessUtility.PreprocessEntities(entitiesStructMatch);
+            PrintEntities(entitiesStructMatch);
+
+            var textSendToTA = HtmlTextUtility.StripTags(HttpUtility.HtmlDecode(node.Value.ToString()));
+            var entitiesTA = _namedEntityRecognizer.RecognizeText(textSendToTA);
+            PrintEntities(entitiesTA);
+
+            var processedText = EntityProcessUtility.ProcessEntities(node.Value.ToString(), entitiesStructMatch);
             _printInfo.AppendLine(resourceNode.Name.ToString());
             _printInfo.AppendLine(node.Value.ToString());
             _printInfo.AppendLine(processedText);
@@ -80,7 +96,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
 
             Console.WriteLine(_printInfo);
             node.Value = processedText;
-            processResult.AddProcessRecord(AnonymizationOperations.Masked, node);
+            processResult.AddProcessRecord(AnonymizationOperations.Inspect, node);
             return processResult;
         }
 
@@ -132,11 +148,6 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             {
                 var start = 0;
                 var at = 0;
-                // TODO: For print the structure entities infomation, will be removed after finishing testing
-                if (text.IndexOf(structData.Text) > 0)
-                {
-                    _printInfo.AppendLine($"{$"[{structData.Category}]",-15} {structData.InstanceType}: {structData.Text}");
-                }
                 while ((start <= end) && (at > -1))
                 {
                     at = text.IndexOf(structData.Text, start, end - start);
@@ -160,28 +171,14 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             return entities;
         }
 
-        private string ProcessEntities(string originText, IEnumerable<Entity> textEntities)
+        private void PrintEntities(List<Entity> entities)
         {
-            if (string.IsNullOrWhiteSpace(originText))
+            foreach (var entity in entities)
             {
-                return originText;
+                _printInfo.AppendLine($"{$"[{entity.Category}]",-20} {entity.SubCategory}:" +
+                                      $"({$"[{entity.Offset}]",-6},{$"[{entity.Offset+entity.Length-1}]",-6})" +
+                                      $" {entity.Text}");
             }
-
-            var result = new StringBuilder();
-            // Use StringInfo to avoid offset issues https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/concepts/text-offsets
-            var text = new StringInfo(originText);
-            var startIndex = 0;
-            foreach (var entity in textEntities)
-            {
-                result.Append(text.SubstringByTextElements(startIndex, entity.Offset - startIndex));
-                result.Append($"[{entity.Category.ToUpperInvariant()}]");
-                startIndex = entity.Offset + entity.Length;
-            }
-            if (startIndex < text.LengthInTextElements)
-            {
-                result.Append(text.SubstringByTextElements(startIndex));
-            }
-            return result.ToString();
         }
     }
 }

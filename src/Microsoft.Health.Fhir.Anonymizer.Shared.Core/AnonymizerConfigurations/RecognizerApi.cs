@@ -5,9 +5,6 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.AnonymizerConfigurations.TextAna
     [DataContract]
     public class RecognizerApi
     {
-        [DataMember(Name = "type")]
-        public RecognizerType Type { get; set; }
-
         [DataMember(Name = "url")]
         public string Url { get; set; }
 

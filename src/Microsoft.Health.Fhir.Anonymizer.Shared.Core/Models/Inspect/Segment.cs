@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Health.Fhir.Anonymizer.Core.Models.TextAnalytics
+﻿namespace Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect
 {
     public class Segment
     {

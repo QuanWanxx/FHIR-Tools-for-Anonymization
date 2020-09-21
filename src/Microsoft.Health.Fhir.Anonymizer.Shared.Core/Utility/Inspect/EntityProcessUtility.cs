@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using System.Text;
 using System.Collections.Generic;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect;
 
@@ -21,6 +23,30 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                 this.position = position;
                 this.score = score;
             }
+        }
+
+        public static string ProcessEntities(string originText, IEnumerable<Entity> entities)
+        {
+            if (string.IsNullOrWhiteSpace(originText))
+            {
+                return originText;
+            }
+
+            var result = new StringBuilder();
+            // Use StringInfo to avoid offset issues https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/concepts/text-offsets
+            var text = new StringInfo(originText);
+            var startIndex = 0;
+            foreach (var entity in entities)
+            {
+                result.Append(text.SubstringByTextElements(startIndex, entity.Offset - startIndex));
+                result.Append($"[{entity.Category.ToUpperInvariant()}]");
+                startIndex = entity.Offset + entity.Length;
+            }
+            if (startIndex < text.LengthInTextElements)
+            {
+                result.Append(text.SubstringByTextElements(startIndex));
+            }
+            return result.ToString();
         }
 
         // Process overlap entities
