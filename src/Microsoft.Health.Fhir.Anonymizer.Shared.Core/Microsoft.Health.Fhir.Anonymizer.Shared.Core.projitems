@@ -28,6 +28,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ElementNodeOperationExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ElementNodeVisitorExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\FhirPathSymbolExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Inspect\Entity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ProcessResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ProcessContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\SecurityLabels.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utility\CryptoHashUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\DateTimeUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\EncryptUtility.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utility\Inspect\EntityProcessUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\PostalCodeUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\ReferenceUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Validation\AttributeValidator.cs" />

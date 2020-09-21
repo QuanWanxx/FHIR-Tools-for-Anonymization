@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,11 @@ using Hl7.FhirPath;
 using Hl7.Fhir.ElementModel;
 using Microsoft.Health.Fhir.Anonymizer.Core.Extensions;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models;
+using Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect;
 using Microsoft.Health.Fhir.Anonymizer.Core.Processors.Settings;
+using Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect;
 using Microsoft.Extensions.Primitives;
+using System.Threading;
 
 namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
 {
@@ -65,23 +69,17 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
                 }
             }
 
-            // TODO: Maybe use EntityProcessUtility in TA_processor branch
-            structDataList.Sort((t1, t2) =>
-            {
-                return t2.Text.Length.CompareTo(t1.Text.Length);
-            });
-
-            var freeText = new StringBuilder(node.Value.ToString());
-            MatchAndReplace(freeText, structDataList);
-
+            var entities = InspectEntities(node.Value.ToString(), structDataList);
+            entities = EntityProcessUtility.PreprocessEntities(entities);
+            var processedText = ProcessEntities(node.Value.ToString(), entities);
             _printInfo.AppendLine(resourceNode.Name.ToString());
             _printInfo.AppendLine(node.Value.ToString());
-            _printInfo.AppendLine(freeText.ToString());
+            _printInfo.AppendLine(processedText);
             _printInfo.AppendLine(new string('-', 100));
             _printInfo.AppendLine();
 
             Console.WriteLine(_printInfo);
-            node.Value = freeText.ToString();
+            node.Value = processedText;
             processResult.AddProcessRecord(AnonymizationOperations.Masked, node);
             return processResult;
         }
@@ -125,19 +123,65 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             return;
         }
 
-        private void MatchAndReplace(StringBuilder text, List<StructData> structDataList) 
+        private List<Entity> InspectEntities(string text, List<StructData> structDataList)
         {
+            var entities = new List<Entity>();
+
+            var end = text.Length;
             foreach (var structData in structDataList)
             {
-                // TODO: Here Converter to string just for print the replace information, will be removed after finishing testing
-                var freeTextString = text.ToString();
-                if (freeTextString.IndexOf(structData.Text) > 0)
+                var start = 0;
+                var at = 0;
+                // TODO: For print the structure entities infomation, will be removed after finishing testing
+                if (text.IndexOf(structData.Text) > 0)
                 {
                     _printInfo.AppendLine($"{$"[{structData.Category}]",-15} {structData.InstanceType}: {structData.Text}");
                 }
-                text.Replace(structData.Text, $"[{structData.Category}]");
+                while ((start <= end) && (at > -1))
+                {
+                    at = text.IndexOf(structData.Text, start, end - start);
+                    if (at == -1)
+                    {
+                        break;
+                    }
+                    start = at + 1;
+
+                    entities.Add(new Entity()
+                    {
+                        Category = structData.Category,
+                        SubCategory = structData.InstanceType,
+                        ConfidenceScore = 1,
+                        Length = structData.Text.Length,
+                        Offset = at,
+                        Text = structData.Text
+                    });
+                }
             }
-            return;
+            return entities;
+        }
+
+        private string ProcessEntities(string originText, IEnumerable<Entity> textEntities)
+        {
+            if (string.IsNullOrWhiteSpace(originText))
+            {
+                return originText;
+            }
+
+            var result = new StringBuilder();
+            // Use StringInfo to avoid offset issues https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/concepts/text-offsets
+            var text = new StringInfo(originText);
+            var startIndex = 0;
+            foreach (var entity in textEntities)
+            {
+                result.Append(text.SubstringByTextElements(startIndex, entity.Offset - startIndex));
+                result.Append($"[{entity.Category.ToUpperInvariant()}]");
+                startIndex = entity.Offset + entity.Length;
+            }
+            if (startIndex < text.LengthInTextElements)
+            {
+                result.Append(text.SubstringByTextElements(startIndex));
+            }
+            return result.ToString();
         }
     }
 }
