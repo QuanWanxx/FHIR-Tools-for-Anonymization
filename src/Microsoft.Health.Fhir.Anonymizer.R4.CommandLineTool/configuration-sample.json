@@ -26,28 +26,6 @@
 	  ]
 	},
 	
-	{
-	  "path": "nodesByType('Narrative').div",
-	  "method": "inspect",
-	  "expressions": [
-	  ],
-	  "matchTypes": [
-		"string",
-		"date",
-		"dateTime",
-		"instant"
-	  ]
-	},
-
-
-	
-	{
-	  "path": "Condition.onset | Condition.abatement as Age",
-	  "method": "perturb",
-	  "span": 6,
-	  "rangeType": "fixed",
-	  "roundTo": 0
-	},
     {"path": "nodesByType('Extension')", "method": "redact"},
 
     {"path": "Organization.identifier", "method": "keep"},
@@ -236,7 +214,6 @@
     {"path": "nodesByType('Reference').display", "method": "redact"},
     {"path": "nodesByType('Reference').reference", "method": "cryptoHash"},
 
-    {"path": "nodesByType('Narrative')", "method": "redact"},
     {"path": "nodesByType('base64Binary')", "method": "redact"},
     {"path": "nodesByType('date')", "method": "dateshift"},
     {"path": "nodesByType('dateTime')", "method": "dateshift"},
@@ -255,6 +232,11 @@
     "enablePartialAgesForRedact": true,
     "enablePartialDatesForRedact": true,
     "enablePartialZipCodesForRedact": true,
+	"recognizerApi": {
+		"type": "MicrosoftNer",
+		"url": "https://eastus.api.cognitive.microsoft.com/text/analytics/v3.1-preview.1/entities/recognition/pii",
+		"key": "eff334d6e5e04b2d94d10ca0bccb4602"
+	},
     "restrictedZipCodeTabulationAreas": [
       "036",
       "059",
