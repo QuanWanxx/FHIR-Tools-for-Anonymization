@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect;
 
@@ -115,7 +116,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                 var start = boundaries[i - 1].Item1;
                 var end = boundaries[i].Item1;
                 var originOffset = entities[index].Offset;
-                result.Add(new Entity()
+                var entity = new Entity()
                 {
                     Category = entities[index].Category,
                     SubCategory = entities[index].SubCategory,
@@ -123,7 +124,13 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                     Offset = start,
                     Length = end - start,
                     ConfidenceScore = entities[index].ConfidenceScore
-                });
+                };
+
+                // Ignore the entities doesnt contains information
+                if (Regex.Matches(entity.Text, @"[a-zA-Z0-9]").Count > 0)
+                {
+                    result.Add(entity);
+                }
             }
             return result;
         }

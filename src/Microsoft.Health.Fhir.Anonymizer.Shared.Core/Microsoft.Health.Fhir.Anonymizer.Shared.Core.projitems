@@ -74,6 +74,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utility\HtmlTextUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\Inspect\INamedEntityRecognizer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\Inspect\SegmentUtility.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utility\Inspect\StructMatchRecognizer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\Inspect\TextAnalyticRecognizer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\PostalCodeUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\ReferenceUtility.cs" />
