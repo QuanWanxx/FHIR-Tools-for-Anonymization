@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models;
 
 namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility
@@ -70,7 +71,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility
                 {
                     heapInstance.Remove(e.index);
                     var maxInstance = MaxInstance(heapInstance);
-                    if (score > maxInstance.Item2)
+                    if (score >= maxInstance.Item2)
                     {
                         boundaries.Add(new Tuple<int, int>(e.position, maxInstance.Item1));
                     }
@@ -89,7 +90,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility
                 var start = boundaries[i - 1].Item1;
                 var end = boundaries[i].Item1;
                 var originOffset = entities[index].Offset;
-                result.Add(new Entity()
+                var entity = new Entity()
                 {
                     Category = entities[index].Category,
                     SubCategory = entities[index].SubCategory,
@@ -97,7 +98,13 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility
                     Offset = start,
                     Length = end - start,
                     ConfidenceScore = entities[index].ConfidenceScore
-                });
+                };
+
+                // Ignore the entities doesnt contains information
+                if (Regex.Matches(entity.Text, @"[a-zA-Z0-9]").Count > 0)
+                {
+                    result.Add(entity);
+                }
             }
             return result;
         }
