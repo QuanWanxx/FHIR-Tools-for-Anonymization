@@ -44,32 +44,28 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             {
                 return processResult;
             }
-            // Print the type of resource node, will be removed
-            var resourceNode = node;
-            while (!resourceNode.IsFhirResource())
-            {
-                resourceNode = resourceNode.Parent;
-            }
-            _printInfo.AppendLine(resourceNode.Name.ToString());
+            PrintResourceType(node);
             _printInfo.AppendLine(node.Value.ToString());
 
-            // TA recognizer 
+            // TA recognizer results
             var textSendToTA = HtmlTextUtility.StripTags(HttpUtility.HtmlDecode(node.Value.ToString()));
             var entitiesTA = _namedEntityRecognizer.RecognizeText(textSendToTA);
-            PrintEntities(entitiesTA);
+            PrintEntities(entitiesTA, "TA recognizer");
 
-            _printInfo.AppendLine(new string('-', 30));
-
-            // Structuerd fields match recognizer 
+            // Structuerd fields match recognizer results
             _structMatchRecognizer = new StructMatchRecognizer();
             var entitiesStructMatch = _structMatchRecognizer.RecognizeText(node, settings);
-            PrintEntities(entitiesStructMatch);
+            PrintEntities(entitiesStructMatch, "StructMatch recognizer");
 
+            // Combined entities
+            var entities = entitiesTA.Concat(entitiesStructMatch).ToList<Entity>();
+            entities = EntityProcessUtility.PreprocessEntities(entities);
+            PrintEntities(entities, "Combined Results");
 
-            var processedText = EntityProcessUtility.ProcessEntities(node.Value.ToString(), entitiesStructMatch);
+            var processedText = EntityProcessUtility.ProcessEntities(node.Value.ToString(), entities);
             //_printInfo.AppendLine(processedText);
             _printInfo.AppendLine(new string('=', 100));
-            _printInfo.AppendLine();
+            
 
             Console.WriteLine(_printInfo);
             node.Value = processedText;
@@ -77,13 +73,25 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             return processResult;
         }
 
-        private void PrintEntities(List<Entity> entities)
+        private void PrintResourceType(ElementNode node)
         {
+            var resourceNode = node;
+            while (!resourceNode.IsFhirResource())
+            {
+                resourceNode = resourceNode.Parent;
+            }
+            _printInfo.AppendLine(resourceNode.Name.ToString());
+        }
+
+        private void PrintEntities(List<Entity> entities, string recognizerType = "")
+        {
+            _printInfo.AppendLine(new string('-', 12) + $"{recognizerType, 25}" + new string('-', 12));
             foreach (var entity in entities)
             {
                 _printInfo.AppendLine($"{$"[{entity.Category}]",-20} {entity.SubCategory,-10} -{entity.Offset, -4}:" +
                                       $" {entity.Text}");
             }
+            _printInfo.AppendLine();
         }
     }
 }

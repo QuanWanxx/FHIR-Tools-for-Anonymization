@@ -18,6 +18,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
             public string InstanceType { get; set; }
         };
 
+        HashSet<ElementNode> _ignoreNodes = new HashSet<ElementNode>();
         InspectSetting _inspectSetting;
 
         public List<Entity> RecognizeText(ElementNode node, Dictionary<string, object> settings = null)
@@ -29,16 +30,22 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                 resourceNode = resourceNode.Parent;
             }
 
+            foreach (var ignoreExpression in _inspectSetting.IgnoreExpressions)
+            {
+                var matchNodes = resourceNode.Select(ignoreExpression).Cast<ElementNode>();
+                _ignoreNodes.UnionWith(matchNodes.ToHashSet());
+            }
+
             var structDataList = new List<StructData>();
             // If no expressions in config, will collect all node under the source node.
             // Notice: The value from pending processed node will not be collected in any cases.
-            if (_inspectSetting.Expressions.Count == 0)
+            if (_inspectSetting.MatchExpressions.Count == 0)
             {
                 CollectStructDataRecursive(resourceNode, node, structDataList);
             }
             else
             {
-                foreach (var ruleExpression in _inspectSetting.Expressions)
+                foreach (var ruleExpression in _inspectSetting.MatchExpressions)
                 {
                     var matchNodes = resourceNode.Select(ruleExpression).Cast<ElementNode>();
                     foreach (var matchNode in matchNodes)
@@ -56,7 +63,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
         private void CollectStructDataRecursive(ElementNode node, ElementNode processingNode, List<StructData> structDataList)
         {
             var childs = node.Children().Cast<ElementNode>();
-            if (node == processingNode)
+            if (node == processingNode || _ignoreNodes.Contains(node))
             {
                 return;
             }
@@ -64,7 +71,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
             {
                 if (_inspectSetting.MathTypes.Contains(node.InstanceType))
                 {
-                    var combineName = node.Parent == null ? $"{node.Name}" : $"{node.Parent.Name}.{node.Name}";
+                    var combineName = TryFindDetailName(node);
                     structDataList.Add(new StructData()
                     {
                         Text = node.Value.ToString(),
@@ -114,7 +121,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                     {
                         Category = structData.Category,
                         SubCategory = structData.InstanceType,
-                        ConfidenceScore = 1,
+                        ConfidenceScore = 1.1,
                         Length = structData.Text.Length,
                         Offset = at,
                         Text = structData.Text
@@ -122,6 +129,45 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                 }
             }
             return entities;
+        }
+
+        private string TryFindDetailName(ElementNode node)
+        {
+            if (node.Parent == null)
+            {
+                return node.Name;
+            }
+
+            string combineName = node.Parent.Name switch
+            {
+                "identifier" => IdentifierCodeType(node.Parent),
+                _ => $"{node.Parent.Name}.{node.Name}"
+            };
+
+            return combineName;
+        }
+
+        private string IdentifierCodeType(ElementNode identifierNode)
+        {
+            var codeExpression = "type.coding.code";
+            var textExpression = "text";
+            var matchNodes = identifierNode.Select(textExpression).Cast<ElementNode>();
+            if (matchNodes.Count() == 0)
+            {
+                matchNodes = identifierNode.Select(codeExpression).Cast<ElementNode>();
+                if (matchNodes.Count() == 0)
+                {
+                    return "identifier.value";
+                }
+                else
+                {
+                    return $"{matchNodes.First().Value.ToString()}.code";
+                }
+            }
+            else
+            {
+                return $"{matchNodes.First().Value.ToString()}.code";
+            }
         }
     }
 }
