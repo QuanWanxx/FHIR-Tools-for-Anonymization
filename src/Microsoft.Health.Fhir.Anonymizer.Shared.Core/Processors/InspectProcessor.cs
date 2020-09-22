@@ -22,7 +22,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
 {
     public class InspectProcessor : IAnonymizerProcessor
     {
-        private INamedEntityRecognizer _namedEntityRecognizer { get; set; }
+        private INamedEntityRecognizer _textAnalyticRecognizer { get; set; }
+        private INamedEntityRecognizer _ruleBasedRecognizer { get; set; }
         private StructMatchRecognizer _structMatchRecognizer { get; set; }
 
         private StringBuilder _printInfo;
@@ -30,7 +31,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
         public InspectProcessor(RecognizerApi recognizerApi)
         {
             _printInfo = new StringBuilder();
-            _namedEntityRecognizer = new TextAnalyticRecognizer(recognizerApi);
+            _textAnalyticRecognizer = new TextAnalyticRecognizer(recognizerApi);
+            _ruleBasedRecognizer = new RuleBasedRecognizer();
         }
 
         public ProcessResult Process(ElementNode node, ProcessContext context = null, Dictionary<string, object> settings = null)
@@ -47,13 +49,14 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             PrintResourceType(node);
             _printInfo.AppendLine(node.Value.ToString());
 
-            ;
-            // TA recognizer results
             var rawText = HttpUtility.HtmlDecode(node.Value.ToString());
-            var textSendToTA = HtmlTextUtility.StripTags(rawText);
-            var entitiesTA = _namedEntityRecognizer.RecognizeText(textSendToTA);
+            var strippedText = HtmlTextUtility.StripTags(rawText);
+            // TA recognizer results
+            var entitiesTA = _textAnalyticRecognizer.RecognizeText(strippedText);
             PrintEntities(entitiesTA, "TA recognizer");
-
+            // Rule-based (Recognizers.Text) recognizer results
+            var entitiesRuleBased = _ruleBasedRecognizer.RecognizeText(strippedText);
+            PrintEntities(entitiesRuleBased, "RuleBased recognizer");
 
             // Structuerd fields match recognizer results
             _structMatchRecognizer = new StructMatchRecognizer();
@@ -61,14 +64,13 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             PrintEntities(entitiesStructMatch, "StructMatch recognizer");
 
             // Combined entities
-            var entities = entitiesTA.Concat(entitiesStructMatch).ToList<Entity>();
+            var entities = entitiesTA.Concat(entitiesStructMatch).Concat(entitiesRuleBased).ToList<Entity>();
             entities = EntityProcessUtility.PreprocessEntities(entities);
             PrintEntities(entities, "Combined Results");
 
             var processedText = EntityProcessUtility.ProcessEntities(rawText, entities);
             _printInfo.AppendLine(processedText);
             _printInfo.AppendLine(new string('=', 100));
-            
 
             Console.WriteLine(_printInfo);
             node.Value = processedText;
