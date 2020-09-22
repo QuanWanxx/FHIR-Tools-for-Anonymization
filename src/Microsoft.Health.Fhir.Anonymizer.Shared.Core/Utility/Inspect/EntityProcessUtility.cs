@@ -97,7 +97,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                 {
                     heapInstance.Remove(e.index);
                     var maxInstance = MaxInstance(heapInstance);
-                    if (score > maxInstance.Item2)
+                    if (score >= maxInstance.Item2)
                     {
                         boundaries.Add(new Tuple<int, int>(e.position, maxInstance.Item1));
                     }
