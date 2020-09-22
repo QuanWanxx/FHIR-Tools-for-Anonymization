@@ -1,6 +1,6 @@
 {
   "resourceType": "RiskAssessment",
-  "id": "94aef55f376da0d110d6df78a8028f14c84a3fb29979cd9c2e42f336366dc1e9",
+  "id": "3f4e01a1dd0adc3a587da1f5fb7395db096cecf37433d90899f91d27578df72e",
   "meta": {
     "security": [
       {
@@ -30,12 +30,12 @@
   },
   "status": "final",
   "subject": {
-    "reference": "Patient/c242cf38ae75a692bc85ddb71a50f536b209e1a96d4e57beb300c6b090f213d1"
+    "reference": "Patient/44151217dbfc8786a1214ae31351eae68bfdfa0474f90ad1f2276f036b3458da"
   },
-  "occurrenceDateTime": "2005-11-28T00:00:00Z",
+  "occurrenceDateTime": "2005-11-30T00:00:00Z",
   "basis": [
     {
-      "reference": "List/c9834175bfcd01f78f349151d1c575068ac2f6d8902cc2c21142cfec57de7d0b"
+      "reference": "List/3aa38396b6336796adc681019a323601e1a88cd6e70739e8798a065e12e84acd"
     }
   ],
   "prediction": [

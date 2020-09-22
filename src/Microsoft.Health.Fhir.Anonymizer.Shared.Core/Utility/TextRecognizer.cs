@@ -12,15 +12,30 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility
 {
     public class TextRecognizer : INamedEntityRecognizer
     {
-        public string[] IdRegex = { @"MRN", @"code", @"id" };
-        public int WindowBefore = 10;
-        public int WindowAfter = 0;
+        // MRN regex
+        private static readonly string _mrnFormat = @"[0-9a-zA-Z]{5,}";
+        private static readonly Regex _mrnRegex = new Regex($@"(?<=(MRN|mrn|Mrn):?\s*){_mrnFormat}\b");
+        // DateTime regex (https://www.hl7.org/fhir/datatypes.html#dateTime)
+        private static readonly string _dateTimeFormat = @"([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\.[0-9]+)?(Z|(\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00)))?)?)";
+        private static readonly Regex _dateTimeRegex = new Regex($@"\b{_dateTimeFormat}\b");
+        // SSN regex (http://rion.io/2013/09/10/validating-social-security-numbers-through-regular-expressions-2)
+        private static readonly string _ssnWithDashesFormat = @"(?!219-09-9999|078-05-1120)(?!666|000|9\d{2})\d{3}-(?!00)\d{2}-(?!0{4})\d{4}";
+        private static readonly string _ssnWithoutDashesFormat = @"(?!219099999|078051120)(?!666|000|9\d{2})\d{3}(?!00)\d{2}(?!0{4})\d{4}";
+        private static readonly Regex _ssnRegex = new Regex($@"(?<=(SSN|ssn|Ssn):?\s*)({_ssnWithDashesFormat}|{_ssnWithoutDashesFormat})\b");
+        // Oid regex (https://www.hl7.org/fhir/datatypes.html#oid)
+        private static readonly string _oidFormat = @"urn:oid:[0-2](\.(0|[1-9][0-9]*))+";
+        private static readonly Regex _oidRegex = new Regex($@"\b{_oidFormat}\b");
+        // Phone number validation
+        private static readonly Func<string, string> _phoneNumberValidationRegex1 = (phoneNumber) => $@"(SNOMED CT code|LOINC code|RxNorm code)\s+'?{phoneNumber}'?";
+        private static readonly Func<string, string> _phoneNumberValidationRegex2 = (phoneNumber) => $@"code.{{,10}}'?{phoneNumber}'?";
+        private static readonly Func<string, string> _phoneNumberValidationRegex3 = (phoneNumber) => $@"id.{{,10}}'?{phoneNumber}'?";
 
         public List<Entity> RecognizeText(string text)
         {
             var culture = Culture.English;
 
             var modelResults = new List<ModelResult>();
+
             modelResults.AddRange(NumberWithUnitRecognizer.RecognizeAge(text, culture));
             modelResults.AddRange(DateTimeRecognizer.RecognizeDateTime(text, culture));
             modelResults.AddRange(SequenceRecognizer.RecognizePhoneNumber(text, culture));
@@ -28,6 +43,11 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility
             modelResults.AddRange(SequenceRecognizer.RecognizeEmail(text, culture));
             modelResults.AddRange(SequenceRecognizer.RecognizeGUID(text, culture));
             modelResults.AddRange(SequenceRecognizer.RecognizeURL(text, culture));
+
+            modelResults.AddRange(RecognizeMRN(text));
+            modelResults.AddRange(RecognizeDateTime(text));
+            modelResults.AddRange(RecognizeSSN(text));
+            modelResults.AddRange(RecognizeOid(text));
 
             var recognitionResults = new List<Entity>();
             foreach (var modelResult in modelResults)
@@ -55,15 +75,58 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility
             {   
                 if (entity.Category == "phonenumber")
                 {
-                    var startIndex = Math.Max(0, entity.Offset - WindowBefore);
-                    var endIndex = Math.Min(text.Length, entity.Offset + entity.Length + WindowAfter);
-                    if (IdRegex.Any(regex => Regex.IsMatch(text.Substring(startIndex, endIndex - startIndex), regex, RegexOptions.IgnoreCase)))
+                    if (Regex.IsMatch(text, _phoneNumberValidationRegex1(entity.Text), RegexOptions.IgnoreCase))
+                    {
+                        entity.Category = string.Empty;
+                    }
+                    else if (Regex.IsMatch(text, _phoneNumberValidationRegex2(entity.Text), RegexOptions.IgnoreCase))
+                    {
+                        entity.Category = "code";
+                    }
+                    else if (Regex.IsMatch(text, _phoneNumberValidationRegex3(entity.Text), RegexOptions.IgnoreCase))
                     {
                         entity.Category = "id";
                     }
                 }
             }
+            entities.RemoveAll(entity => string.IsNullOrEmpty(entity.Category));
             return entities;
+        }
+
+        public List<ModelResult> RecognizeMRN(string query)
+        {
+            return Extract(query, _mrnRegex, "mrn");
+        }
+
+        public List<ModelResult> RecognizeDateTime(string query)
+        {
+            return Extract(query, _dateTimeRegex, "datetime");
+        }
+
+        public List<ModelResult> RecognizeSSN(string query)
+        {
+            return Extract(query, _ssnRegex, "ssn");
+        }
+
+        public List<ModelResult> RecognizeOid(string query)
+        {
+            return Extract(query, _oidRegex, "oid");
+        }
+
+        public List<ModelResult> Extract(string query, Regex regex, string type)
+        {
+            var modelResults = new List<ModelResult>();
+            var matches = regex.Matches(query);
+            foreach (Match match in matches)
+            {
+                modelResults.Add(new ModelResult() {
+                    Text = match.Value,
+                    Start = match.Index,
+                    End = match.Index + match.Length - 1,
+                    TypeName = type,
+                });
+            }
+            return modelResults;
         }
     }
 }

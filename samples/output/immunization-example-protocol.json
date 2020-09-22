@@ -1,6 +1,6 @@
 {
   "resourceType": "Immunization",
-  "id": "360d1454bddb15fc9364eeaf6a4d9921f32bcb129080f90398c29f512e2ec318",
+  "id": "39daf9f3141149860d5d642c0a6c067b32800864048afd1c52352ed697354770",
   "meta": {
     "security": [
       {
@@ -26,7 +26,7 @@
   },
   "text": {
     "status": "generated",
-    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: protocol</p><p><b>identifier</b>: urn:oid:[IP].4.1.21367.[DATETIMEV2.DATE].1234</p><p><b>status</b>: completed</p><p><b>vaccineCode</b>: Twinrix (HepA/HepB) <span>(Details : {[URL] code '104' = 'Hep A-Hep B)</span></p><p><b>patient</b>: <a>Patient/example</a></p><p><b>encounter</b>: <a>Encounter/example</a></p><p><b>occurrence</b>: [DATETIMEV2.DATE]</p><p><b>primarySource</b>: true</p><p><b>location</b>: <a>Location/1</a></p><p><b>manufacturer</b>: <a>Organization/hl7</a></p><p><b>lotNumber</b>: PT123F</p><p><b>expirationDate</b>: [DATETIMEV2.DATE]</p><p><b>site</b>: left arm <span>(Details : {[URL] code 'LA' = 'left arm', given as 'left arm'})</span></p><p><b>route</b>: Injection, intramuscular <span>(Details : {[URL] code 'IM' = 'Injection, intramuscular', given as 'Injection, intramuscular'})</span></p><p><b>doseQuantity</b>: 5 mg<span> (Details: UCUM code mg = 'mg')</span></p><blockquote><p><b>performer</b></p><p><b>function</b>: Ordering Provider <span>(Details : {[URL] code 'OP' = 'Ordering Provider)</span></p><p><b>actor</b>: <a>Practitioner/example</a></p></blockquote><blockquote><p><b>performer</b></p><p><b>function</b>: Administering Provider <span>(Details : {[URL] code 'AP' = 'Administering Provider)</span></p><p><b>actor</b>: <a>Practitioner/example</a></p></blockquote><p><b>isSubpotent</b>: false</p><p><b>programEligibility</b>: Not Eligible <span>(Details : {[URL] code 'ineligible' = 'Not Eligible)</span></p><p><b>fundingSource</b>: Private <span>(Details : {[URL] code 'private' = 'Private)</span></p><blockquote><p><b>protocolApplied</b></p><p><b>series</b>: 2-dose</p><p><b>targetDisease</b>: Viral hepatitis, type A <span>(Details : {SNOMED CT code '[ID]' = 'Viral hepatitis, type A)</span></p><p><b>doseNumber</b>: 1</p></blockquote><blockquote><p><b>protocolApplied</b></p><p><b>series</b>: 3-dose</p><p><b>targetDisease</b>: Type B viral hepatitis <span>(Details : {SNOMED CT code '[ID]' = 'Type B viral hepatitis)</span></p><p><b>doseNumber</b>: 2</p></blockquote></div>"
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: protocol</p><p><b>identifier</b>: [OID]</p><p><b>status</b>: completed</p><p><b>vaccineCode</b>: Twinrix (HepA/HepB) <span>(Details : {[URL] code '104' = 'Hep A-Hep B)</span></p><p><b>patient</b>: <a>Patient/example</a></p><p><b>encounter</b>: <a>Encounter/example</a></p><p><b>occurrence</b>: [DATETIMEV2.DATE]</p><p><b>primarySource</b>: true</p><p><b>location</b>: <a>Location/1</a></p><p><b>manufacturer</b>: <a>Organization/hl7</a></p><p><b>lotNumber</b>: PT123F</p><p><b>expirationDate</b>: [DATETIMEV2.DATE]</p><p><b>site</b>: left arm <span>(Details : {[URL] code 'LA' = 'left arm', given as 'left arm'})</span></p><p><b>route</b>: Injection, intramuscular <span>(Details : {[URL] code 'IM' = 'Injection, intramuscular', given as 'Injection, intramuscular'})</span></p><p><b>doseQuantity</b>: 5 mg<span> (Details: UCUM code mg = 'mg')</span></p><blockquote><p><b>performer</b></p><p><b>function</b>: Ordering Provider <span>(Details : {[URL] code 'OP' = 'Ordering Provider)</span></p><p><b>actor</b>: <a>Practitioner/example</a></p></blockquote><blockquote><p><b>performer</b></p><p><b>function</b>: Administering Provider <span>(Details : {[URL] code 'AP' = 'Administering Provider)</span></p><p><b>actor</b>: <a>Practitioner/example</a></p></blockquote><p><b>isSubpotent</b>: false</p><p><b>programEligibility</b>: Not Eligible <span>(Details : {[URL] code 'ineligible' = 'Not Eligible)</span></p><p><b>fundingSource</b>: Private <span>(Details : {[URL] code 'private' = 'Private)</span></p><blockquote><p><b>protocolApplied</b></p><p><b>series</b>: 2-dose</p><p><b>targetDisease</b>: Viral hepatitis, type A <span>(Details : {SNOMED CT code '40468003' = 'Viral hepatitis, type A)</span></p><p><b>doseNumber</b>: 1</p></blockquote><blockquote><p><b>protocolApplied</b></p><p><b>series</b>: 3-dose</p><p><b>targetDisease</b>: Type B viral hepatitis <span>(Details : {SNOMED CT code '66071002' = 'Type B viral hepatitis)</span></p><p><b>doseNumber</b>: 2</p></blockquote></div>"
   },
   "identifier": [
     {
@@ -42,21 +42,21 @@
     ]
   },
   "patient": {
-    "reference": "Patient/f90a7a3e6668aeb3649896530e29289505767cb7fece648bd573bb930c1aa2cf"
+    "reference": "Patient/48be5f6666f9bbf25ccf935b7a0c097116a6089a1a30a1f1d05a54d0030b1929"
   },
   "encounter": {
-    "reference": "Encounter/f90a7a3e6668aeb3649896530e29289505767cb7fece648bd573bb930c1aa2cf"
+    "reference": "Encounter/48be5f6666f9bbf25ccf935b7a0c097116a6089a1a30a1f1d05a54d0030b1929"
   },
   "occurrenceDateTime": "2018",
   "primarySource": true,
   "location": {
-    "reference": "Location/347c4f27b78f4a11cc4dae000e7cb2aeb92e32f9c962387be01c163154eae5eb"
+    "reference": "Location/d94385bab78c7fda88d072d3905eaa24ce49763b911e5d29f1ff7b77050444d7"
   },
   "manufacturer": {
-    "reference": "Organization/811fc028a637d1eef9823510b8929265ccfac12ce6d5ccd27e02ca31cefecf7f"
+    "reference": "Organization/b38cdfc1e0c5c9e32f0fb723125f5daccc416a075adf92d115ee95d8ae7c4f63"
   },
   "lotNumber": "PT123F",
-  "expirationDate": "2018-12-08",
+  "expirationDate": "2018-10-26",
   "site": {
     "coding": [
       {
@@ -86,7 +86,7 @@
         ]
       },
       "actor": {
-        "reference": "Practitioner/f90a7a3e6668aeb3649896530e29289505767cb7fece648bd573bb930c1aa2cf"
+        "reference": "Practitioner/48be5f6666f9bbf25ccf935b7a0c097116a6089a1a30a1f1d05a54d0030b1929"
       }
     },
     {
@@ -98,7 +98,7 @@
         ]
       },
       "actor": {
-        "reference": "Practitioner/f90a7a3e6668aeb3649896530e29289505767cb7fece648bd573bb930c1aa2cf"
+        "reference": "Practitioner/48be5f6666f9bbf25ccf935b7a0c097116a6089a1a30a1f1d05a54d0030b1929"
       }
     }
   ],

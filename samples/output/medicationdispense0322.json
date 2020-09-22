@@ -1,6 +1,6 @@
 {
   "resourceType": "MedicationDispense",
-  "id": "aa2307ce6eb28068ce0ae8be3672bdaee0dbc82246a146ed85c6dc27aa354ce8",
+  "id": "2a34074093e489c593598703affceba1105aa065f129bf0b2346c5f345ead1e8",
   "meta": {
     "security": [
       {
@@ -26,7 +26,7 @@
   },
   "text": {
     "status": "generated",
-    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: meddisp0322</p><p><b>status</b>: completed</p><p><b>medication</b>: Dilantin 125mg/5ml Oral Suspension <span>(Details : {[URL] code '[ID]' = 'n/a', given as 'Dilantin 125mg/5ml Oral Suspension'})</span></p><p><b>subject</b>: <a>Donald Duck</a></p><h3>Performers</h3><table><tr><td>-</td><td><b>Actor</b></td></tr><tr><td>*</td><td><a>Practitioner/f006</a></td></tr></table><p><b>authorizingPrescription</b>: <a>MedicationRequest/medrx0312</a></p><p><b>type</b>: Refill - Part Fill <span>(Details : {[URL] code 'RFP' = 'Refill - Part Fill', given as 'Refill - Part Fill'})</span></p><p><b>quantity</b>: 360 ml<span> (Details: UCUM code ml = 'ml')</span></p><p><b>daysSupply</b>: [DATETIMEV2.DURATION]<span> (Details: UCUM code d = 'd')</span></p><p><b>whenPrepared</b>: [DATETIMEV2.DATETIME]</p><p><b>whenHandedOver</b>: [DATETIMEV2.DATETIME]</p><p><b>dosageInstruction</b>: </p></div>"
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: meddisp0322</p><p><b>status</b>: completed</p><p><b>medication</b>: Dilantin 125mg/5ml Oral Suspension <span>(Details : {[URL] code '[PHONENUMBER]' = 'n/a', given as 'Dilantin 125mg/5ml Oral Suspension'})</span></p><p><b>subject</b>: <a>Donald Duck</a></p><h3>Performers</h3><table><tr><td>-</td><td><b>Actor</b></td></tr><tr><td>*</td><td><a>Practitioner/f006</a></td></tr></table><p><b>authorizingPrescription</b>: <a>MedicationRequest/medrx0312</a></p><p><b>type</b>: Refill - Part Fill <span>(Details : {[URL] code 'RFP' = 'Refill - Part Fill', given as 'Refill - Part Fill'})</span></p><p><b>quantity</b>: 360 ml<span> (Details: UCUM code ml = 'ml')</span></p><p><b>daysSupply</b>: [DATETIMEV2.DURATION]<span> (Details: UCUM code d = 'd')</span></p><p><b>whenPrepared</b>: [DATETIMEV2.DATETIME]</p><p><b>whenHandedOver</b>: [DATETIMEV2.DATETIME]</p><p><b>dosageInstruction</b>: </p></div>"
   },
   "status": "completed",
   "medicationCodeableConcept": {
@@ -37,18 +37,18 @@
     ]
   },
   "subject": {
-    "reference": "Patient/fba239deac9378c8c9d1842d539b4595888da5fa08919820df2dba73cb95c5b7"
+    "reference": "Patient/fa9e59e5547bb6cc462aea15e8ff4227c3ffe9cafea631dfa070da05290b238d"
   },
   "performer": [
     {
       "actor": {
-        "reference": "Practitioner/cca1977ad2ef7e010086c58cc7b766e520865e341e52dc7d73e9aea284cda1b8"
+        "reference": "Practitioner/46a3808cd0b00d1e74e189d65e40bbb165ba82f9b7062deb632bf82143bbe715"
       }
     }
   ],
   "authorizingPrescription": [
     {
-      "reference": "MedicationRequest/84900f808498be3f3813224d34a93ce5e0269a55adffc0df6800eb84c1731e34"
+      "reference": "MedicationRequest/46cf66088fd930854f9f276a380740eba1551cbc19bdd2916382df9f62da96da"
     }
   ],
   "type": {
@@ -69,8 +69,8 @@
     "system": "http://unitsofmeasure.org",
     "code": "d"
   },
-  "whenPrepared": "2015-02-12T00:00:00+05:00",
-  "whenHandedOver": "2015-02-14T00:00:00+05:00",
+  "whenPrepared": "2015-03-04T00:00:00+05:00",
+  "whenHandedOver": "2015-03-06T00:00:00+05:00",
   "dosageInstruction": [
     {
       "sequence": 1,
