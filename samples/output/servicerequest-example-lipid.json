@@ -1,6 +1,6 @@
 {
   "resourceType": "ServiceRequest",
-  "id": "4f7adb61bdd7865ba10ce2b9b1c3847dd536a746791e4bf7c7c2002b592729f7",
+  "id": "58e9d80a14113401df87365fbf4a94eb5dd65853dca403bd8d7c4f3e3e80811c",
   "meta": {
     "security": [
       {
@@ -26,12 +26,12 @@
   },
   "text": {
     "status": "generated",
-    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: lipid</p><p><b>contained</b>: , </p><p><b>identifier</b>: Placer = [PHONENUMBER]</p><p><b>status</b>: active</p><p><b>intent</b>: original-order</p><p><b>code</b>: Lipid Panel <span>(Details : {[URL] code 'LIPID' = 'LIPID)</span></p><p><b>subject</b>: <a>Patient/example</a></p><p><b>encounter</b>: <a>Encounter/example</a></p><p><b>occurrence</b>: [DATETIMEV2.DATETIME]</p><p><b>requester</b>: <a>Practitioner/example</a></p><p><b>performer</b>: <a>Practitioner/f202</a></p><p><b>reasonCode</b>: Fam hx-ischem heart dis <span>(Details : {ICD-9 code 'V173' = 'V173', given as 'Fam hx-ischem heart dis'})</span></p><p><b>supportingInfo</b>: Fasting status. Generated Summary: id: fasting; status: final; Fasting status - Reported <span>(Details : {LOINC code '49541-6' = 'Fasting status - Reported', given as 'Fasting status - Reported'})</span>; Yes <span>(Details : {[URL] code 'Y' = 'Yes', given as 'Yes'})</span></p><p><b>specimen</b>: Serum specimen. Generated Summary: id: serum; [PHONENUMBER]; Serum sample <span>(Details : {SNOMED CT code '[PHONENUMBER]' = 'Serum specimen', given as 'Serum sample'})</span></p><p><b>note</b>: patient is afraid of needles</p></div>"
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: lipid</p><p><b>contained</b>: , </p><p><b>identifier</b>: Placer = [PHONENUMBER]</p><p><b>status</b>: active</p><p><b>intent</b>: original-order</p><p><b>code</b>: Lipid Panel <span>(Details : {[URL] code 'LIPID' = 'LIPID)</span></p><p><b>subject</b>: <a>Patient/example</a></p><p><b>encounter</b>: <a>Encounter/example</a></p><p><b>occurrence</b>: [DATETIMEV2.DATETIME]</p><p><b>requester</b>: <a>Practitioner/example</a></p><p><b>performer</b>: <a>Practitioner/f202</a></p><p><b>reasonCode</b>: Fam hx-ischem heart dis <span>(Details : {ICD-9 code 'V173' = 'V173', given as 'Fam hx-ischem heart dis'})</span></p><p><b>supportingInfo</b>: Fasting status. Generated Summary: id: fasting; status: final; Fasting status - Reported <span>(Details : {LOINC code '49541-6' = 'Fasting status - Reported', given as 'Fasting status - Reported'})</span>; Yes <span>(Details : {[URL] code 'Y' = 'Yes', given as 'Yes'})</span></p><p><b>specimen</b>: Serum specimen. Generated Summary: id: serum; [PHONENUMBER]; Serum sample <span>(Details : {SNOMED CT code '[ID]' = 'Serum specimen', given as 'Serum sample'})</span></p><p><b>note</b>: patient is afraid of needles</p></div>"
   },
   "contained": [
     {
       "resourceType": "Observation",
-      "id": "43c22d99cc0f6eae201b2d792ef3707805a0af251399f3fd1a3786e157b3dd57",
+      "id": "817b1d547809f661231aeb0a4a93dcb00610f7c17f99f26ac6e123100185323d",
       "status": "final",
       "code": {
         "coding": [
@@ -41,12 +41,12 @@
         ]
       },
       "subject": {
-        "reference": "Patient/912f64647465fbd7888d185ecfe613a6bd99a1924355c661b35ec5b69f0b2c6e"
+        "reference": "Patient/f90a7a3e6668aeb3649896530e29289505767cb7fece648bd573bb930c1aa2cf"
       }
     },
     {
       "resourceType": "Specimen",
-      "id": "0d1afde16a7db98c1d772760c389ed67e00f3daba553c5101703a8989d31bb2c",
+      "id": "23846fab67cf85dbbb3a152c2b56d6933ac5071d014afa7d9088af01d3780f54",
       "identifier": [
         {
           "system": "http://acme.org/specimens"
@@ -60,10 +60,10 @@
         ]
       },
       "subject": {
-        "reference": "Patient/912f64647465fbd7888d185ecfe613a6bd99a1924355c661b35ec5b69f0b2c6e"
+        "reference": "Patient/f90a7a3e6668aeb3649896530e29289505767cb7fece648bd573bb930c1aa2cf"
       },
       "collection": {
-        "collectedDateTime": "2015-10-02T00:00:00Z"
+        "collectedDateTime": "2015-07-18T00:00:00Z"
       }
     }
   ],
@@ -89,18 +89,18 @@
     ]
   },
   "subject": {
-    "reference": "Patient/912f64647465fbd7888d185ecfe613a6bd99a1924355c661b35ec5b69f0b2c6e"
+    "reference": "Patient/f90a7a3e6668aeb3649896530e29289505767cb7fece648bd573bb930c1aa2cf"
   },
   "encounter": {
-    "reference": "Encounter/912f64647465fbd7888d185ecfe613a6bd99a1924355c661b35ec5b69f0b2c6e"
+    "reference": "Encounter/f90a7a3e6668aeb3649896530e29289505767cb7fece648bd573bb930c1aa2cf"
   },
-  "occurrenceDateTime": "2013-06-18T00:00:00-07:00",
+  "occurrenceDateTime": "2013-04-03T00:00:00-07:00",
   "requester": {
-    "reference": "Practitioner/912f64647465fbd7888d185ecfe613a6bd99a1924355c661b35ec5b69f0b2c6e"
+    "reference": "Practitioner/f90a7a3e6668aeb3649896530e29289505767cb7fece648bd573bb930c1aa2cf"
   },
   "performer": [
     {
-      "reference": "Practitioner/51692b7beac2696467f0bc7c21142a4630d5f06d7faace133a84f3209dc7de0b"
+      "reference": "Practitioner/1f93d03e20582982d010e4ed58b06f7c009a21fc5c288286b683a81ec8c9bd82"
     }
   ],
   "reasonCode": [
@@ -114,12 +114,12 @@
   ],
   "supportingInfo": [
     {
-      "reference": "#43c22d99cc0f6eae201b2d792ef3707805a0af251399f3fd1a3786e157b3dd57"
+      "reference": "#817b1d547809f661231aeb0a4a93dcb00610f7c17f99f26ac6e123100185323d"
     }
   ],
   "specimen": [
     {
-      "reference": "#0d1afde16a7db98c1d772760c389ed67e00f3daba553c5101703a8989d31bb2c"
+      "reference": "#23846fab67cf85dbbb3a152c2b56d6933ac5071d014afa7d9088af01d3780f54"
     }
   ]
 }

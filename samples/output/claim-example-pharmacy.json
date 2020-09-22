@@ -1,6 +1,6 @@
 {
   "resourceType": "Claim",
-  "id": "e4d6cadd7b1f6a97baaa744ba20df2e78f2bd31c4c67a07a950327316e6cf9b1",
+  "id": "ed29bf751402951a5e97afed35c20846b246f7243cf648e6f37099ca4564ffca",
   "meta": {
     "security": [
       {
@@ -43,20 +43,20 @@
   },
   "use": "claim",
   "patient": {
-    "reference": "Patient/91aa09d66aebed8f7aab1354ad6cbaddf11efbe0d16b52160dd616e5fe2284c3"
+    "reference": "Patient/347c4f27b78f4a11cc4dae000e7cb2aeb92e32f9c962387be01c163154eae5eb"
   },
-  "created": "2014-07-13",
+  "created": "2014-08-26",
   "insurer": {
-    "reference": "Organization/f4a88193d1f7a27f05ec9b09af79245c072d6c2ae332d4c28760603d18eb8144"
+    "reference": "Organization/526d6d7453d553ebc31f563d294381b757a3c33122a7958208a8273bf65710df"
   },
   "provider": {
-    "reference": "Organization/91aa09d66aebed8f7aab1354ad6cbaddf11efbe0d16b52160dd616e5fe2284c3"
+    "reference": "Organization/347c4f27b78f4a11cc4dae000e7cb2aeb92e32f9c962387be01c163154eae5eb"
   },
   "careTeam": [
     {
       "sequence": 1,
       "provider": {
-        "reference": "Practitioner/912f64647465fbd7888d185ecfe613a6bd99a1924355c661b35ec5b69f0b2c6e"
+        "reference": "Practitioner/f90a7a3e6668aeb3649896530e29289505767cb7fece648bd573bb930c1aa2cf"
       }
     }
   ],
@@ -70,7 +70,7 @@
       "sequence": 1,
       "focal": true,
       "coverage": {
-        "reference": "Coverage/52a69a6de33c27d4c11f68252d9f2a6e1dac0024b859bdc2642b8a3ac8df2fc2"
+        "reference": "Coverage/754ea4194c0b4d68aad903dbc4ace1b59f198a17b7aa94f77697e5ae3d31c25d"
       }
     }
   ],
@@ -87,7 +87,7 @@
           }
         ]
       },
-      "servicedDate": "2014-07-13",
+      "servicedDate": "2014-08-26",
       "unitPrice": {
         "value": 60.00,
         "currency": "USD"

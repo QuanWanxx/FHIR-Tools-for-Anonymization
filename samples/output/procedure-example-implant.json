@@ -1,6 +1,6 @@
 {
   "resourceType": "Procedure",
-  "id": "32730324307ea4f859f24a3ba1a3eabd4e8d6083df4cd41a178e50b739063ef9",
+  "id": "afb1823f4a1d850b1d9614e9f14f82c7bad864aae2f932bdc6431a3f8d22daed",
   "meta": {
     "security": [
       {
@@ -22,7 +22,7 @@
   },
   "text": {
     "status": "generated",
-    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: example-implant</p><p><b>status</b>: completed</p><p><b>code</b>: Implant Pacemaker <span>(Details : {SNOMED CT code '[PHONENUMBER]' = 'Insertion of intracardiac pacemaker', given as 'Insertion of intracardiac pacemaker (procedure)'})</span></p><p><b>subject</b>: <a>Patient/example</a></p><p><b>performed</b>: [DATETIMEV2.DATE]</p><h3>Performers</h3><table><tr><td>-</td><td><b>Actor</b></td></tr><tr><td>*</td><td><a>Dr Cecil Surgeon</a></td></tr></table><p><b>reasonCode</b>: Bradycardia <span>(Details )</span></p><p><b>followUp</b>: ROS [DATETIMEV2.DURATION]  - 2013-04-10 <span>(Details )</span></p><p><b>note</b>: Routine Appendectomy. Appendix was inflamed and in retro-caecal position</p><h3>FocalDevices</h3><table><tr><td>-</td><td><b>Action</b></td><td><b>Manipulated</b></td></tr><tr><td>*</td><td>Implanted <span>(Details : {[URL] code 'implanted' = 'Implanted)</span></td><td><a>Device/example-pacemaker</a></td></tr></table></div>"
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: example-implant</p><p><b>status</b>: completed</p><p><b>code</b>: Implant Pacemaker <span>(Details : {SNOMED CT code '[ID]' = 'Insertion of intracardiac pacemaker', given as 'Insertion of intracardiac pacemaker (procedure)'})</span></p><p><b>subject</b>: <a>Patient/example</a></p><p><b>performed</b>: [DATETIMEV2.DATE]</p><h3>Performers</h3><table><tr><td>-</td><td><b>Actor</b></td></tr><tr><td>*</td><td><a>Dr Cecil Surgeon</a></td></tr></table><p><b>reasonCode</b>: Bradycardia <span>(Details )</span></p><p><b>followUp</b>: ROS [DATETIMEV2.DURATION]  - 2013-04-10 <span>(Details )</span></p><p><b>note</b>: Routine Appendectomy. Appendix was inflamed and in retro-caecal position</p><h3>FocalDevices</h3><table><tr><td>-</td><td><b>Action</b></td><td><b>Manipulated</b></td></tr><tr><td>*</td><td>Implanted <span>(Details : {[URL] code 'implanted' = 'Implanted)</span></td><td><a>Device/example-pacemaker</a></td></tr></table></div>"
   },
   "status": "completed",
   "code": {
@@ -33,13 +33,13 @@
     ]
   },
   "subject": {
-    "reference": "Patient/912f64647465fbd7888d185ecfe613a6bd99a1924355c661b35ec5b69f0b2c6e"
+    "reference": "Patient/f90a7a3e6668aeb3649896530e29289505767cb7fece648bd573bb930c1aa2cf"
   },
   "performedDateTime": "2015",
   "performer": [
     {
       "actor": {
-        "reference": "Practitioner/912f64647465fbd7888d185ecfe613a6bd99a1924355c661b35ec5b69f0b2c6e"
+        "reference": "Practitioner/f90a7a3e6668aeb3649896530e29289505767cb7fece648bd573bb930c1aa2cf"
       }
     }
   ],
@@ -53,7 +53,7 @@
         ]
       },
       "manipulated": {
-        "reference": "Device/4c0dab10a3d240d42d6874a83c37fcd8d156b0a7efd59ea2a17411a01e09425a"
+        "reference": "Device/aae2993a4978efc4c0b80555ce2445521d9cfe6e0883925e6a875fccf32fd305"
       }
     }
   ]

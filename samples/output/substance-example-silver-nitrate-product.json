@@ -1,6 +1,6 @@
 {
   "resourceType": "Substance",
-  "id": "03bf6d7781163e716d63faeff3e2624f6df562030c9300715d5b4e07ca7d2b6c",
+  "id": "ff33c75c2b094800bab4ae4645a9266455a0fdcc5ce11878a63ea46cb70f9918",
   "meta": {
     "security": [
       {
@@ -26,7 +26,7 @@
   },
   "text": {
     "status": "generated",
-    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: f204</p><p><b>identifier</b>: 15970</p><p><b>category</b>: Chemical <span>(Details : {[URL] code 'chemical' = 'Chemical', given as 'Chemical'})</span></p><p><b>code</b>: Silver nitrate 20% solution (product) <span>(Details : {SNOMED CT code '[PHONENUMBER]' = 'Silver nitrate 20% solution', given as 'Silver nitrate 20% solution (product)'})</span></p><p><b>description</b>: Solution for silver nitrate stain</p><h3>Instances</h3><table><tr><td>-</td><td><b>Identifier</b></td><td><b>Expiry</b></td><td><b>Quantity</b></td></tr><tr><td>*</td><td>AB94687</td><td>[DATETIMEV2.DATE]</td><td>100 mL<span> (Details: UCUM code mL = 'mL')</span></td></tr></table></div>"
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: f204</p><p><b>identifier</b>: 15970</p><p><b>category</b>: Chemical <span>(Details : {[URL] code 'chemical' = 'Chemical', given as 'Chemical'})</span></p><p><b>code</b>: Silver nitrate 20% solution (product) <span>(Details : {SNOMED CT code '[ID]' = 'Silver nitrate 20% solution', given as 'Silver nitrate 20% solution (product)'})</span></p><p><b>description</b>: Solution for silver nitrate stain</p><h3>Instances</h3><table><tr><td>-</td><td><b>Identifier</b></td><td><b>Expiry</b></td><td><b>Quantity</b></td></tr><tr><td>*</td><td>AB94687</td><td>[DATETIMEV2.DATE]</td><td>100 mL<span> (Details: UCUM code mL = 'mL')</span></td></tr></table></div>"
   },
   "identifier": [
     {
@@ -54,7 +54,7 @@
       "identifier": {
         "system": "http://acme.org/identifiers/substances/lot"
       },
-      "expiry": "2018-02-08",
+      "expiry": "2018-02-14",
       "quantity": {
         "value": 100,
         "unit": "mL",

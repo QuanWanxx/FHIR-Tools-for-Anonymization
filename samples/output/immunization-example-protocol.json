@@ -1,6 +1,6 @@
 {
   "resourceType": "Immunization",
-  "id": "b157e2ccfd5edc1a2ad7652a32e11774b77e9dfd95b5e801c0a3f6fe0ba15087",
+  "id": "360d1454bddb15fc9364eeaf6a4d9921f32bcb129080f90398c29f512e2ec318",
   "meta": {
     "security": [
       {
@@ -26,7 +26,7 @@
   },
   "text": {
     "status": "generated",
-    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: protocol</p><p><b>identifier</b>: urn:oid:[IP].4.1.21367.[DATETIMEV2.DATE].1234</p><p><b>status</b>: completed</p><p><b>vaccineCode</b>: Twinrix (HepA/HepB) <span>(Details : {[URL] code '104' = 'Hep A-Hep B)</span></p><p><b>patient</b>: <a>Patient/example</a></p><p><b>encounter</b>: <a>Encounter/example</a></p><p><b>occurrence</b>: [DATETIMEV2.DATE]</p><p><b>primarySource</b>: true</p><p><b>location</b>: <a>Location/1</a></p><p><b>manufacturer</b>: <a>Organization/hl7</a></p><p><b>lotNumber</b>: PT123F</p><p><b>expirationDate</b>: [DATETIMEV2.DATE]</p><p><b>site</b>: left arm <span>(Details : {[URL] code 'LA' = 'left arm', given as 'left arm'})</span></p><p><b>route</b>: Injection, intramuscular <span>(Details : {[URL] code 'IM' = 'Injection, intramuscular', given as 'Injection, intramuscular'})</span></p><p><b>doseQuantity</b>: 5 mg<span> (Details: UCUM code mg = 'mg')</span></p><blockquote><p><b>performer</b></p><p><b>function</b>: Ordering Provider <span>(Details : {[URL] code 'OP' = 'Ordering Provider)</span></p><p><b>actor</b>: <a>Practitioner/example</a></p></blockquote><blockquote><p><b>performer</b></p><p><b>function</b>: Administering Provider <span>(Details : {[URL] code 'AP' = 'Administering Provider)</span></p><p><b>actor</b>: <a>Practitioner/example</a></p></blockquote><p><b>isSubpotent</b>: false</p><p><b>programEligibility</b>: Not Eligible <span>(Details : {[URL] code 'ineligible' = 'Not Eligible)</span></p><p><b>fundingSource</b>: Private <span>(Details : {[URL] code 'private' = 'Private)</span></p><blockquote><p><b>protocolApplied</b></p><p><b>series</b>: 2-dose</p><p><b>targetDisease</b>: Viral hepatitis, type A <span>(Details : {SNOMED CT code '[PHONENUMBER]' = 'Viral hepatitis, type A)</span></p><p><b>doseNumber</b>: 1</p></blockquote><blockquote><p><b>protocolApplied</b></p><p><b>series</b>: 3-dose</p><p><b>targetDisease</b>: Type B viral hepatitis <span>(Details : {SNOMED CT code '[PHONENUMBER]' = 'Type B viral hepatitis)</span></p><p><b>doseNumber</b>: 2</p></blockquote></div>"
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: protocol</p><p><b>identifier</b>: urn:oid:[IP].4.1.21367.[DATETIMEV2.DATE].1234</p><p><b>status</b>: completed</p><p><b>vaccineCode</b>: Twinrix (HepA/HepB) <span>(Details : {[URL] code '104' = 'Hep A-Hep B)</span></p><p><b>patient</b>: <a>Patient/example</a></p><p><b>encounter</b>: <a>Encounter/example</a></p><p><b>occurrence</b>: [DATETIMEV2.DATE]</p><p><b>primarySource</b>: true</p><p><b>location</b>: <a>Location/1</a></p><p><b>manufacturer</b>: <a>Organization/hl7</a></p><p><b>lotNumber</b>: PT123F</p><p><b>expirationDate</b>: [DATETIMEV2.DATE]</p><p><b>site</b>: left arm <span>(Details : {[URL] code 'LA' = 'left arm', given as 'left arm'})</span></p><p><b>route</b>: Injection, intramuscular <span>(Details : {[URL] code 'IM' = 'Injection, intramuscular', given as 'Injection, intramuscular'})</span></p><p><b>doseQuantity</b>: 5 mg<span> (Details: UCUM code mg = 'mg')</span></p><blockquote><p><b>performer</b></p><p><b>function</b>: Ordering Provider <span>(Details : {[URL] code 'OP' = 'Ordering Provider)</span></p><p><b>actor</b>: <a>Practitioner/example</a></p></blockquote><blockquote><p><b>performer</b></p><p><b>function</b>: Administering Provider <span>(Details : {[URL] code 'AP' = 'Administering Provider)</span></p><p><b>actor</b>: <a>Practitioner/example</a></p></blockquote><p><b>isSubpotent</b>: false</p><p><b>programEligibility</b>: Not Eligible <span>(Details : {[URL] code 'ineligible' = 'Not Eligible)</span></p><p><b>fundingSource</b>: Private <span>(Details : {[URL] code 'private' = 'Private)</span></p><blockquote><p><b>protocolApplied</b></p><p><b>series</b>: 2-dose</p><p><b>targetDisease</b>: Viral hepatitis, type A <span>(Details : {SNOMED CT code '[ID]' = 'Viral hepatitis, type A)</span></p><p><b>doseNumber</b>: 1</p></blockquote><blockquote><p><b>protocolApplied</b></p><p><b>series</b>: 3-dose</p><p><b>targetDisease</b>: Type B viral hepatitis <span>(Details : {SNOMED CT code '[ID]' = 'Type B viral hepatitis)</span></p><p><b>doseNumber</b>: 2</p></blockquote></div>"
   },
   "identifier": [
     {
@@ -42,21 +42,21 @@
     ]
   },
   "patient": {
-    "reference": "Patient/912f64647465fbd7888d185ecfe613a6bd99a1924355c661b35ec5b69f0b2c6e"
+    "reference": "Patient/f90a7a3e6668aeb3649896530e29289505767cb7fece648bd573bb930c1aa2cf"
   },
   "encounter": {
-    "reference": "Encounter/912f64647465fbd7888d185ecfe613a6bd99a1924355c661b35ec5b69f0b2c6e"
+    "reference": "Encounter/f90a7a3e6668aeb3649896530e29289505767cb7fece648bd573bb930c1aa2cf"
   },
   "occurrenceDateTime": "2018",
   "primarySource": true,
   "location": {
-    "reference": "Location/91aa09d66aebed8f7aab1354ad6cbaddf11efbe0d16b52160dd616e5fe2284c3"
+    "reference": "Location/347c4f27b78f4a11cc4dae000e7cb2aeb92e32f9c962387be01c163154eae5eb"
   },
   "manufacturer": {
-    "reference": "Organization/2a141e8fb8100e8dbc176dff1834704c10978d73a6893370647556b003d8551c"
+    "reference": "Organization/811fc028a637d1eef9823510b8929265ccfac12ce6d5ccd27e02ca31cefecf7f"
   },
   "lotNumber": "PT123F",
-  "expirationDate": "2019-01-07",
+  "expirationDate": "2018-12-08",
   "site": {
     "coding": [
       {
@@ -86,7 +86,7 @@
         ]
       },
       "actor": {
-        "reference": "Practitioner/912f64647465fbd7888d185ecfe613a6bd99a1924355c661b35ec5b69f0b2c6e"
+        "reference": "Practitioner/f90a7a3e6668aeb3649896530e29289505767cb7fece648bd573bb930c1aa2cf"
       }
     },
     {
@@ -98,7 +98,7 @@
         ]
       },
       "actor": {
-        "reference": "Practitioner/912f64647465fbd7888d185ecfe613a6bd99a1924355c661b35ec5b69f0b2c6e"
+        "reference": "Practitioner/f90a7a3e6668aeb3649896530e29289505767cb7fece648bd573bb930c1aa2cf"
       }
     }
   ],

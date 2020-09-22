@@ -1,6 +1,6 @@
 {
   "resourceType": "Specimen",
-  "id": "8263b0291f90d117a1e58316591594d2acd2490adc1d364275574c058f5a7d64",
+  "id": "216fe1a4b7316629b297d66ecd55046fe62e600dd0f35299f9a9499b76b9b939",
   "meta": {
     "security": [
       {
@@ -26,12 +26,12 @@
   },
   "text": {
     "status": "generated",
-    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: isolate</p><p><b>contained</b>: </p><p><b>accessionIdentifier</b>: X352356-ISO1</p><p><b>status</b>: available</p><p><b>type</b>: Bacterial isolate specimen <span>(Details : {SNOMED CT code '[PHONENUMBER]' = 'Bacterial isolate specimen (specimen)', given as 'Bacterial isolate specimen'})</span></p><p><b>subject</b>: <a>Patient/example</a></p><p><b>receivedTime</b>: [DATETIMEV2.DATETIME]</p><p><b>parent</b>: id: stool; X352356; status: unavailable; Stool specimen <span>(Details : {SNOMED CT code '[PHONENUMBER]' = 'Stool specimen', given as 'Stool specimen'})</span>; receivedTime: [DATETIMEV2.DATETIME]</p><h3>Collections</h3><table><tr><td>-</td><td><b>Collector</b></td><td><b>Collected[x]</b></td><td><b>Method</b></td></tr><tr><td>*</td><td><a>Practitioner/f202</a></td><td>16/[DATETIMEV2.DATERANGE] [DATETIMEV2.TIME]</td><td>Plates, Blood Agar <span>(Details : {[URL] code 'BAP' = 'Plates, Blood Agar)</span></td></tr></table><p><b>note</b>: Patient dropped off specimen</p></div>"
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative with Details</b></p><p><b>id</b>: isolate</p><p><b>contained</b>: </p><p><b>accessionIdentifier</b>: X352356-ISO1</p><p><b>status</b>: available</p><p><b>type</b>: Bacterial isolate specimen <span>(Details : {SNOMED CT code '[ID]' = 'Bacterial isolate specimen (specimen)', given as 'Bacterial isolate specimen'})</span></p><p><b>subject</b>: <a>Patient/example</a></p><p><b>receivedTime</b>: [DATETIMEV2.DATETIME]</p><p><b>parent</b>: id: stool; X352356; status: unavailable; Stool specimen <span>(Details : {SNOMED CT code '[ID]' = 'Stool specimen', given as 'Stool specimen'})</span>; receivedTime: [DATETIMEV2.DATETIME]</p><h3>Collections</h3><table><tr><td>-</td><td><b>Collector</b></td><td><b>Collected[x]</b></td><td><b>Method</b></td></tr><tr><td>*</td><td><a>Practitioner/f202</a></td><td>16/[DATETIMEV2.DATERANGE] [DATETIMEV2.TIME]</td><td>Plates, Blood Agar <span>(Details : {[URL] code 'BAP' = 'Plates, Blood Agar)</span></td></tr></table><p><b>note</b>: Patient dropped off specimen</p></div>"
   },
   "contained": [
     {
       "resourceType": "Specimen",
-      "id": "22335b9557efd9183a674942e0d803cff1d7c08047c7841ac6660c9b39a473c4",
+      "id": "a40e7964f24629921aea5183352ad9df62c3a397726d6ba0e2631cd89017cb90",
       "accessionIdentifier": {
         "system": "http://lab.acme.org/specimens/2015"
       },
@@ -44,11 +44,11 @@
         ]
       },
       "subject": {
-        "reference": "Patient/912f64647465fbd7888d185ecfe613a6bd99a1924355c661b35ec5b69f0b2c6e"
+        "reference": "Patient/f90a7a3e6668aeb3649896530e29289505767cb7fece648bd573bb930c1aa2cf"
       },
-      "receivedTime": "2015-08-28T00:00:00Z",
+      "receivedTime": "2015-09-18T00:00:00Z",
       "collection": {
-        "collectedDateTime": "2011-08-28T00:00:00Z",
+        "collectedDateTime": "2011-09-18T00:00:00Z",
         "method": {
           "coding": [
             {
@@ -71,19 +71,19 @@
     ]
   },
   "subject": {
-    "reference": "Patient/912f64647465fbd7888d185ecfe613a6bd99a1924355c661b35ec5b69f0b2c6e"
+    "reference": "Patient/f90a7a3e6668aeb3649896530e29289505767cb7fece648bd573bb930c1aa2cf"
   },
-  "receivedTime": "2015-08-30T00:00:00Z",
+  "receivedTime": "2015-09-20T00:00:00Z",
   "parent": [
     {
-      "reference": "#22335b9557efd9183a674942e0d803cff1d7c08047c7841ac6660c9b39a473c4"
+      "reference": "#a40e7964f24629921aea5183352ad9df62c3a397726d6ba0e2631cd89017cb90"
     }
   ],
   "collection": {
     "collector": {
-      "reference": "Practitioner/51692b7beac2696467f0bc7c21142a4630d5f06d7faace133a84f3209dc7de0b"
+      "reference": "Practitioner/1f93d03e20582982d010e4ed58b06f7c009a21fc5c288286b683a81ec8c9bd82"
     },
-    "collectedDateTime": "2015-08-28T00:00:00Z",
+    "collectedDateTime": "2015-09-18T00:00:00Z",
     "method": {
       "coding": [
         {
