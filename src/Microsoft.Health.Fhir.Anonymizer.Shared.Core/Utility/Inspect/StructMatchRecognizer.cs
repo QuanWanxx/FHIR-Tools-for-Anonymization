@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Web;
 using Hl7.FhirPath;
 using Hl7.Fhir.ElementModel;
 using Microsoft.Health.Fhir.Anonymizer.Core.Extensions;
@@ -54,8 +55,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                     }
                 }
             }
-
-            var entities = InspectEntities(node.Value.ToString(), structDataList);
+            var rawText = HttpUtility.HtmlDecode(node.Value.ToString());
+            var entities = InspectEntities(rawText, structDataList);
             entities = EntityProcessUtility.PreprocessEntities(entities);
             return entities;
         }

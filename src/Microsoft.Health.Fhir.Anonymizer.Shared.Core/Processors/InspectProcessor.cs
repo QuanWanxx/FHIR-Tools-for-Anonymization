@@ -47,10 +47,13 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             PrintResourceType(node);
             _printInfo.AppendLine(node.Value.ToString());
 
+            ;
             // TA recognizer results
-            var textSendToTA = HtmlTextUtility.StripTags(HttpUtility.HtmlDecode(node.Value.ToString()));
+            var rawText = HttpUtility.HtmlDecode(node.Value.ToString());
+            var textSendToTA = HtmlTextUtility.StripTags(rawText);
             var entitiesTA = _namedEntityRecognizer.RecognizeText(textSendToTA);
             PrintEntities(entitiesTA, "TA recognizer");
+
 
             // Structuerd fields match recognizer results
             _structMatchRecognizer = new StructMatchRecognizer();
@@ -62,8 +65,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             entities = EntityProcessUtility.PreprocessEntities(entities);
             PrintEntities(entities, "Combined Results");
 
-            var processedText = EntityProcessUtility.ProcessEntities(node.Value.ToString(), entities);
-            //_printInfo.AppendLine(processedText);
+            var processedText = EntityProcessUtility.ProcessEntities(rawText, entities);
+            _printInfo.AppendLine(processedText);
             _printInfo.AppendLine(new string('=', 100));
             
 
