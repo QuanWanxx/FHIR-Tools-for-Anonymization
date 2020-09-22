@@ -1,45 +1,32 @@
 {
   "resourceType": "RiskAssessment",
-  "id": "9e86b5a418845d89de7ad9fc5cfd2029429a6b41bebed38a061feef354184a9c",
-  "meta": {
-    "security": [
+  "id": "genetic",
+  "text": {
+    "status": "generated",
+    "div": "\u003cdiv xmlns\u003d\"http://www.w3.org/1999/xhtml\"\u003e\n      \u003cp\u003eProbability of developing breast cancer before the age indicated:\u003c/p\u003e\n      \u003ctable\u003e\n        \u003cthead\u003e\n          \u003ctr\u003e\n            \u003cth\u003eAge\u003c/th\u003e\n            \u003cth\u003eProbability (%)\u003c/th\u003e\n          \u003c/tr\u003e\n        \u003c/thead\u003e\n        \u003ctbody\u003e\n          \u003ctr\u003e\n            \u003ctd\u003ecurrent-53\u003c/td\u003e\n            \u003ctd\u003e0.0168\u003c/td\u003e\n          \u003c/tr\u003e\n          \u003ctr\u003e\n            \u003ctd\u003e54-57\u003c/td\u003e\n            \u003ctd\u003e0.0368\u003c/td\u003e\n          \u003c/tr\u003e\n          \u003ctr\u003e\n            \u003ctd\u003e58-62\u003c/td\u003e\n            \u003ctd\u003e0.0594\u003c/td\u003e\n          \u003c/tr\u003e\n          \u003ctr\u003e\n            \u003ctd\u003e63-67\u003c/td\u003e\n            \u003ctd\u003e0.0838\u003c/td\u003e\n          \u003c/tr\u003e\n          \u003ctr\u003e\n            \u003ctd\u003e68-72\u003c/td\u003e\n            \u003ctd\u003e0.1089\u003c/td\u003e\n          \u003c/tr\u003e\n          \u003ctr\u003e\n            \u003ctd\u003e73-77\u003c/td\u003e\n            \u003ctd\u003e0.1327\u003c/td\u003e\n          \u003c/tr\u003e\n          \u003ctr\u003e\n            \u003ctd\u003e78-82\u003c/td\u003e\n            \u003ctd\u003e0.1530\u003c/td\u003e\n          \u003c/tr\u003e\n          \u003ctr\u003e\n            \u003ctd\u003e83-87\u003c/td\u003e\n            \u003ctd\u003e0.1663\u003c/td\u003e\n          \u003c/tr\u003e\n        \u003c/tbody\u003e\n      \u003c/table\u003e\n    \u003c/div\u003e"
+  },
+  "status": "final",
+  "method": {
+    "coding": [
       {
-        "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
-        "code": "REDACTED",
-        "display": "redacted"
-      },
-      {
-        "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
-        "code": "CRYTOHASH",
-        "display": "cryptographic hash function"
-      },
-      {
-        "code": "PERTURBED",
-        "display": "exact value is replaced with another exact value"
-      }
-    ],
-    "tag": [
-      {
-        "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason"
+        "code": "BRCAPRO"
       }
     ]
   },
-  "text": {
-    "status": "generated",
-    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">\n      <p>Probability of developing breast cancer before the age indicated:</p>\n      <table>\n        <thead>\n          <tr>\n            <th>Age</th>\n            <th>Probability (%)</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td>current-53</td>\n            <td>0.0168</td>\n          </tr>\n          <tr>\n            <td>54-57</td>\n            <td>0.0368</td>\n          </tr>\n          <tr>\n            <td>58-62</td>\n            <td>0.0594</td>\n          </tr>\n          <tr>\n            <td>63-67</td>\n            <td>0.0838</td>\n          </tr>\n          <tr>\n            <td>68-72</td>\n            <td>0.1089</td>\n          </tr>\n          <tr>\n            <td>73-77</td>\n            <td>0.1327</td>\n          </tr>\n          <tr>\n            <td>78-82</td>\n            <td>0.[DATETIMEV2.DATERANGE]</td>\n          </tr>\n          <tr>\n            <td>83-87</td>\n            <td>0.[DATETIMEV2.DATERANGE]</td>\n          </tr>\n        </tbody>\n      </table>\n    </div>"
-  },
-  "status": "final",
   "subject": {
-    "reference": "Patient/d2924bb7486692a6d9845de9ef0961d319ca788e4b96fd61d3086130242a956c"
+    "reference": "Patient/b248b1b2-1686-4b94-9936-37d7a5f94b51"
   },
-  "occurrenceDateTime": "2006-01-05T00:00:00Z",
+  "occurrenceDateTime": "2006-01-13T23:01:00Z",
   "basis": [
     {
-      "reference": "List/48e52cbb39905b23aebd44e0d6bb4c83a0a3a3872ef3126949a1b0954b3de161"
+      "reference": "List/prognosis"
     }
   ],
   "prediction": [
     {
+      "outcome": {
+        "text": "Breast Cancer"
+      },
       "probabilityDecimal": 0.000168,
       "whenRange": {
         "high": {
@@ -51,6 +38,9 @@
       }
     },
     {
+      "outcome": {
+        "text": "Breast Cancer"
+      },
       "probabilityDecimal": 0.000368,
       "whenRange": {
         "low": {
@@ -68,6 +58,9 @@
       }
     },
     {
+      "outcome": {
+        "text": "Breast Cancer"
+      },
       "probabilityDecimal": 0.000594,
       "whenRange": {
         "low": {
@@ -85,6 +78,9 @@
       }
     },
     {
+      "outcome": {
+        "text": "Breast Cancer"
+      },
       "probabilityDecimal": 0.000838,
       "whenRange": {
         "low": {
@@ -102,6 +98,9 @@
       }
     },
     {
+      "outcome": {
+        "text": "Breast Cancer"
+      },
       "probabilityDecimal": 0.001089,
       "whenRange": {
         "low": {
@@ -119,6 +118,9 @@
       }
     },
     {
+      "outcome": {
+        "text": "Breast Cancer"
+      },
       "probabilityDecimal": 0.001327,
       "whenRange": {
         "low": {
@@ -136,6 +138,9 @@
       }
     },
     {
+      "outcome": {
+        "text": "Breast Cancer"
+      },
       "probabilityDecimal": 0.001530,
       "whenRange": {
         "low": {
@@ -153,6 +158,9 @@
       }
     },
     {
+      "outcome": {
+        "text": "Breast Cancer"
+      },
       "probabilityDecimal": 0.001663,
       "whenRange": {
         "low": {
@@ -169,5 +177,19 @@
         }
       }
     }
-  ]
+  ],
+  "note": [
+    {
+      "text": "High degree of certainty"
+    }
+  ],
+  "meta": {
+    "tag": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+        "code": "HTEST",
+        "display": "test health data"
+      }
+    ]
+  }
 }

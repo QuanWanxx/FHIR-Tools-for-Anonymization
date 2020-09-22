@@ -26,16 +26,17 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility
         private static readonly string _oidFormat = @"urn:oid:[0-2](\.(0|[1-9][0-9]*))+";
         private static readonly Regex _oidRegex = new Regex($@"\b{_oidFormat}\b");
         // Phone number validation
-        private static readonly Func<string, string> _phoneNumberValidationRegex1 = (phoneNumber) => $@"(SNOMED CT code|LOINC code|RxNorm code)\s+'?{phoneNumber}'?";
-        private static readonly Func<string, string> _phoneNumberValidationRegex2 = (phoneNumber) => $@"code.{{,10}}'?{phoneNumber}'?";
-        private static readonly Func<string, string> _phoneNumberValidationRegex3 = (phoneNumber) => $@"id.{{,10}}'?{phoneNumber}'?";
+        private static readonly Func<string, string> _phoneNumberValidationRegex1 = (phoneNumber) => $@"(SNOMED CT code|LOINC code|RxNorm code)\s+'?{Regex.Escape(phoneNumber)}'?";
+        private static readonly Func<string, string> _phoneNumberValidationRegex2 = (phoneNumber) => $@"code.{{,10}}'?{Regex.Escape(phoneNumber)}'?";
+        private static readonly Func<string, string> _phoneNumberValidationRegex3 = (phoneNumber) => $@"id.{{,10}}'?{Regex.Escape(phoneNumber)}'?";
 
         public List<Entity> RecognizeText(string text)
         {
             var culture = Culture.English;
 
-            var modelResults = new List<ModelResult>();
+            var recognitionResults = new List<Entity>();
 
+            var modelResults = new List<ModelResult>();
             modelResults.AddRange(NumberWithUnitRecognizer.RecognizeAge(text, culture));
             modelResults.AddRange(DateTimeRecognizer.RecognizeDateTime(text, culture));
             modelResults.AddRange(SequenceRecognizer.RecognizePhoneNumber(text, culture));
@@ -44,12 +45,12 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility
             modelResults.AddRange(SequenceRecognizer.RecognizeGUID(text, culture));
             modelResults.AddRange(SequenceRecognizer.RecognizeURL(text, culture));
 
-            modelResults.AddRange(RecognizeMRN(text));
-            modelResults.AddRange(RecognizeDateTime(text));
-            modelResults.AddRange(RecognizeSSN(text));
-            modelResults.AddRange(RecognizeOid(text));
+            var customResults = new List<ModelResult>();
+            customResults.AddRange(RecognizeMRN(text));
+            customResults.AddRange(RecognizeDateTime(text));
+            customResults.AddRange(RecognizeSSN(text));
+            customResults.AddRange(RecognizeOid(text));
 
-            var recognitionResults = new List<Entity>();
             foreach (var modelResult in modelResults)
             {
                 recognitionResults.Add(new Entity() 
@@ -58,6 +59,18 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility
                     Text = modelResult.Text,
                     Offset = modelResult.Start,
                     Length = modelResult.End - modelResult.Start + 1,
+                    ConfidenceScore = 0.5
+                });
+            }
+
+            foreach (var customResult in customResults)
+            {
+                recognitionResults.Add(new Entity() 
+                {
+                    Category = customResult.TypeName,
+                    Text = customResult.Text,
+                    Offset = customResult.Start,
+                    Length = customResult.End - customResult.Start + 1,
                     ConfidenceScore = 1
                 });
             }
@@ -82,10 +95,12 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility
                     else if (Regex.IsMatch(text, _phoneNumberValidationRegex2(entity.Text), RegexOptions.IgnoreCase))
                     {
                         entity.Category = "code";
+                        entity.ConfidenceScore = 1;
                     }
                     else if (Regex.IsMatch(text, _phoneNumberValidationRegex3(entity.Text), RegexOptions.IgnoreCase))
                     {
                         entity.Category = "id";
+                        entity.ConfidenceScore = 1;
                     }
                 }
             }

@@ -1,6 +1,6 @@
 {
   "resourceType": "Substance",
-  "id": "70ced8447f22e534b1210bcbc1a57eb4b661aeb5657e2a748b86ff392c29d19e",
+  "id": "34a5d18884d02ff8e347c01063445b70810edaf8e076e2b9cee5c34fad2546e2",
   "meta": {
     "security": [
       {
@@ -54,7 +54,7 @@
       "identifier": {
         "system": "http://acme.org/identifiers/substances/lot"
       },
-      "expiry": "2017-12-30",
+      "expiry": "2018-02-09",
       "quantity": {
         "value": 100,
         "unit": "mL",

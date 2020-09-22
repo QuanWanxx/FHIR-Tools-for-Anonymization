@@ -1,6 +1,6 @@
 {
   "resourceType": "Immunization",
-  "id": "39daf9f3141149860d5d642c0a6c067b32800864048afd1c52352ed697354770",
+  "id": "0b09bd851e49ab9fb8baf068e1ff42c817b59d921000a23ccaf88ad7036a6901",
   "meta": {
     "security": [
       {
@@ -42,21 +42,21 @@
     ]
   },
   "patient": {
-    "reference": "Patient/48be5f6666f9bbf25ccf935b7a0c097116a6089a1a30a1f1d05a54d0030b1929"
+    "reference": "Patient/a1c6aced4c326f1889ebffb3f072cb598bd19dae15d530ca796e87678aa39c35"
   },
   "encounter": {
-    "reference": "Encounter/48be5f6666f9bbf25ccf935b7a0c097116a6089a1a30a1f1d05a54d0030b1929"
+    "reference": "Encounter/a1c6aced4c326f1889ebffb3f072cb598bd19dae15d530ca796e87678aa39c35"
   },
   "occurrenceDateTime": "2018",
   "primarySource": true,
   "location": {
-    "reference": "Location/d94385bab78c7fda88d072d3905eaa24ce49763b911e5d29f1ff7b77050444d7"
+    "reference": "Location/94510c09c969158b435bbc655a5ae9293901befcba4f5cdbb2558725bac9ed9a"
   },
   "manufacturer": {
-    "reference": "Organization/b38cdfc1e0c5c9e32f0fb723125f5daccc416a075adf92d115ee95d8ae7c4f63"
+    "reference": "Organization/fbac4dc51b6650169df0c32ea79c20b86497ededa3dbc104205c2a1329b50116"
   },
   "lotNumber": "PT123F",
-  "expirationDate": "2018-10-26",
+  "expirationDate": "2018-11-27",
   "site": {
     "coding": [
       {
@@ -86,7 +86,7 @@
         ]
       },
       "actor": {
-        "reference": "Practitioner/48be5f6666f9bbf25ccf935b7a0c097116a6089a1a30a1f1d05a54d0030b1929"
+        "reference": "Practitioner/a1c6aced4c326f1889ebffb3f072cb598bd19dae15d530ca796e87678aa39c35"
       }
     },
     {
@@ -98,7 +98,7 @@
         ]
       },
       "actor": {
-        "reference": "Practitioner/48be5f6666f9bbf25ccf935b7a0c097116a6089a1a30a1f1d05a54d0030b1929"
+        "reference": "Practitioner/a1c6aced4c326f1889ebffb3f072cb598bd19dae15d530ca796e87678aa39c35"
       }
     }
   ],
