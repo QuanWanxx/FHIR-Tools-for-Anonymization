@@ -7,6 +7,7 @@ using Hl7.Fhir.ElementModel;
 using Microsoft.Health.Fhir.Anonymizer.Core.Extensions;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect;
 using Microsoft.Health.Fhir.Anonymizer.Core.Processors.Settings;
+using System.ComponentModel;
 
 namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
 {
@@ -104,7 +105,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
         private List<Entity> InspectEntities(string text, List<StructData> structDataList)
         {
             var entities = new List<Entity>();
-
+            var textUpper = text.ToUpper();
             var end = text.Length;
             foreach (var structData in structDataList)
             {
@@ -112,7 +113,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                 var at = 0;
                 while ((start <= end) && (at > -1))
                 {
-                    at = text.IndexOf(structData.Text, start, end - start);
+                    at = textUpper.IndexOf(structData.Text.ToUpper(), start, end - start);
                     if (at == -1)
                     {
                         break;
@@ -130,7 +131,17 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                         Recognizer = "StructMatchRecognizer"
                     });
                 }
+
+                var textStripTags = HtmlTextUtility.StripTags(text);
+                var entitiesFuzzyMatch = FuzzyMatchUtility.FuzzyMatch(textStripTags.ToUpper(), structData.Text.ToUpper(), 2, 0.6);
+                foreach (var entity in entitiesFuzzyMatch)
+                {
+                    entity.Category = structData.Category;
+                    entity.SubCategory = structData.InstanceType;
+                }
+                entities.AddRange(entitiesFuzzyMatch);
             }
+            
             return entities;
         }
 
