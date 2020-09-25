@@ -126,7 +126,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                         Text = responseEntity.Text,
                         Offset = responseEntity.Offset,
                         Length = responseEntity.Length,
-                        ConfidenceScore = responseEntity.ConfidenceScore
+                        ConfidenceScore = responseEntity.ConfidenceScore,
+                        Recognizer = "TextAnalyticRecognizer"
                     };
                     if (entity.Category != string.Empty)
                     {

@@ -59,7 +59,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                     Text = modelResult.Text,
                     Offset = modelResult.Start,
                     Length = modelResult.End - modelResult.Start + 1,
-                    ConfidenceScore = 0.5
+                    ConfidenceScore = 0.5,
+                    Recognizer = "RuleBasedRecognizer"
                 });
             }
 
@@ -71,7 +72,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                     Text = customResult.Text,
                     Offset = customResult.Start,
                     Length = customResult.End - customResult.Start + 1,
-                    ConfidenceScore = 1
+                    ConfidenceScore = 1,
+                    Recognizer = "RuleBasedRecognizer"
                 });
             }
 
@@ -90,7 +92,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                 {
                     if (Regex.IsMatch(text, _phoneNumberValidationRegex1(entity.Text), RegexOptions.IgnoreCase))
                     {
-                        entity.Category = string.Empty;
+                        entity.Category = "code";
+                        entity.ConfidenceScore = 1;
                     }
                     else if (Regex.IsMatch(text, _phoneNumberValidationRegex2(entity.Text), RegexOptions.IgnoreCase))
                     {

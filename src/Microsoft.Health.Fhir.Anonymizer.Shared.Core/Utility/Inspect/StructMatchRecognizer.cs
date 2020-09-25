@@ -56,7 +56,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                 }
             }
             var rawText = HttpUtility.HtmlDecode(node.Value.ToString());
-            var entities = InspectEntities(rawText, structDataList);
+            var formattedText = System.Xml.Linq.XElement.Parse(rawText).ToString();
+            var entities = InspectEntities(formattedText, structDataList);
             entities = EntityProcessUtility.PreprocessEntities(entities);
             return entities;
         }
@@ -125,7 +126,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                         ConfidenceScore = 1.1,
                         Length = structData.Text.Length,
                         Offset = at,
-                        Text = structData.Text
+                        Text = structData.Text,
+                        Recognizer = "StructMatchRecognizer"
                     });
                 }
             }

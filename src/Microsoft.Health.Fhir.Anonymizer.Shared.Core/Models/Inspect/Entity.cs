@@ -13,5 +13,7 @@
         public int Length { get; set; }
 
         public double ConfidenceScore { get; set; }
+
+        public string Recognizer { get; set; }
     }
 }

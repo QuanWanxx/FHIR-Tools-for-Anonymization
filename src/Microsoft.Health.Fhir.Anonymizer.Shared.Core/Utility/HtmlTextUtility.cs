@@ -25,6 +25,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility
                     startIndex = node.StreamPosition + node.InnerLength;
                 }
             }
+            sb.Append(new string(' ', html.Length - startIndex));
             return sb.ToString();
         }
 

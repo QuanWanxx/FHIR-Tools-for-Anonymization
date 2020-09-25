@@ -123,7 +123,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                     Text = entities[index].Text.Substring(start - originOffset, end - start),
                     Offset = start,
                     Length = end - start,
-                    ConfidenceScore = entities[index].ConfidenceScore
+                    ConfidenceScore = entities[index].ConfidenceScore,
+                    Recognizer = entities[index].Recognizer
                 };
 
                 // Ignore the entities doesnt contains information
