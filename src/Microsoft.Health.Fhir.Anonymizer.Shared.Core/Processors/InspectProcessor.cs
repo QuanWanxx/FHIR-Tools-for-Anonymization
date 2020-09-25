@@ -106,7 +106,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
 
         private void PrintEntities(List<Entity> entities, string recognizerType = "")
         {
-            _printInfo.AppendLine(new string('-', 12) + $"{recognizerType, 25}" + new string('-', 12));
+            _printInfo.AppendLine(new string('-', 12) + $"{recognizerType, -25}" + new string('-', 12));
             foreach (var entity in entities)
             {
                 _printInfo.AppendLine($"{$"[{entity.Category}]",-20} {entity.SubCategory,-10} -{entity.Offset, -4}:" +
