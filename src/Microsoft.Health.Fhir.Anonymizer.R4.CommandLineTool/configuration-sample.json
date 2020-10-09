@@ -203,7 +203,7 @@
     {"path": "InsurancePlan.coverage.benefit.requirement", "method": "redact"},
     {"path": "InsurancePlan.plan.generalCost.comment", "method": "redact"},
     
-
+    {"path": "nodesByType('Narrative')", "method": "redact"},
     {"path": "nodesByType('Expression').description", "method": "redact"},   
     {"path": "nodesByType('Expression').expression", "method": "redact"},    
     {"path": "nodesByType('Attachment').title", "method": "redact"},

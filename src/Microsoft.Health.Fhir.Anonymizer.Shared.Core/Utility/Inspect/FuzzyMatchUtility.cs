@@ -16,6 +16,13 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
             var entities = new List<Entity>();
             var tokenStringPattern = ConcateTokensOrdered(tokensPattern, 0, tokensPattern.Count);
             string tokenStringText;
+
+            // Do not do FuzzyMatch if the length of pattern less than 4
+            if (tokenStringPattern.Length < 4)
+            {
+                return entities;
+            }
+
             for (int d = -span; d <= span; d++)
             {
                 var count = tokensPattern.Count + d;

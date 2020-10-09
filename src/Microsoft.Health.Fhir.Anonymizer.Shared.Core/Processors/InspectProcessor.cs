@@ -66,30 +66,39 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             // Structuerd fields match recognizer results
             _structMatchRecognizer = new StructMatchRecognizer();
             var entitiesStructMatch = _structMatchRecognizer.RecognizeText(node, settings);
-            // PrintEntities(entitiesStructMatch, "StructMatch recognizer");
-            SaveEntities(entitiesStructMatch, node, rawText, formattedText, strippedText, "structMatch");
             
             // TA recognizer results
             var entitiesTA = _textAnalyticRecognizer.RecognizeText(strippedText);
-            // PrintEntities(entitiesTA, "TA recognizer");
-            SaveEntities(entitiesTA, node, rawText, formattedText, strippedText, "textAnalytic");
+
             // Rule-based (Recognizers.Text) recognizer results
             var entitiesRuleBased = _ruleBasedRecognizer.RecognizeText(strippedText);
-            // PrintEntities(entitiesRuleBased, "RuleBased recognizer");
-            SaveEntities(entitiesRuleBased, node, rawText, formattedText, strippedText, "ruleBased");
 
             // Combined entities
             var entities = entitiesTA.Concat(entitiesStructMatch).Concat(entitiesRuleBased).ToList<Entity>();
+            
             entities = EntityProcessUtility.PreprocessEntities(entities);
-            // PrintEntities(entities, "Combined Results");
-            SaveEntities(entities, node, rawText, formattedText, strippedText, "merged");
-
             var processedText = EntityProcessUtility.ProcessEntities(formattedText, entities);
-            _printInfo.AppendLine(processedText);
-            _printInfo.AppendLine(new string('=', 100));
-
-            // Console.WriteLine(_printInfo);
             node.Value = processedText;
+
+            if (false) 
+            {
+                SaveEntities(entitiesStructMatch, node, rawText, formattedText, strippedText, "structMatch");
+                SaveEntities(entitiesTA, node, rawText, formattedText, strippedText, "textAnalytic");
+                SaveEntities(entitiesRuleBased, node, rawText, formattedText, strippedText, "ruleBased");
+                SaveEntities(entities, node, rawText, formattedText, strippedText, "merged");
+            }
+
+            if (true)
+            {
+                PrintEntities(entitiesStructMatch, "StructMatch recognizer");
+                PrintEntities(entitiesTA, "TA recognizer");
+                PrintEntities(entitiesRuleBased, "RuleBased recognizer");
+                PrintEntities(entities, "Combined Results");
+                _printInfo.AppendLine(processedText);
+                _printInfo.AppendLine(new string('=', 100));
+                Console.WriteLine(_printInfo);
+            }
+
             processResult.AddProcessRecord(AnonymizationOperations.Inspect, node);
             return processResult;
         }
