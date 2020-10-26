@@ -127,10 +127,56 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                     Recognizer = entities[index].Recognizer
                 };
 
-                // Ignore the entities doesnt contains information
+                // Ignore the entities don't contain information
                 if (Regex.Matches(entity.Text, @"[a-zA-Z0-9]").Count > 0)
                 {
                     result.Add(entity);
+                }
+            }
+            return result;
+        }
+
+        public static List<Entity> PostprocessEntities(List<Entity> entities, stripInfo stripInfo)
+        {
+            var result = new List<Entity>();
+            int shiftLength = 0;
+            int i = 0;
+            foreach (var entity in entities)
+            {
+                while (i < stripInfo.SkipPositions.Count)
+                {
+                    if (entity.Offset >= stripInfo.SkipPositions[i].Index)
+                    {
+                        shiftLength += stripInfo.SkipPositions[i].Length;
+                        i++;
+                    }
+                    else if (entity.Offset + entity.Length <= stripInfo.SkipPositions[i].Index)
+                    {
+                        entity.Offset += shiftLength;
+                        result.Add(entity);
+                        break;
+                    }
+                    else
+                    {
+                        result.Add(new Entity() {
+                            Category = entity.Category,
+                            SubCategory = entity.SubCategory,
+                            Text = entity.Text.Substring(0, stripInfo.SkipPositions[i].Index - entity.Offset),
+                            Offset = entity.Offset + shiftLength,
+                            Length = stripInfo.SkipPositions[i].Index - entity.Offset,
+                            ConfidenceScore = entity.ConfidenceScore,
+                            Recognizer = entity.Recognizer
+                        });
+                        entity.Text = entity.Text.Substring(stripInfo.SkipPositions[i].Index - entity.Offset + 1);
+                        entity.Offset = stripInfo.SkipPositions[i].Index + 1;
+                        entity.Length = entity.Text.Length;
+                        shiftLength += stripInfo.SkipPositions[i].Length;
+                        i++;
+                    }
+                }
+                if (i >= stripInfo.SkipPositions.Count)
+                {
+                    entity.Offset += shiftLength;
                 }
             }
             return result;

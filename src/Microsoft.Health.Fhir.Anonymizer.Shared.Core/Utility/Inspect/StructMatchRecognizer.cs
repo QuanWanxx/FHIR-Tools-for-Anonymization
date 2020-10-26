@@ -23,7 +23,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
         HashSet<ElementNode> _ignoreNodes = new HashSet<ElementNode>();
         InspectSetting _inspectSetting;
 
-        public List<Entity> RecognizeText(ElementNode node, Dictionary<string, object> settings = null)
+        public List<Entity> RecognizeText(string strippedText, ElementNode node, Dictionary<string, object> settings = null)
         {
             _inspectSetting = InspectSetting.CreateFromRuleSettings(settings);
             var resourceNode = node;
@@ -56,9 +56,9 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                     }
                 }
             }
-            var formattedText = HttpUtility.HtmlDecode(node.Value.ToString());
+            // var formattedText = HttpUtility.HtmlDecode(node.Value.ToString());
             //var formattedText = System.Xml.Linq.XElement.Parse(rawText).ToString();
-            var entities = InspectEntities(formattedText, structDataList);
+            var entities = InspectEntities(strippedText, structDataList);
             entities = EntityProcessUtility.PreprocessEntities(entities);
             return entities;
         }
@@ -132,8 +132,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                     });
                 }
 
-                var textStripTags = HtmlTextUtility.StripTags(text);
-                var entitiesFuzzyMatch = FuzzyMatchUtility.FuzzyMatch(textStripTags.ToUpper(), structData.Text.ToUpper(), 2, 0.6);
+                // var textStripTags = HtmlTextUtility.StripTags(text);
+                var entitiesFuzzyMatch = FuzzyMatchUtility.FuzzyMatch(text.ToUpper(), structData.Text.ToUpper(), 2, 0.6);
                 foreach (var entity in entitiesFuzzyMatch)
                 {
                     entity.Category = structData.Category;

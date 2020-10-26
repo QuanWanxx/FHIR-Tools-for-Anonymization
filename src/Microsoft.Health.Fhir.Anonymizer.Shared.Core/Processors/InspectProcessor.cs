@@ -61,9 +61,10 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             _printInfo.AppendLine(node.Value.ToString());
 
             // var rawText = HttpUtility.HtmlDecode(node.Value.ToString());
-            var formattedText = HttpUtility.HtmlDecode(node.Value.ToString());
+            var rawText = HttpUtility.HtmlDecode(node.Value.ToString());
             // var formattedText = System.Xml.Linq.XElement.Parse(rawText).ToString();
-            var strippedText = HtmlTextUtility.StripTags(formattedText);
+            var stripInfo = HtmlTextUtility.StripTags(rawText);
+            var strippedText = stripInfo.StrippedText;
             // Console.WriteLine(strippedText);
 
             Stopwatch stopWatch = new Stopwatch();
@@ -71,7 +72,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             stopWatch.Start();
             // Structuerd fields match recognizer results
             _structMatchRecognizer = new StructMatchRecognizer();
-            var entitiesStructMatch = _structMatchRecognizer.RecognizeText(node, settings);
+            var entitiesStructMatch = _structMatchRecognizer.RecognizeText(strippedText, node, settings);
             stopWatch.Stop();
             Console.WriteLine($"StructMatch: {stopWatch.Elapsed}");
 
@@ -90,11 +91,12 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             Console.WriteLine($"RT: {stopWatch.Elapsed}");
 
             // Combined entities
-            //var entities = entitiesTA.Concat(entitiesStructMatch).Concat(entitiesRuleBased).ToList<Entity>();
-            var entities = entitiesStructMatch.Concat(entitiesRuleBased).ToList<Entity>();
+            var entities = entitiesTA.Concat(entitiesStructMatch).Concat(entitiesRuleBased).ToList<Entity>();
+            // var entities = entitiesStructMatch.Concat(entitiesRuleBased).ToList<Entity>();
 
             entities = EntityProcessUtility.PreprocessEntities(entities);
-            var processedText = EntityProcessUtility.ProcessEntities(formattedText, entities);
+            entities = EntityProcessUtility.PostprocessEntities(entities, stripInfo);
+            var processedText = EntityProcessUtility.ProcessEntities(rawText, entities);
             node.Value = processedText;
 
             //if (false) 

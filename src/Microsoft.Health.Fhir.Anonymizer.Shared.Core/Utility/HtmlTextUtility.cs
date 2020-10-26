@@ -9,8 +9,12 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility
 {
     public class HtmlTextUtility
     {
-        public static string StripTags(string html)
+        public static stripInfo StripTags(string html)
         {
+            var result = new stripInfo()
+            {
+                SkipPositions = new List<skipPosition>()
+            };
             HtmlDocument mainDoc = new HtmlDocument();
             mainDoc.LoadHtml(html);
             StringBuilder sb = new StringBuilder();
@@ -20,18 +24,35 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility
             {
                 if (!node.HasChildNodes)
                 {
-                    sb.Append(new string(' ', node.StreamPosition - startIndex));
+                    result.SkipPositions.Add(new skipPosition() { Index = sb.Length, Length = node.StreamPosition - startIndex - 1 });
+                    sb.Append(new string(' ', 1));
                     sb.Append(node.InnerText);
                     startIndex = node.StreamPosition + node.InnerLength;
                 }
             }
-            sb.Append(new string(' ', html.Length - startIndex));
-            return sb.ToString();
+            result.SkipPositions.Add(new skipPosition() { Index = sb.Length, Length = html.Length - startIndex - 1 });
+            sb.Append(new string(' ', 1));
+            result.StrippedText = sb.ToString();
+            return result;
         }
 
-        public static IEnumerable<string> StripTagsForArray(IEnumerable<string> htmls)
+        public static IEnumerable<stripInfo> StripTagsForArray(IEnumerable<string> htmls)
         {
             return htmls.Select(html => StripTags(html));
         }
+    }
+
+    public class stripInfo
+    {
+        public List<skipPosition> SkipPositions;
+        
+        public string StrippedText;
+    }
+
+    public class skipPosition
+    {
+        public int Index;
+        
+        public int Length;
     }
 }
