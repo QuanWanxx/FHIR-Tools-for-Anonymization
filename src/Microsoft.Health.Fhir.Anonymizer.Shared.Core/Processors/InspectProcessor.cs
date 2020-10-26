@@ -75,12 +75,14 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             stopWatch.Stop();
             Console.WriteLine($"StructMatch: {stopWatch.Elapsed}");
 
+            stopWatch.Reset();
             stopWatch.Start();
             // TA recognizer results
             var entitiesTA = _textAnalyticRecognizer.RecognizeText(strippedText);
             stopWatch.Stop();
             Console.WriteLine($"TA: {stopWatch.Elapsed}");
 
+            stopWatch.Reset();
             stopWatch.Start();
             // Rule-based (Recognizers.Text) recognizer results
             var entitiesRuleBased = _ruleBasedRecognizer.RecognizeText(strippedText);
@@ -88,8 +90,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             Console.WriteLine($"RT: {stopWatch.Elapsed}");
 
             // Combined entities
-            var entities = entitiesTA.Concat(entitiesStructMatch).Concat(entitiesRuleBased).ToList<Entity>();
-            // var entities = entitiesStructMatch.Concat(entitiesRuleBased).ToList<Entity>();
+            //var entities = entitiesTA.Concat(entitiesStructMatch).Concat(entitiesRuleBased).ToList<Entity>();
+            var entities = entitiesStructMatch.Concat(entitiesRuleBased).ToList<Entity>();
 
             entities = EntityProcessUtility.PreprocessEntities(entities);
             var processedText = EntityProcessUtility.ProcessEntities(formattedText, entities);
