@@ -22,6 +22,7 @@ using Microsoft.Extensions.Primitives;
 using System.Threading;
 using Microsoft.Health.Fhir.Anonymizer.Core.AnonymizerConfigurations.TextAnalytics;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
 {
@@ -59,45 +60,59 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             PrintResourceType(node);
             _printInfo.AppendLine(node.Value.ToString());
 
-            var rawText = HttpUtility.HtmlDecode(node.Value.ToString());
-            var formattedText = System.Xml.Linq.XElement.Parse(rawText).ToString();
+            // var rawText = HttpUtility.HtmlDecode(node.Value.ToString());
+            var formattedText = HttpUtility.HtmlDecode(node.Value.ToString());
+            // var formattedText = System.Xml.Linq.XElement.Parse(rawText).ToString();
             var strippedText = HtmlTextUtility.StripTags(formattedText);
+            // Console.WriteLine(strippedText);
 
+            Stopwatch stopWatch = new Stopwatch();
+
+            stopWatch.Start();
             // Structuerd fields match recognizer results
             _structMatchRecognizer = new StructMatchRecognizer();
             var entitiesStructMatch = _structMatchRecognizer.RecognizeText(node, settings);
-            
+            stopWatch.Stop();
+            Console.WriteLine($"StructMatch: {stopWatch.Elapsed}");
+
+            stopWatch.Start();
             // TA recognizer results
             var entitiesTA = _textAnalyticRecognizer.RecognizeText(strippedText);
+            stopWatch.Stop();
+            Console.WriteLine($"TA: {stopWatch.Elapsed}");
 
+            stopWatch.Start();
             // Rule-based (Recognizers.Text) recognizer results
             var entitiesRuleBased = _ruleBasedRecognizer.RecognizeText(strippedText);
+            stopWatch.Stop();
+            Console.WriteLine($"RT: {stopWatch.Elapsed}");
 
             // Combined entities
             var entities = entitiesTA.Concat(entitiesStructMatch).Concat(entitiesRuleBased).ToList<Entity>();
-            
+            // var entities = entitiesStructMatch.Concat(entitiesRuleBased).ToList<Entity>();
+
             entities = EntityProcessUtility.PreprocessEntities(entities);
             var processedText = EntityProcessUtility.ProcessEntities(formattedText, entities);
             node.Value = processedText;
 
-            if (false) 
-            {
-                SaveEntities(entitiesStructMatch, node, rawText, formattedText, strippedText, "structMatch");
-                SaveEntities(entitiesTA, node, rawText, formattedText, strippedText, "textAnalytic");
-                SaveEntities(entitiesRuleBased, node, rawText, formattedText, strippedText, "ruleBased");
-                SaveEntities(entities, node, rawText, formattedText, strippedText, "merged");
-            }
+            //if (false) 
+            //{
+            //    SaveEntities(entitiesStructMatch, node, rawText, formattedText, strippedText, "structMatch");
+            //    SaveEntities(entitiesTA, node, rawText, formattedText, strippedText, "textAnalytic");
+            //    SaveEntities(entitiesRuleBased, node, rawText, formattedText, strippedText, "ruleBased");
+            //    SaveEntities(entities, node, rawText, formattedText, strippedText, "merged");
+            //}
 
-            if (true)
-            {
-                PrintEntities(entitiesStructMatch, "StructMatch recognizer");
-                PrintEntities(entitiesTA, "TA recognizer");
-                PrintEntities(entitiesRuleBased, "RuleBased recognizer");
-                PrintEntities(entities, "Combined Results");
-                _printInfo.AppendLine(processedText);
-                _printInfo.AppendLine(new string('=', 100));
-                Console.WriteLine(_printInfo);
-            }
+            //if (false)
+            //{
+            //    PrintEntities(entitiesStructMatch, "StructMatch recognizer");
+            //    PrintEntities(entitiesTA, "TA recognizer");
+            //    PrintEntities(entitiesRuleBased, "RuleBased recognizer");
+            //    PrintEntities(entities, "Combined Results");
+            //    _printInfo.AppendLine(processedText);
+            //    _printInfo.AppendLine(new string('=', 100));
+            //    Console.WriteLine(_printInfo);
+            //}
 
             processResult.AddProcessRecord(AnonymizationOperations.Inspect, node);
             return processResult;

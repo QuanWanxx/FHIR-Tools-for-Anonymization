@@ -56,8 +56,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                     }
                 }
             }
-            var rawText = HttpUtility.HtmlDecode(node.Value.ToString());
-            var formattedText = System.Xml.Linq.XElement.Parse(rawText).ToString();
+            var formattedText = HttpUtility.HtmlDecode(node.Value.ToString());
+            //var formattedText = System.Xml.Linq.XElement.Parse(rawText).ToString();
             var entities = InspectEntities(formattedText, structDataList);
             entities = EntityProcessUtility.PreprocessEntities(entities);
             return entities;
