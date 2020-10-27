@@ -28,6 +28,10 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
 {
     public class InspectProcessor : IAnonymizerProcessor
     {
+        public static TimeSpan StructMatchTime = new TimeSpan();
+        public static TimeSpan TATime = new TimeSpan();
+        public static TimeSpan RTTime = new TimeSpan();
+
         private Dictionary<string, string> _colorMapper = new Dictionary<string, string>() {
             { "TextAnalyticRecognizer", "danger" },
             { "RuleBasedRecognizer", "success" },
@@ -75,6 +79,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             var entitiesStructMatch = _structMatchRecognizer.RecognizeText(strippedText, node, settings);
             stopWatch.Stop();
             Console.WriteLine($"StructMatch: {stopWatch.Elapsed}");
+            StructMatchTime += stopWatch.Elapsed;
 
             stopWatch.Reset();
             stopWatch.Start();
@@ -82,6 +87,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             var entitiesTA = _textAnalyticRecognizer.RecognizeText(strippedText);
             stopWatch.Stop();
             Console.WriteLine($"TA: {stopWatch.Elapsed}");
+            TATime += stopWatch.Elapsed;
 
             stopWatch.Reset();
             stopWatch.Start();
@@ -89,6 +95,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             var entitiesRuleBased = _ruleBasedRecognizer.RecognizeText(strippedText);
             stopWatch.Stop();
             Console.WriteLine($"RT: {stopWatch.Elapsed}");
+            RTTime += stopWatch.Elapsed;
 
             // Combined entities
             var entities = entitiesTA.Concat(entitiesStructMatch).Concat(entitiesRuleBased).ToList<Entity>();

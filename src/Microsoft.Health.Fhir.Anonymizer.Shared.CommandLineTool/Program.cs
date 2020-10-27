@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CommandLine;
 using Microsoft.Extensions.Logging;
 using Microsoft.Health.Fhir.Anonymizer.Core;
+using Microsoft.Health.Fhir.Anonymizer.Core.Processors;
 
 namespace Microsoft.Health.Fhir.Anonymizer.Tool    
 {
@@ -35,6 +36,9 @@ namespace Microsoft.Health.Fhir.Anonymizer.Tool
         {
             await CommandLine.Parser.Default.ParseArguments<Options>(args)
                .MapResult(async options => await AnonymizationLogic.AnonymizeAsync(options).ConfigureAwait(false), _ => Task.FromResult(1)).ConfigureAwait(false);
+            Console.WriteLine($"StructMatch total time: {InspectProcessor.StructMatchTime}");
+            Console.WriteLine($"TA total time: {InspectProcessor.TATime}");
+            Console.WriteLine($"RT total time: {InspectProcessor.RTTime}");
         }        
     }
 }
