@@ -2,7 +2,7 @@
   "profiles": {
     "Microsoft.Health.Fhir.Anonymizer.R4.CommandLineTool": {
       "commandName": "Project",
-      "commandLineArgs": "-i \"C:\\Users\\v-zhexji\\data\\fhir-examples\" -o \"C:\\Users\\v-zhexji\\data\\fhir-examples-results\""
+      "commandLineArgs": "-i \"C:\\Users\\v-zhexji\\FHIR-Tools-for-Anonymization\\samples\\NerTestFiles\" -o \"C:\\Users\\v-zhexji\\data\\fhir-examples-results\""
     }
   }
 }
