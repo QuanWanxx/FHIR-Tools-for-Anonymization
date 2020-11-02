@@ -70,15 +70,16 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             var stripInfo = HtmlTextUtility.StripTags(rawText);
             var strippedText = stripInfo.StrippedText;
             // Console.WriteLine(strippedText);
+            // Console.WriteLine(strippedText.Length);
 
             Stopwatch stopWatch = new Stopwatch();
 
             stopWatch.Start();
             // Structuerd fields match recognizer results
             _structMatchRecognizer = new StructMatchRecognizer();
-            var entitiesStructMatch = _structMatchRecognizer.RecognizeText(strippedText, node, settings);
+            var entitiesStructMatch = _structMatchRecognizer.RecognizeText(strippedText, false, node, settings);
             stopWatch.Stop();
-            Console.WriteLine($"StructMatch: {stopWatch.Elapsed}");
+            // Console.WriteLine($"StructMatch: {stopWatch.Elapsed}");
             StructMatchTime += stopWatch.Elapsed;
 
             stopWatch.Reset();
@@ -86,7 +87,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             // TA recognizer results
             var entitiesTA = _textAnalyticRecognizer.RecognizeText(strippedText);
             stopWatch.Stop();
-            Console.WriteLine($"TA: {stopWatch.Elapsed}");
+            // Console.WriteLine($"TA: {stopWatch.Elapsed}");
             TATime += stopWatch.Elapsed;
 
             stopWatch.Reset();
@@ -94,12 +95,12 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             // Rule-based (Recognizers.Text) recognizer results
             var entitiesRuleBased = _ruleBasedRecognizer.RecognizeText(strippedText);
             stopWatch.Stop();
-            Console.WriteLine($"RT: {stopWatch.Elapsed}");
+            // Console.WriteLine($"RT: {stopWatch.Elapsed}");
             RTTime += stopWatch.Elapsed;
 
             // Combined entities
-            var entities = entitiesTA.Concat(entitiesStructMatch).Concat(entitiesRuleBased).ToList<Entity>();
-            // var entities = entitiesStructMatch.Concat(entitiesRuleBased).ToList<Entity>();
+            //var entities = entitiesTA.Concat(entitiesStructMatch).Concat(entitiesRuleBased).ToList<Entity>();
+            var entities = entitiesStructMatch.Concat(entitiesRuleBased).ToList<Entity>();
 
             entities = EntityProcessUtility.PreprocessEntities(entities);
             entities = EntityProcessUtility.PostprocessEntities(entities, stripInfo);

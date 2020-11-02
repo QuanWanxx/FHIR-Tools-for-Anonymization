@@ -21,9 +21,17 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                 {
                     segmentText = text.Substring(offset, maxSegmentLength);
                     var segmentLength = EndOfLastSentenceOrParagraph(segmentText);
-                    if (segmentLength == 0)
+                    if (segmentLength != 0)
                     {
                         segmentText = text.Substring(offset, segmentLength);
+                    }
+                    else
+                    {
+                        segmentLength = EndOfLastSpace(segmentText);
+                        if (segmentLength != 0)
+                        {
+                            segmentText = text.Substring(offset, segmentLength);
+                        }
                     }
                 }
                 segments.Add(new Segment()
@@ -44,6 +52,11 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                 text.LastIndexOf("? "), // end of last interrogative sentence
                 text.LastIndexOf("\n")  // end of last paragraph
             }.Max() + 1;
+        }
+
+        public static int EndOfLastSpace(string text)
+        {
+            return text.LastIndexOf(" ") + 1;
         }
 
         public static List<Entity> MergeSegmentRecognitionResults(List<Segment> segments, List<List<Entity>> segmentRecognitionResults)

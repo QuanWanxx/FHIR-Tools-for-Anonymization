@@ -23,7 +23,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
         HashSet<ElementNode> _ignoreNodes = new HashSet<ElementNode>();
         InspectSetting _inspectSetting;
 
-        public List<Entity> RecognizeText(string strippedText, ElementNode node, Dictionary<string, object> settings = null)
+        public List<Entity> RecognizeText(string strippedText, bool enableFuzzyMatch, ElementNode node, Dictionary<string, object> settings = null)
         {
             _inspectSetting = InspectSetting.CreateFromRuleSettings(settings);
             var resourceNode = node;
@@ -58,7 +58,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
             }
             // var formattedText = HttpUtility.HtmlDecode(node.Value.ToString());
             //var formattedText = System.Xml.Linq.XElement.Parse(rawText).ToString();
-            var entities = InspectEntities(strippedText, structDataList);
+            var entities = InspectEntities(strippedText, structDataList, enableFuzzyMatch);
             entities = EntityProcessUtility.PreprocessEntities(entities);
             return entities;
         }
@@ -102,7 +102,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
             return;
         }
 
-        private List<Entity> InspectEntities(string text, List<StructData> structDataList)
+        private List<Entity> InspectEntities(string text, List<StructData> structDataList, bool enableFuzzyMatch)
         {
             var entities = new List<Entity>();
             var textUpper = text.ToUpper();
@@ -133,13 +133,17 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                 }
 
                 // var textStripTags = HtmlTextUtility.StripTags(text);
-                var entitiesFuzzyMatch = FuzzyMatchUtility.FuzzyMatch(text.ToUpper(), structData.Text.ToUpper(), 2, 0.6);
-                foreach (var entity in entitiesFuzzyMatch)
+                if (enableFuzzyMatch)
                 {
-                    entity.Category = structData.Category;
-                    entity.SubCategory = structData.InstanceType;
+                    var entitiesFuzzyMatch = FuzzyMatchUtility.FuzzyMatch(text.ToUpper(), structData.Text.ToUpper(), 2, 0.6);
+                    foreach (var entity in entitiesFuzzyMatch)
+                    {
+                        entity.Category = structData.Category;
+                        entity.SubCategory = structData.InstanceType;
+                    }
+                    entities.AddRange(entitiesFuzzyMatch);
                 }
-                entities.AddRange(entitiesFuzzyMatch);
+
             }
             
             return entities;
