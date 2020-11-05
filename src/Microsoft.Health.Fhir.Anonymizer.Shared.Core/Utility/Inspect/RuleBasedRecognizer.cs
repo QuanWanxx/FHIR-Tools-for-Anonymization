@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect;
 using Microsoft.Recognizers.Text;
 using Microsoft.Recognizers.Text.DateTime;
@@ -12,6 +14,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
 {
     public class RuleBasedRecognizer : INamedEntityRecognizer
     {
+        private readonly int _timeout = 10000; // millisecond
         // MRN regex
         private static readonly string _mrnFormat = @"[0-9a-zA-Z]{5,}";
         private static readonly Regex _mrnRegex = new Regex($@"(?<=(MRN|mrn|Mrn):?\s*){_mrnFormat}\b");
@@ -32,24 +35,11 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
 
         public List<Entity> RecognizeText(string text)
         {
-            var culture = Culture.English;
-
             var recognitionResults = new List<Entity>();
 
-            var modelResults = new List<ModelResult>();
-            modelResults.AddRange(NumberWithUnitRecognizer.RecognizeAge(text, culture));
-            modelResults.AddRange(DateTimeRecognizer.RecognizeDateTime(text, culture));
-            modelResults.AddRange(SequenceRecognizer.RecognizePhoneNumber(text, culture));
-            modelResults.AddRange(SequenceRecognizer.RecognizeIpAddress(text, culture));
-            modelResults.AddRange(SequenceRecognizer.RecognizeEmail(text, culture));
-            modelResults.AddRange(SequenceRecognizer.RecognizeGUID(text, culture));
-            modelResults.AddRange(SequenceRecognizer.RecognizeURL(text, culture));
-
-            var customResults = new List<ModelResult>();
-            customResults.AddRange(RecognizeMRN(text));
-            customResults.AddRange(RecognizeDateTime(text));
-            customResults.AddRange(RecognizeSSN(text));
-            customResults.AddRange(RecognizeOid(text));
+            var modelResults = GetModelResults(text).Result;
+        
+            var customResults = GetCustomResults(text).Result;
 
             foreach (var modelResult in modelResults)
             {
@@ -82,6 +72,74 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
             recognitionResults = EntityProcessUtility.PreprocessEntities(recognitionResults);
 
             return recognitionResults;
+        }
+
+        public async Task<List<ModelResult>> GetModelResults(string text)
+        {
+            var culture = Culture.English;
+            try
+            {
+                var timeoutTask = Task.Delay(_timeout);
+                var executionTask = Task<List<ModelResult>>.Run(() => 
+                {
+                    var modelResults = new List<ModelResult>();
+                    modelResults.AddRange(NumberWithUnitRecognizer.RecognizeAge(text, culture));
+                    modelResults.AddRange(DateTimeRecognizer.RecognizeDateTime(text, culture));
+                    modelResults.AddRange(SequenceRecognizer.RecognizePhoneNumber(text, culture));
+                    modelResults.AddRange(SequenceRecognizer.RecognizeIpAddress(text, culture));
+                    modelResults.AddRange(SequenceRecognizer.RecognizeEmail(text, culture));
+                    modelResults.AddRange(SequenceRecognizer.RecognizeGUID(text, culture));
+                    modelResults.AddRange(SequenceRecognizer.RecognizeURL(text, culture));
+                    return modelResults;
+                });
+                var completedTask = await Task.WhenAny(new Task [] { executionTask, timeoutTask }).ConfigureAwait(false);
+
+                if (completedTask == executionTask)
+                {
+                    return await executionTask.ConfigureAwait(false);
+                }
+                else
+                {
+                    throw new TimeoutException();
+                }
+            }
+            catch (TimeoutException)
+            {
+                Console.WriteLine("RecognizerText-GetModelResults: Timeout");
+                return new List<ModelResult>();
+            }
+        }
+
+        public async Task<List<ModelResult>> GetCustomResults(string text)
+        {
+            try
+            {
+                var timeoutTask = Task.Delay(_timeout);
+                var executionTask = Task<List<ModelResult>>.Run(() => 
+                {
+                    var customResults = new List<ModelResult>();
+                    customResults.AddRange(RecognizeMRN(text));
+                    customResults.AddRange(RecognizeDateTime(text));
+                    customResults.AddRange(RecognizeSSN(text));
+                    customResults.AddRange(RecognizeOid(text));
+                    return customResults;
+                });
+                var completedTask = await Task.WhenAny(new Task [] { executionTask, timeoutTask }).ConfigureAwait(false);
+
+                if (completedTask == executionTask)
+                {
+                    return await executionTask.ConfigureAwait(false);
+                }
+                else
+                {
+                    throw new TimeoutException();
+                }
+            }
+            catch (TimeoutException)
+            {
+                Console.WriteLine("RecognizerText-GetCustomResults: Timeout");
+                return new List<ModelResult>();
+            }
         }
 
         public List<Entity> Postprocess(string text, List<Entity> entities)

@@ -19,6 +19,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
     {
         // Class members for HTTP requests
         private readonly int _maxLength = 5000; // byte
+        private readonly int _taskTimeout = 20000; // millisecond
+        private int _requestTimeout = 5000; // millisecond
         private readonly HttpClient _client = new HttpClient();
         private static readonly int _maxNumberOfRetries = 6;
         protected static readonly HttpStatusCode[] _httpStatusCodesForRetrying = {
@@ -41,10 +43,19 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
         {
             var segments = SegmentUtility.SegmentText(text, _maxLength);
             var segmentRecognitionResults = new List<List<Entity>>();
+
+            var cts = new CancellationTokenSource();
+            cts.CancelAfter(_taskTimeout);
             foreach (var segment in segments)
             {
                 segmentRecognitionResults.Add(RecognizeSegment(segment));
+                if (cts.IsCancellationRequested)
+                {
+                    Console.WriteLine("TextAnalytic-Task: Timeout");
+                    return new List<Entity>();
+                }
             }
+
             // Merge results
             var recognitionResults = SegmentUtility.MergeSegmentRecognitionResults(segments, segmentRecognitionResults);
             recognitionResults = EntityProcessUtility.PreprocessEntities(recognitionResults);
@@ -99,22 +110,44 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                     _maxNumberOfRetries,
                     retryAttempt =>
                     {
-                        Console.WriteLine("Processor: Retry");
+                        Console.WriteLine("TextAnalytic: Retry");
                         return TimeSpan.FromSeconds(Math.Pow(2, retryAttempt));
                     });
 
-            var response = await retryPolicy.ExecuteAsync(
-                    async ct => await _client.SendAsync(CreateRequestMessage(requestText), ct), CancellationToken.None);
+            HttpResponseMessage response = new HttpResponseMessage();
 
-            response.EnsureSuccessStatusCode();
-            var responseString = await response.Content.ReadAsStringAsync();
+            try
+            {
+                var cts = new CancellationTokenSource();
+                cts.CancelAfter(_requestTimeout);
+
+                response = await retryPolicy.ExecuteAsync(
+                    async ct => await _client.SendAsync(CreateRequestMessage(requestText), ct), cts.Token);
+            }
+            catch (TaskCanceledException)
+            {
+                response.StatusCode = HttpStatusCode.RequestTimeout;
+                Console.WriteLine("TextAnalytic-Request: Timeout");
+            }
+            catch (OperationCanceledException)
+            {
+                response.StatusCode = HttpStatusCode.RequestTimeout;
+                Console.WriteLine("TextAnalytic-Request: Timeout");
+            }
+
+            string responseString = string.Empty;
+            if (response.StatusCode != HttpStatusCode.RequestTimeout)
+            {
+                response.EnsureSuccessStatusCode();
+                responseString = await response.Content.ReadAsStringAsync();
+            }
             return responseString;
         }
 
         private List<Entity> ResponseContentToEntities(MicrosoftResponseContent responseContent)
         {
             var recognitionResult = new List<Entity>();
-            if (responseContent.Documents.Count == 1)
+            if (responseContent?.Documents?.Count == 1)
             {
                 var responseEntities = responseContent.Documents[0].Entities;
                 foreach (var responseEntity in responseEntities)

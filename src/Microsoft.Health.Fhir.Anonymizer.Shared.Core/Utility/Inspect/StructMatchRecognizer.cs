@@ -72,7 +72,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
             }
             if (node.Value != null)
             {
-                if (_inspectSetting.MathTypes.Contains(node.InstanceType))
+                if (_inspectSetting.MatchTypes.Contains(node.InstanceType))
                 {
                     var combineName = TryFindDetailName(node);
                     structDataList.Add(new StructData()

@@ -43,6 +43,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
 
         private StringBuilder _printInfo;
 
+        private InspectSetting _inspectSetting;
+
         public InspectProcessor(RecognizerApi recognizerApi)
         {
             _printInfo = new StringBuilder();
@@ -55,6 +57,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             EnsureArg.IsNotNull(node);
             EnsureArg.IsNotNull(context?.VisitedNodes);
             EnsureArg.IsNotNull(settings);
+
+            _inspectSetting = InspectSetting.CreateFromRuleSettings(settings);
 
             var processResult = new ProcessResult();
             if (string.IsNullOrEmpty(node?.Value?.ToString()))
@@ -74,33 +78,44 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
 
             Stopwatch stopWatch = new Stopwatch();
 
-            stopWatch.Start();
-            // Structuerd fields match recognizer results
-            _structMatchRecognizer = new StructMatchRecognizer();
-            var entitiesStructMatch = _structMatchRecognizer.RecognizeText(strippedText, false, node, settings);
-            stopWatch.Stop();
-            // Console.WriteLine($"StructMatch: {stopWatch.Elapsed}");
-            StructMatchTime += stopWatch.Elapsed;
-
-            stopWatch.Reset();
-            stopWatch.Start();
-            // TA recognizer results
-            var entitiesTA = _textAnalyticRecognizer.RecognizeText(strippedText);
-            stopWatch.Stop();
-            // Console.WriteLine($"TA: {stopWatch.Elapsed}");
-            TATime += stopWatch.Elapsed;
-
-            stopWatch.Reset();
-            stopWatch.Start();
-            // Rule-based (Recognizers.Text) recognizer results
-            var entitiesRuleBased = _ruleBasedRecognizer.RecognizeText(strippedText);
-            stopWatch.Stop();
-            // Console.WriteLine($"RT: {stopWatch.Elapsed}");
-            RTTime += stopWatch.Elapsed;
+            var entitiesStructMatch = new List<Entity>();
+            if (_inspectSetting.EnableStructMatchRecognizer)
+            {
+                stopWatch.Start();
+                // Structuerd fields match recognizer results
+                _structMatchRecognizer = new StructMatchRecognizer();
+                entitiesStructMatch = _structMatchRecognizer.RecognizeText(strippedText, false, node, settings);
+                stopWatch.Stop();
+                // Console.WriteLine($"StructMatch: {stopWatch.Elapsed}");
+                StructMatchTime += stopWatch.Elapsed;
+            }
+            
+            var entitiesTA = new List<Entity>();
+            if (_inspectSetting.EnableTextAnalyticRecognizer)
+            {
+                stopWatch.Reset();
+                stopWatch.Start();
+                // TA recognizer results
+                entitiesTA = _textAnalyticRecognizer.RecognizeText(strippedText);
+                stopWatch.Stop();
+                // Console.WriteLine($"TA: {stopWatch.Elapsed}");
+                TATime += stopWatch.Elapsed;
+            }
+            
+            var entitiesRuleBased = new List<Entity>();
+            if (_inspectSetting.EnableRuleBasedRecognizer)
+            {
+                stopWatch.Reset();
+                stopWatch.Start();
+                // Rule-based (Recognizers.Text) recognizer results
+                entitiesRuleBased = _ruleBasedRecognizer.RecognizeText(strippedText);
+                stopWatch.Stop();
+                // Console.WriteLine($"RT: {stopWatch.Elapsed}");
+                RTTime += stopWatch.Elapsed;
+            }
 
             // Combined entities
-            //var entities = entitiesTA.Concat(entitiesStructMatch).Concat(entitiesRuleBased).ToList<Entity>();
-            var entities = entitiesStructMatch.Concat(entitiesRuleBased).ToList<Entity>();
+            var entities = entitiesTA.Concat(entitiesStructMatch).Concat(entitiesRuleBased).ToList<Entity>();
 
             entities = EntityProcessUtility.PreprocessEntities(entities);
             entities = EntityProcessUtility.PostprocessEntities(entities, stripInfo);
