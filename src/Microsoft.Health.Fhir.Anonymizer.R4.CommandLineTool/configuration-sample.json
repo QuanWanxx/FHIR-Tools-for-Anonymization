@@ -3,7 +3,10 @@
   "fhirPathRules": [
 	{
 	  "path": "nodesByType('Narrative').div",
-	  "method": "inspect",
+    "method": "inspect",
+    "enableStructMatchRecognizer": true,
+    "enableRuleBasedRecognizer": true,
+    "enableTextAnalyticRecognizer": true,
 	  "matchExpressions": [
 		"nodesByType('HumanName')",
 		"nodesByType('ContactPoint')",
