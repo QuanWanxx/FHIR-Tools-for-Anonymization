@@ -12,6 +12,7 @@ using Hl7.FhirPath;
 using Hl7.Fhir.Serialization;
 using Hl7.Fhir.ElementModel;
 using Hl7.Fhir.Model;
+using Microsoft.Extensions.Logging;
 using Microsoft.Health.Fhir.Anonymizer.Core.Extensions;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect;
@@ -45,6 +46,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
 
         private InspectSetting _inspectSetting;
 
+        private readonly ILogger _logger = AnonymizerLogging.CreateLogger<InspectProcessor>();
+
         public InspectProcessor(RecognizerApi recognizerApi)
         {
             _printInfo = new StringBuilder();
@@ -68,8 +71,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             PrintResourceType(node);
             _printInfo.AppendLine(node.Value.ToString());
 
-            // var rawText = HttpUtility.HtmlDecode(node.Value.ToString());
-            var rawText = HttpUtility.HtmlDecode(node.Value.ToString());
+            var input = node.Value.ToString();
+            var rawText = HttpUtility.HtmlDecode(input);
             // var formattedText = System.Xml.Linq.XElement.Parse(rawText).ToString();
             var stripInfo = HtmlTextUtility.StripTags(rawText);
             var strippedText = stripInfo.StrippedText;
@@ -140,7 +143,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             //    _printInfo.AppendLine(new string('=', 100));
             //    Console.WriteLine(_printInfo);
             //}
-
+            _logger.LogDebug($"Fhir value '{input}' at '{node.Location}' is de-identified to '{node.Value}'.");
             processResult.AddProcessRecord(AnonymizationOperations.Inspect, node);
             return processResult;
         }

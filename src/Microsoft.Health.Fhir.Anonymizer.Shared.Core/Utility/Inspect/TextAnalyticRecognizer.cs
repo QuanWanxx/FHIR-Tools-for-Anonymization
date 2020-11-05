@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Microsoft.Health.Fhir.Anonymizer.Core.AnonymizerConfigurations.TextAnalytics;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect.Html;
@@ -31,6 +32,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
             HttpStatusCode.ServiceUnavailable, // 503
             HttpStatusCode.GatewayTimeout // 504
         };
+        private readonly ILogger _logger = AnonymizerLogging.CreateLogger<TextAnalyticRecognizer>();
 
         public TextAnalyticRecognizer(RecognizerApi recognizerApi)
         {
@@ -51,7 +53,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                 segmentRecognitionResults.Add(RecognizeSegment(segment));
                 if (cts.IsCancellationRequested)
                 {
-                    Console.WriteLine("TextAnalytic-Task: Timeout");
+                    _logger.LogWarning("TextAnalytic-Task: Timeout");
                     return new List<Entity>();
                 }
             }
@@ -110,7 +112,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                     _maxNumberOfRetries,
                     retryAttempt =>
                     {
-                        Console.WriteLine("TextAnalytic: Retry");
+                        _logger.LogWarning("TextAnalytic: Retry");
                         return TimeSpan.FromSeconds(Math.Pow(2, retryAttempt));
                     });
 
@@ -127,12 +129,12 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
             catch (TaskCanceledException)
             {
                 response.StatusCode = HttpStatusCode.RequestTimeout;
-                Console.WriteLine("TextAnalytic-Request: Timeout");
+                _logger.LogWarning("TextAnalytic-Request: Timeout");
             }
             catch (OperationCanceledException)
             {
                 response.StatusCode = HttpStatusCode.RequestTimeout;
-                Console.WriteLine("TextAnalytic-Request: Timeout");
+                _logger.LogWarning("TextAnalytic-Request: Timeout");
             }
 
             string responseString = string.Empty;

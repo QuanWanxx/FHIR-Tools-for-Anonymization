@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect;
 using Microsoft.Recognizers.Text;
 using Microsoft.Recognizers.Text.DateTime;
@@ -32,6 +33,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
         private static readonly Func<string, string> _phoneNumberValidationRegex1 = (phoneNumber) => $@"(SNOMED CT code|LOINC code|RxNorm code)\s+'?{Regex.Escape(phoneNumber)}'?";
         private static readonly Func<string, string> _phoneNumberValidationRegex2 = (phoneNumber) => $@"code.{{,10}}'?{Regex.Escape(phoneNumber)}'?";
         private static readonly Func<string, string> _phoneNumberValidationRegex3 = (phoneNumber) => $@"id.{{,10}}'?{Regex.Escape(phoneNumber)}'?";
+        private readonly ILogger _logger = AnonymizerLogging.CreateLogger<RuleBasedRecognizer>();
 
         public List<Entity> RecognizeText(string text)
         {
@@ -105,7 +107,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
             }
             catch (TimeoutException)
             {
-                Console.WriteLine("RecognizerText-GetModelResults: Timeout");
+                _logger.LogWarning("RecognizerText-GetModelResults: Timeout");
                 return new List<ModelResult>();
             }
         }
@@ -137,7 +139,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
             }
             catch (TimeoutException)
             {
-                Console.WriteLine("RecognizerText-GetCustomResults: Timeout");
+                _logger.LogWarning("RecognizerText-GetCustomResults: Timeout");
                 return new List<ModelResult>();
             }
         }
