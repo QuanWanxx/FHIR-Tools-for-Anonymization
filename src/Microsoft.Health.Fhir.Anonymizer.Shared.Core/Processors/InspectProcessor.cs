@@ -99,7 +99,20 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
                 stopWatch.Reset();
                 stopWatch.Start();
                 // TA recognizer results
-                entitiesTA = _textAnalyticRecognizer.RecognizeText(strippedText);
+                try
+                {
+                    entitiesTA = _textAnalyticRecognizer.RecognizeText(strippedText);
+                }
+                catch (TimeoutException)
+                {
+                    stopWatch.Stop();
+                    TATime += stopWatch.Elapsed;
+                    _logger.LogWarning($"TextAnalyticRecognizer failed.");
+                    node.Value = null;
+                    ProcessResult result = new ProcessResult();
+                    result.AddProcessRecord(AnonymizationOperations.Redact, node);
+                    return result;
+                }
                 stopWatch.Stop();
                 // Console.WriteLine($"TA: {stopWatch.Elapsed}");
                 TATime += stopWatch.Elapsed;

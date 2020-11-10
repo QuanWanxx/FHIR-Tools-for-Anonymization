@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -12,6 +13,7 @@ using Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect.Html;
 using Newtonsoft.Json;
 using Polly;
+using Polly.Timeout;
 
 namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
 {
@@ -22,6 +24,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
         private readonly int _maxLength = 5000; // byte
         private readonly int _taskTimeout = 20000; // millisecond
         private int _requestTimeout = 5000; // millisecond
+        private int _maxNumberOfRequestTimeoutRetries = 2;
         private readonly HttpClient _client = new HttpClient();
         private static readonly int _maxNumberOfRetries = 6;
         protected static readonly HttpStatusCode[] _httpStatusCodesForRetrying = {
@@ -47,14 +50,28 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
             var segmentRecognitionResults = new List<List<Entity>>();
 
             var cts = new CancellationTokenSource();
-            cts.CancelAfter(_taskTimeout);
+            cts.CancelAfter(TimeSpan.FromMilliseconds(_taskTimeout));
             foreach (var segment in segments)
             {
-                segmentRecognitionResults.Add(RecognizeSegment(segment));
+                try
+                {
+                    segmentRecognitionResults.Add(RecognizeSegment(segment));
+                }
+                catch (AggregateException ae)
+                {
+                    ae.Handle(e =>
+                    {
+                        if (e is TimeoutException)
+                        {
+                            throw e;
+                        }
+                        return false;
+                    });
+                }
                 if (cts.IsCancellationRequested)
                 {
-                    _logger.LogWarning("TextAnalytic-Task: Timeout");
-                    return new List<Entity>();
+                    _logger.LogDebug($"TextAnalyticRecognizer: Total time for mutiple requests exceeded the time limit {_taskTimeout}.");
+                    throw new TimeoutException();
                 }
             }
 
@@ -110,39 +127,40 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                 .OrResult<HttpResponseMessage>(r => _httpStatusCodesForRetrying.Contains(r.StatusCode))
                 .WaitAndRetryAsync(
                     _maxNumberOfRetries,
-                    retryAttempt =>
+                    retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                    (exception, timeSpan, retryCount) =>
                     {
-                        _logger.LogWarning("TextAnalytic: Retry");
-                        return TimeSpan.FromSeconds(Math.Pow(2, retryAttempt));
+                        _logger.LogDebug($"TextAnalyticRecognizer: No.{retryCount} retry for unsuccessful status code.");
                     });
 
-            HttpResponseMessage response = new HttpResponseMessage();
+            var timeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(TimeSpan.FromMilliseconds(_requestTimeout));
 
+            var timeoutRetryPolicy = Policy<HttpResponseMessage>
+               .Handle<TimeoutRejectedException>()
+               .RetryAsync(
+                   _maxNumberOfRequestTimeoutRetries,
+                   (exception, retryCount) =>
+                   {
+                       _logger.LogDebug($"TextAnalyticRecognizer: No.{retryCount} retry for timeout.");
+                   }
+               );
+            
+            var policyWrap = Policy.WrapAsync(retryPolicy, timeoutRetryPolicy, timeoutPolicy);
+
+            HttpResponseMessage response = new HttpResponseMessage();
             try
             {
-                var cts = new CancellationTokenSource();
-                cts.CancelAfter(_requestTimeout);
-
-                response = await retryPolicy.ExecuteAsync(
-                    async ct => await _client.SendAsync(CreateRequestMessage(requestText), ct), cts.Token);
+                response = await policyWrap.ExecuteAsync(
+                    async ct => await _client.SendAsync(CreateRequestMessage(requestText), ct), CancellationToken.None);
             }
-            catch (TaskCanceledException)
+            catch (TimeoutRejectedException)
             {
-                response.StatusCode = HttpStatusCode.RequestTimeout;
-                _logger.LogWarning("TextAnalytic-Request: Timeout");
-            }
-            catch (OperationCanceledException)
-            {
-                response.StatusCode = HttpStatusCode.RequestTimeout;
-                _logger.LogWarning("TextAnalytic-Request: Timeout");
+                _logger.LogDebug($"TextAnalyticRecognizer: {_maxNumberOfRequestTimeoutRetries} timeout retries of single request all failed.");
+                throw new TimeoutException();
             }
 
-            string responseString = string.Empty;
-            if (response.StatusCode != HttpStatusCode.RequestTimeout)
-            {
-                response.EnsureSuccessStatusCode();
-                responseString = await response.Content.ReadAsStringAsync();
-            }
+            response.EnsureSuccessStatusCode();
+            var responseString = await response.Content.ReadAsStringAsync();
             return responseString;
         }
 
