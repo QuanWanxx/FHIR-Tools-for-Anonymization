@@ -20,6 +20,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)AnonymizerConfigurations\DateShiftScope.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AnonymizerConfigurations\ParameterConfiguration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AnonymizerConfigurationManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AnonymizerConfigurations\InspectParameters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AnonymizerConfigurations\RuleBasedRecognizerParameters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AnonymizerConfigurations\StructMatchRecognizerParameters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AnonymizerConfigurations\TextAnalyticRecognizerParameters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AnonymizerConfigurations\RecognizerApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AnonymizerEngine.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AnonymizerLogging.cs" />

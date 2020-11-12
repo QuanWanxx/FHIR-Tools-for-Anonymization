@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Microsoft.Health.Fhir.Anonymizer.Core.AnonymizerConfigurations;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect;
 using Microsoft.Recognizers.Text;
 using Microsoft.Recognizers.Text.DateTime;
@@ -35,13 +36,34 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
         private static readonly Func<string, string> _phoneNumberValidationRegex3 = (phoneNumber) => $@"id.{{,10}}'?{Regex.Escape(phoneNumber)}'?";
         private readonly ILogger _logger = AnonymizerLogging.CreateLogger<RuleBasedRecognizer>();
 
+        public RuleBasedRecognizer(RuleBasedRecognizerParameters parameters)
+        {
+            _timeout = parameters.Timeout;
+        }
+
         public List<Entity> RecognizeText(string text)
         {
             var recognitionResults = new List<Entity>();
+            
+            List<ModelResult> modelResults = new List<ModelResult>();
+            List<ModelResult> customResults = new List<ModelResult>();
 
-            var modelResults = GetModelResults(text).Result;
-        
-            var customResults = GetCustomResults(text).Result;
+            try
+            {
+                modelResults = GetModelResults(text).Result;
+                customResults = GetCustomResults(text).Result;
+            }
+            catch (AggregateException ae)
+            {
+                ae.Handle(e =>
+                {
+                    if (e is TimeoutException)
+                    {
+                        throw e;
+                    }
+                    return false;
+                });
+            }
 
             foreach (var modelResult in modelResults)
             {
@@ -79,68 +101,54 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
         public async Task<List<ModelResult>> GetModelResults(string text)
         {
             var culture = Culture.English;
-            try
+            var timeoutTask = Task.Delay(_timeout);
+            var executionTask = Task<List<ModelResult>>.Run(() => 
             {
-                var timeoutTask = Task.Delay(_timeout);
-                var executionTask = Task<List<ModelResult>>.Run(() => 
-                {
-                    var modelResults = new List<ModelResult>();
-                    modelResults.AddRange(NumberWithUnitRecognizer.RecognizeAge(text, culture));
-                    modelResults.AddRange(DateTimeRecognizer.RecognizeDateTime(text, culture));
-                    modelResults.AddRange(SequenceRecognizer.RecognizePhoneNumber(text, culture));
-                    modelResults.AddRange(SequenceRecognizer.RecognizeIpAddress(text, culture));
-                    modelResults.AddRange(SequenceRecognizer.RecognizeEmail(text, culture));
-                    modelResults.AddRange(SequenceRecognizer.RecognizeGUID(text, culture));
-                    modelResults.AddRange(SequenceRecognizer.RecognizeURL(text, culture));
-                    return modelResults;
-                });
-                var completedTask = await Task.WhenAny(new Task [] { executionTask, timeoutTask }).ConfigureAwait(false);
+                var modelResults = new List<ModelResult>();
+                modelResults.AddRange(NumberWithUnitRecognizer.RecognizeAge(text, culture));
+                modelResults.AddRange(DateTimeRecognizer.RecognizeDateTime(text, culture));
+                modelResults.AddRange(SequenceRecognizer.RecognizePhoneNumber(text, culture));
+                modelResults.AddRange(SequenceRecognizer.RecognizeIpAddress(text, culture));
+                modelResults.AddRange(SequenceRecognizer.RecognizeEmail(text, culture));
+                modelResults.AddRange(SequenceRecognizer.RecognizeGUID(text, culture));
+                modelResults.AddRange(SequenceRecognizer.RecognizeURL(text, culture));
+                return modelResults;
+            });
+            var completedTask = await Task.WhenAny(new Task [] { executionTask, timeoutTask }).ConfigureAwait(false);
 
-                if (completedTask == executionTask)
-                {
-                    return await executionTask.ConfigureAwait(false);
-                }
-                else
-                {
-                    throw new TimeoutException();
-                }
-            }
-            catch (TimeoutException)
+            if (completedTask == executionTask)
             {
-                _logger.LogWarning("RecognizerText-GetModelResults: Timeout");
-                return new List<ModelResult>();
+                return await executionTask.ConfigureAwait(false);
+            }
+            else
+            {
+                _logger.LogDebug("RecognizerText-GetModelResults: Timeout");
+                throw new TimeoutException();
             }
         }
 
         public async Task<List<ModelResult>> GetCustomResults(string text)
         {
-            try
+            var timeoutTask = Task.Delay(_timeout);
+            var executionTask = Task<List<ModelResult>>.Run(() => 
             {
-                var timeoutTask = Task.Delay(_timeout);
-                var executionTask = Task<List<ModelResult>>.Run(() => 
-                {
-                    var customResults = new List<ModelResult>();
-                    customResults.AddRange(RecognizeMRN(text));
-                    customResults.AddRange(RecognizeDateTime(text));
-                    customResults.AddRange(RecognizeSSN(text));
-                    customResults.AddRange(RecognizeOid(text));
-                    return customResults;
-                });
-                var completedTask = await Task.WhenAny(new Task [] { executionTask, timeoutTask }).ConfigureAwait(false);
+                var customResults = new List<ModelResult>();
+                customResults.AddRange(RecognizeMRN(text));
+                customResults.AddRange(RecognizeDateTime(text));
+                customResults.AddRange(RecognizeSSN(text));
+                customResults.AddRange(RecognizeOid(text));
+                return customResults;
+            });
+            var completedTask = await Task.WhenAny(new Task [] { executionTask, timeoutTask }).ConfigureAwait(false);
 
-                if (completedTask == executionTask)
-                {
-                    return await executionTask.ConfigureAwait(false);
-                }
-                else
-                {
-                    throw new TimeoutException();
-                }
-            }
-            catch (TimeoutException)
+            if (completedTask == executionTask)
             {
-                _logger.LogWarning("RecognizerText-GetCustomResults: Timeout");
-                return new List<ModelResult>();
+                return await executionTask.ConfigureAwait(false);
+            }
+            else
+            {
+                _logger.LogDebug("RecognizerText-GetCustomResults: Timeout");
+                throw new TimeoutException();
             }
         }
 

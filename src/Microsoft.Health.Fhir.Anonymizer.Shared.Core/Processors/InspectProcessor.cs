@@ -21,7 +21,7 @@ using Microsoft.Health.Fhir.Anonymizer.Core.Utility;
 using Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect;
 using Microsoft.Extensions.Primitives;
 using System.Threading;
-using Microsoft.Health.Fhir.Anonymizer.Core.AnonymizerConfigurations.TextAnalytics;
+using Microsoft.Health.Fhir.Anonymizer.Core.AnonymizerConfigurations;
 using Newtonsoft.Json;
 using System.Diagnostics;
 
@@ -48,11 +48,16 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
 
         private readonly ILogger _logger = AnonymizerLogging.CreateLogger<InspectProcessor>();
 
-        public InspectProcessor(RecognizerApi recognizerApi)
+        private InspectParameters _inspectParameters { get; set; }
+
+
+        public InspectProcessor(InspectParameters inspectParameters)
         {
             _printInfo = new StringBuilder();
-            _textAnalyticRecognizer = new TextAnalyticRecognizer(recognizerApi);
-            _ruleBasedRecognizer = new RuleBasedRecognizer();
+            _structMatchRecognizer = new StructMatchRecognizer(inspectParameters.StructMatchRecognizerParameters);
+            _textAnalyticRecognizer = new TextAnalyticRecognizer(inspectParameters.TextAnalyticRecognizerParameters);
+            _ruleBasedRecognizer = new RuleBasedRecognizer(inspectParameters.RuleBasedRecognizerParameters);
+            _inspectParameters = inspectParameters;
         }
 
         public ProcessResult Process(ElementNode node, ProcessContext context = null, Dictionary<string, object> settings = null)
@@ -82,19 +87,18 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             Stopwatch stopWatch = new Stopwatch();
 
             var entitiesStructMatch = new List<Entity>();
-            if (_inspectSetting.EnableStructMatchRecognizer)
+            if (_inspectParameters.StructMatchRecognizerParameters.EnableStructMatchRecognizer)
             {
                 stopWatch.Start();
                 // Structuerd fields match recognizer results
-                _structMatchRecognizer = new StructMatchRecognizer();
-                entitiesStructMatch = _structMatchRecognizer.RecognizeText(strippedText, false, node, settings);
+                entitiesStructMatch = _structMatchRecognizer.RecognizeText(strippedText, node, settings);
                 stopWatch.Stop();
                 // Console.WriteLine($"StructMatch: {stopWatch.Elapsed}");
                 StructMatchTime += stopWatch.Elapsed;
             }
-            
+
             var entitiesTA = new List<Entity>();
-            if (_inspectSetting.EnableTextAnalyticRecognizer)
+            if (_inspectParameters.TextAnalyticRecognizerParameters.EnableTextAnalyticRecognizer)
             {
                 stopWatch.Reset();
                 stopWatch.Start();
@@ -108,10 +112,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
                     stopWatch.Stop();
                     TATime += stopWatch.Elapsed;
                     _logger.LogWarning($"TextAnalyticRecognizer failed.");
-                    node.Value = null;
-                    ProcessResult result = new ProcessResult();
-                    result.AddProcessRecord(AnonymizationOperations.Redact, node);
-                    return result;
+                    return new RedactProcessor(false, false, false, null).Process(node);
                 }
                 stopWatch.Stop();
                 // Console.WriteLine($"TA: {stopWatch.Elapsed}");
@@ -119,12 +120,22 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             }
             
             var entitiesRuleBased = new List<Entity>();
-            if (_inspectSetting.EnableRuleBasedRecognizer)
+            if (_inspectParameters.RuleBasedRecognizerParameters.EnableRuleBasedRecognizer)
             {
                 stopWatch.Reset();
                 stopWatch.Start();
                 // Rule-based (Recognizers.Text) recognizer results
-                entitiesRuleBased = _ruleBasedRecognizer.RecognizeText(strippedText);
+                try
+                {
+                    entitiesRuleBased = _ruleBasedRecognizer.RecognizeText(strippedText);
+                }
+                catch (TimeoutException)
+                {
+                    stopWatch.Stop();
+                    RTTime += stopWatch.Elapsed;
+                    _logger.LogWarning($"RuleBasedRecognizer failed.");
+                    return new RedactProcessor(false, false, false, null).Process(node);
+                }
                 stopWatch.Stop();
                 // Console.WriteLine($"RT: {stopWatch.Elapsed}");
                 RTTime += stopWatch.Elapsed;

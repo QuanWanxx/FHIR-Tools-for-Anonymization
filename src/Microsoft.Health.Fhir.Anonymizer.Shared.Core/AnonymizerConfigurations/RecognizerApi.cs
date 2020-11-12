@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Microsoft.Health.Fhir.Anonymizer.Core.AnonymizerConfigurations.TextAnalytics
+namespace Microsoft.Health.Fhir.Anonymizer.Core.AnonymizerConfigurations
 {
     [DataContract]
     public class RecognizerApi

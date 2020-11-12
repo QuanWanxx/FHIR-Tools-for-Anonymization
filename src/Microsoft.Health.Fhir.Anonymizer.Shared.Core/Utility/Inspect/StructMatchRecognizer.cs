@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Hl7.FhirPath;
 using Hl7.Fhir.ElementModel;
+using Microsoft.Health.Fhir.Anonymizer.Core.AnonymizerConfigurations;
 using Microsoft.Health.Fhir.Anonymizer.Core.Extensions;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect;
 using Microsoft.Health.Fhir.Anonymizer.Core.Processors.Settings;
@@ -20,10 +21,16 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
             public string InstanceType { get; set; }
         };
 
-        HashSet<ElementNode> _ignoreNodes = new HashSet<ElementNode>();
-        InspectSetting _inspectSetting;
+        private HashSet<ElementNode> _ignoreNodes = new HashSet<ElementNode>();
+        private InspectSetting _inspectSetting;
+        private readonly bool _enableFuzzyMatch;
 
-        public List<Entity> RecognizeText(string strippedText, bool enableFuzzyMatch, ElementNode node, Dictionary<string, object> settings = null)
+        public StructMatchRecognizer(StructMatchRecognizerParameters parameters)
+        {
+            _enableFuzzyMatch = parameters.EnableFuzzyMatch;
+        }
+
+        public List<Entity> RecognizeText(string strippedText, ElementNode node, Dictionary<string, object> settings = null)
         {
             _inspectSetting = InspectSetting.CreateFromRuleSettings(settings);
             var resourceNode = node;
@@ -58,7 +65,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
             }
             // var formattedText = HttpUtility.HtmlDecode(node.Value.ToString());
             //var formattedText = System.Xml.Linq.XElement.Parse(rawText).ToString();
-            var entities = InspectEntities(strippedText, structDataList, enableFuzzyMatch);
+            var entities = InspectEntities(strippedText, structDataList);
             entities = EntityProcessUtility.PreprocessEntities(entities);
             return entities;
         }
@@ -102,7 +109,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
             return;
         }
 
-        private List<Entity> InspectEntities(string text, List<StructData> structDataList, bool enableFuzzyMatch)
+        private List<Entity> InspectEntities(string text, List<StructData> structDataList)
         {
             var entities = new List<Entity>();
             var textUpper = text.ToUpper();
@@ -133,7 +140,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                 }
 
                 // var textStripTags = HtmlTextUtility.StripTags(text);
-                if (enableFuzzyMatch)
+                if (_enableFuzzyMatch)
                 {
                     var entitiesFuzzyMatch = FuzzyMatchUtility.FuzzyMatch(text.ToUpper(), structData.Text.ToUpper(), 2, 0.6);
                     foreach (var entity in entitiesFuzzyMatch)

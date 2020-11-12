@@ -8,12 +8,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Microsoft.Health.Fhir.Anonymizer.Core.AnonymizerConfigurations.TextAnalytics;
+using Microsoft.Health.Fhir.Anonymizer.Core.AnonymizerConfigurations;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect.Html;
 using Newtonsoft.Json;
 using Polly;
 using Polly.Timeout;
+using Polly.Wrap;
 
 namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
 {
@@ -23,7 +24,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
         // Class members for HTTP requests
         private readonly int _maxLength = 5000; // byte
         private readonly int _taskTimeout = 20000; // millisecond
-        private int _requestTimeout = 5000; // millisecond
+        private readonly int _requestTimeout = 5000; // millisecond
         private int _maxNumberOfRequestTimeoutRetries = 2;
         private readonly HttpClient _client = new HttpClient();
         private static readonly int _maxNumberOfRetries = 6;
@@ -36,12 +37,16 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
             HttpStatusCode.GatewayTimeout // 504
         };
         private readonly ILogger _logger = AnonymizerLogging.CreateLogger<TextAnalyticRecognizer>();
+        private readonly AsyncPolicyWrap<HttpResponseMessage> _policyWrap;
 
-        public TextAnalyticRecognizer(RecognizerApi recognizerApi)
+        public TextAnalyticRecognizer(TextAnalyticRecognizerParameters parameters)
         {
             // Configure client
-            _client.BaseAddress = new Uri(recognizerApi.Url);
-            _client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", recognizerApi.Key);
+            _client.BaseAddress = new Uri(parameters.RecognizerApi.Url);
+            _client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", parameters.RecognizerApi.Key);
+            _policyWrap = GetPolicyWrap();
+            _taskTimeout = parameters.TimeoutPerTask;
+            _requestTimeout = parameters.TimeoutPerRequest;
         }
 
         public List<Entity> RecognizeText(string text)
@@ -122,6 +127,25 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
 
         private async Task<string> GetResponse(string requestText)
         {
+            HttpResponseMessage response = new HttpResponseMessage();
+            try
+            {
+                response = await _policyWrap.ExecuteAsync(
+                    async ct => await _client.SendAsync(CreateRequestMessage(requestText), ct), CancellationToken.None);
+            }
+            catch (TimeoutRejectedException)
+            {
+                _logger.LogDebug($"TextAnalyticRecognizer: {_maxNumberOfRequestTimeoutRetries} timeout retries of single request all failed.");
+                throw new TimeoutException();
+            }
+
+            response.EnsureSuccessStatusCode();
+            var responseString = await response.Content.ReadAsStringAsync();
+            return responseString;
+        }
+
+        private AsyncPolicyWrap<HttpResponseMessage> GetPolicyWrap()
+        {
             var retryPolicy = Policy
                 .Handle<HttpRequestException>()
                 .OrResult<HttpResponseMessage>(r => _httpStatusCodesForRetrying.Contains(r.StatusCode))
@@ -145,23 +169,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                    }
                );
             
-            var policyWrap = Policy.WrapAsync(retryPolicy, timeoutRetryPolicy, timeoutPolicy);
-
-            HttpResponseMessage response = new HttpResponseMessage();
-            try
-            {
-                response = await policyWrap.ExecuteAsync(
-                    async ct => await _client.SendAsync(CreateRequestMessage(requestText), ct), CancellationToken.None);
-            }
-            catch (TimeoutRejectedException)
-            {
-                _logger.LogDebug($"TextAnalyticRecognizer: {_maxNumberOfRequestTimeoutRetries} timeout retries of single request all failed.");
-                throw new TimeoutException();
-            }
-
-            response.EnsureSuccessStatusCode();
-            var responseString = await response.Content.ReadAsStringAsync();
-            return responseString;
+            return Policy.WrapAsync(retryPolicy, timeoutRetryPolicy, timeoutPolicy);
         }
 
         private List<Entity> ResponseContentToEntities(MicrosoftResponseContent responseContent)

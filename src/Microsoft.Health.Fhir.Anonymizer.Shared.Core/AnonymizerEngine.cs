@@ -117,7 +117,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core
             _processors[AnonymizerMethod.Redact.ToString().ToUpperInvariant()] = RedactProcessor.Create(configurationManager);
             _processors[AnonymizerMethod.CryptoHash.ToString().ToUpperInvariant()] = new CryptoHashProcessor(configurationManager.GetParameterConfiguration().CryptoHashKey);
             _processors[AnonymizerMethod.Encrypt.ToString().ToUpperInvariant()] = new EncryptProcessor(configurationManager.GetParameterConfiguration().EncryptKey);
-            _processors[AnonymizerMethod.Inspect.ToString().ToUpperInvariant()] = new InspectProcessor(configurationManager.GetParameterConfiguration().RecognizerApi);
+            _processors[AnonymizerMethod.Inspect.ToString().ToUpperInvariant()] = new InspectProcessor(configurationManager.GetParameterConfiguration().InspectParameters);
             //_processors[AnonymizerMethod.NamedEntityRecognition.ToString().ToUpperInvariant()] = new NerTAProcessor(configurationManager.GetParameterConfiguration().RecognizerApi);
             _processors[AnonymizerMethod.Substitute.ToString().ToUpperInvariant()] = new SubstituteProcessor();
             _processors[AnonymizerMethod.Perturb.ToString().ToUpperInvariant()] = new PerturbProcessor();

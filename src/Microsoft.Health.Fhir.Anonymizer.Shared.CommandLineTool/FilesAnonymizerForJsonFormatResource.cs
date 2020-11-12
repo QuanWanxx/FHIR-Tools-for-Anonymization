@@ -42,15 +42,15 @@ namespace Microsoft.Health.Fhir.Anonymizer.Tool
             {
                 KeepOrder = false,
                 BatchSize = 1,
-                PartitionCount = Environment.ProcessorCount * 2
-                // PartitionCount = 1
+                // PartitionCount = Environment.ProcessorCount * 2
+                PartitionCount = 1
             };
 
             executor.AnonymizerFunctionAsync = async file =>
             {
                 try
                 {
-                    // Console.WriteLine(file);
+                    Console.WriteLine(file);
                     return await FileAnonymize(file).ConfigureAwait(false);
                 }
                 catch (Exception ex)

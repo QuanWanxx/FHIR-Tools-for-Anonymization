@@ -1,5 +1,4 @@
-﻿using Microsoft.Health.Fhir.Anonymizer.Core.AnonymizerConfigurations.TextAnalytics;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Microsoft.Health.Fhir.Anonymizer.Core.AnonymizerConfigurations
@@ -31,8 +30,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.AnonymizerConfigurations
         [DataMember(Name = "restrictedZipCodeTabulationAreas")]
         public List<string> RestrictedZipCodeTabulationAreas { get; set; }
 
-        [DataMember(Name = "recognizerApi")]
-        public RecognizerApi RecognizerApi { get; set; }
+        [DataMember(Name = "inspectParameters")]
+        public InspectParameters InspectParameters { get; set; }
 
         public string DateShiftKeyPrefix { get; set; }
     }

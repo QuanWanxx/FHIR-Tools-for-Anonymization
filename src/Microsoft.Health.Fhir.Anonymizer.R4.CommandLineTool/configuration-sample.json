@@ -4,9 +4,6 @@
 	{
 	  "path": "nodesByType('Narrative').div",
     "method": "inspect",
-    "enableStructMatchRecognizer": true,
-    "enableRuleBasedRecognizer": true,
-    "enableTextAnalyticRecognizer": true,
 	  "matchExpressions": [
 		"nodesByType('HumanName')",
 		"nodesByType('ContactPoint')",
@@ -15,10 +12,10 @@
 		"nodesByType('Address')",
 		"nodesByType('Period')",
 		"nodesByType('Identifier')",
-		"nodesByType('Reference')",
+		"nodesByType('Reference')"
 	  ],
 	  "ignoreExpressions": [
-		"nodesByType('CodeableConcept').text",
+		"nodesByType('CodeableConcept').text"
 	  ],
 	  "matchTypes": [
 		"string",
@@ -237,10 +234,25 @@
     "enablePartialAgesForRedact": true,
     "enablePartialDatesForRedact": true,
     "enablePartialZipCodesForRedact": true,
-	"recognizerApi": {
-		"url": "https://eastus.api.cognitive.microsoft.com/text/analytics/v3.1-preview.1/entities/recognition/pii",
-		"key": "eff334d6e5e04b2d94d10ca0bccb4602"
-		},
+    "inspectParameters": {
+      "structMatchRecognizerParameters": {
+        "enableStructMatchRecognizer": true,
+        "enableFuzzyMatch": true
+      },
+      "textAnalyticRecognizerParameters": {
+        "recognizerApi": {
+          "url": "https://eastus.api.cognitive.microsoft.com/text/analytics/v3.1-preview.1/entities/recognition/pii",
+          "key": "eff334d6e5e04b2d94d10ca0bccb4602"
+        },
+        "enableTextAnalyticRecognizer": true,
+        "timeoutPerTask": 20000,
+        "timeoutPerRequest": 5000
+      },
+      "ruleBasedRecognizerParameters": {
+        "enableRuleBasedRecognizer": true,
+        "timeout": 10000
+      }
+    },
     "restrictedZipCodeTabulationAreas": [
       "036",
       "059",
