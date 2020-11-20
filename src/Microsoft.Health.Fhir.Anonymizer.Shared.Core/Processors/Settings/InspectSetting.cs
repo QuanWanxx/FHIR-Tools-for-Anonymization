@@ -8,7 +8,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors.Settings
 {
     public class InspectSetting
     {
-        public List<string> MatchExpressions { get; set; }
+        public List<string> ExactMatchExpressions { get; set; }
+        public List<string> FuzzyMatchExpressions { get; set; }
         public List<string> MatchTypes { get; set; }
         public List<string> IgnoreExpressions { get; set; }
 
@@ -16,12 +17,14 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors.Settings
         {
             EnsureArg.IsNotNull(ruleSettings);
 
-            var matchExpressionsString = ruleSettings.GetValueOrDefault("matchExpressions")?.ToString();
+            var exactMatchExpressionsString = ruleSettings.GetValueOrDefault("exactMatchExpressions")?.ToString();
+            var fuzzyMatchExpressionsString = ruleSettings.GetValueOrDefault("fuzzyMatchExpressions")?.ToString();
             var matchTypesString = ruleSettings.GetValueOrDefault("matchTypes")?.ToString();
             var ignoreExpressionsString = ruleSettings.GetValueOrDefault("ignoreExpressions")?.ToString();
             return new InspectSetting
             {
-                MatchExpressions = JsonConvert.DeserializeObject<List<string>>(matchExpressionsString),
+                ExactMatchExpressions = JsonConvert.DeserializeObject<List<string>>(exactMatchExpressionsString),
+                FuzzyMatchExpressions = JsonConvert.DeserializeObject<List<string>>(fuzzyMatchExpressionsString),
                 MatchTypes = JsonConvert.DeserializeObject<List<string>>(matchTypesString),
                 IgnoreExpressions = JsonConvert.DeserializeObject<List<string>>(ignoreExpressionsString),
             };

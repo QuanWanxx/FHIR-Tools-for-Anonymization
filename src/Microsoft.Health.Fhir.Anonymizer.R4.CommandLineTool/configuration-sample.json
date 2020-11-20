@@ -4,27 +4,29 @@
 	{
 	  "path": "nodesByType('Narrative').div",
     "method": "inspect",
-	  "matchExpressions": [
-		"nodesByType('HumanName')",
-		"nodesByType('ContactPoint')",
-		"nodesByType('Date')",
-		"nodesByType('Datetime')",
-		"nodesByType('Address')",
-		"nodesByType('Period')",
-		"nodesByType('Identifier')",
-		"nodesByType('Reference')"
-	  ],
+	  "exactMatchExpressions": [
+      "nodesByType('Identifier')",
+      "nodesByType('Reference')"
+    ],
+    "fuzzyMatchExpressions": [
+      "nodesByType('HumanName')",
+      "nodesByType('Address')",
+      "nodesByType('ContactPoint')",
+      "nodesByType('Date')",
+      "nodesByType('Datetime')",
+      "nodesByType('Period')"
+    ],
 	  "ignoreExpressions": [
-		"nodesByType('CodeableConcept').text"
+		  "nodesByType('CodeableConcept').text"
 	  ],
 	  "matchTypes": [
-		"string",
-		"date",
-		"time",
-		"dateTime",
-		"instant",
-		"url",
-		"uri"
+      "string",
+      "date",
+      "time",
+      "dateTime",
+      "instant",
+      "url",
+      "uri"
 	  ]
 	},
 	
@@ -244,12 +246,12 @@
           "url": "https://eastus.api.cognitive.microsoft.com/text/analytics/v3.1-preview.1/entities/recognition/pii",
           "key": "eff334d6e5e04b2d94d10ca0bccb4602"
         },
-        "enableTextAnalyticRecognizer": true,
+        "enableTextAnalyticRecognizer": false,
         "timeoutPerTask": 20000,
         "timeoutPerRequest": 5000
       },
       "ruleBasedRecognizerParameters": {
-        "enableRuleBasedRecognizer": true,
+        "enableRuleBasedRecognizer": false,
         "timeout": 10000
       }
     },

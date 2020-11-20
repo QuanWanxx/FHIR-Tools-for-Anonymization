@@ -158,10 +158,12 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
                     }
                     else
                     {
+                        var text = entity.Text.Substring(0, stripInfo.SkipPositions[i].Index - entity.Offset);
+                        if (text.Trim().Length == 0) break;
                         result.Add(new Entity() {
                             Category = entity.Category,
                             SubCategory = entity.SubCategory,
-                            Text = entity.Text.Substring(0, stripInfo.SkipPositions[i].Index - entity.Offset),
+                            Text = text,
                             Offset = entity.Offset + shiftLength,
                             Length = stripInfo.SkipPositions[i].Index - entity.Offset,
                             ConfidenceScore = entity.ConfidenceScore,
