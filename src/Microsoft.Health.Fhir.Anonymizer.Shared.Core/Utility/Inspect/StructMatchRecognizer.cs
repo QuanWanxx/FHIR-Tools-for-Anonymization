@@ -2,15 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Web;
 using Hl7.FhirPath;
 using Hl7.Fhir.ElementModel;
 using Microsoft.Health.Fhir.Anonymizer.Core.AnonymizerConfigurations;
 using Microsoft.Health.Fhir.Anonymizer.Core.Extensions;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect;
 using Microsoft.Health.Fhir.Anonymizer.Core.Processors.Settings;
-using System.ComponentModel;
-using System.Diagnostics;
 
 namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
 {
@@ -26,8 +23,6 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
         private HashSet<ElementNode> _ignoreNodes = new HashSet<ElementNode>();
         private InspectSetting _inspectSetting;
         private readonly bool _enableFuzzyMatch;
-        public static TimeSpan FuzzyMatchTime1 = new TimeSpan();
-        public static TimeSpan FuzzyMatchTime2 = new TimeSpan();
 
         public StructMatchRecognizer(StructMatchRecognizerParameters parameters)
         {
@@ -159,68 +154,18 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
 
             foreach (var structData in structDataListForFuzzyMatch)
             {
-                // var textStripTags = HtmlTextUtility.StripTags(text);
                 if (_enableFuzzyMatch)
                 {
-                    Stopwatch stopWatch = new Stopwatch();
-                    stopWatch.Start();
-                    var entitiesFuzzyMatch1 = FuzzyMatchUtility.FuzzyMatch1(text.ToUpper(), structData.Text.ToUpper(), 2, 0.6);
-                    stopWatch.Stop();
-                    FuzzyMatchTime1 += stopWatch.Elapsed;
-                    stopWatch.Reset();
-                    stopWatch.Start();
-                    var entitiesFuzzyMatch2 = FuzzyMatchUtility.FuzzyMatch2(text.ToUpper(), structData.Text.ToUpper(), 2, 0.6);
-                    stopWatch.Stop();
-                    FuzzyMatchTime2 += stopWatch.Elapsed;
-
-                    var good = true;
-                    if (entitiesFuzzyMatch1.Count == entitiesFuzzyMatch2.Count)
-                    {
-                        for (var i = 0; i < entitiesFuzzyMatch1.Count; i++)
-                        {
-                            if (entitiesFuzzyMatch1[i].Text != entitiesFuzzyMatch2[i].Text)
-                            {
-                                // PrintBadCase(text, structData.Text, entitiesFuzzyMatch1, entitiesFuzzyMatch2);
-                                good = false;
-                                break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        good = false;
-                        // PrintBadCase(text, structData.Text, entitiesFuzzyMatch1, entitiesFuzzyMatch2);
-                    }
-                    if (good && entitiesFuzzyMatch1.Count != 0)
-                    {
-                        PrintBadCase(text, structData.Text, entitiesFuzzyMatch1, entitiesFuzzyMatch2);
-                    }
-
-                    foreach (var entity in entitiesFuzzyMatch1)
+                    var entitiesFuzzyMatch = FuzzyMatchUtility.FuzzyMatch(text.ToUpper(), structData.Text.ToUpper());
+                    foreach (var entity in entitiesFuzzyMatch)
                     {
                         entity.Category = structData.Category;
                         entity.SubCategory = structData.InstanceType;
                     }
-                    entities.AddRange(entitiesFuzzyMatch1);
+                    entities.AddRange(entitiesFuzzyMatch);
                 }
             }
             return entities;
-        }
-
-        private void PrintBadCase(string text, string pattern, List<Entity> entitiesFuzzyMatch1, List<Entity> entitiesFuzzyMatch2)
-        {
-            // Console.WriteLine($"Text: {text}");
-            Console.WriteLine($"Pattern: {pattern}");
-            Console.WriteLine("FuzzyMatch1:");
-            foreach (var entity in entitiesFuzzyMatch1)
-            {
-                Console.WriteLine(entity.Text);
-            }
-            Console.WriteLine("FuzzyMatch2:");
-            foreach (var entity in entitiesFuzzyMatch2)
-            {
-                Console.WriteLine(entity.Text);
-            }
         }
 
         private string TryFindDetailName(ElementNode node)

@@ -1,12 +1,7 @@
 ﻿using System;
-using System.IO;
 using System.Threading.Tasks;
 using CommandLine;
-using Microsoft.Extensions.Logging;
-using Microsoft.Health.Fhir.Anonymizer.Core;
-using Microsoft.Health.Fhir.Anonymizer.Core.Processors;
 using System.Diagnostics;
-using Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect;
 
 namespace Microsoft.Health.Fhir.Anonymizer.Tool    
 {
@@ -38,13 +33,10 @@ namespace Microsoft.Health.Fhir.Anonymizer.Tool
         {
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
-            await CommandLine.Parser.Default.ParseArguments<Options>(args)
+            await Parser.Default.ParseArguments<Options>(args)
                .MapResult(async options => await AnonymizationLogic.AnonymizeAsync(options).ConfigureAwait(false), _ => Task.FromResult(1)).ConfigureAwait(false);
             stopWatch.Stop();
             Console.WriteLine($"Total: {stopWatch.Elapsed}");
-            Console.WriteLine($"StructMatch: {InspectProcessor.StructMatchTime} {StructMatchRecognizer.FuzzyMatchTime1} {StructMatchRecognizer.FuzzyMatchTime2}");
-            Console.WriteLine($"TA: {InspectProcessor.TATime}");
-            Console.WriteLine($"RT: {InspectProcessor.RTTime}");
         }        
     }
 }
