@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Collections.Generic;
 using Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect;
 
 namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
@@ -26,7 +26,14 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
             }
         }
 
-        public static string ProcessEntities(string originText, IEnumerable<Entity> entities)
+        public static string Process(string rawText, List<Entity> entities, StripInfo stripInfo)
+        {
+            entities = ResolveEntities(entities);
+            entities = ShiftEntities(entities, stripInfo);
+            return ReplaceEntities(rawText, entities);
+        }
+
+        public static string ReplaceEntities(string originText, IEnumerable<Entity> entities)
         {
             if (string.IsNullOrWhiteSpace(originText))
             {
@@ -54,7 +61,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
         // E.g.
         // Raw entities: {("MS 100 University", "ORG", 0.2), ("100", "AGE", 0.5)}
         // Processed entities: {("MS ", "ORG", 0.2), ("100", "AGE", 0.5), (" University", "ORG", 0.2)}
-        public static List<Entity> PreprocessEntities(List<Entity> entities)
+        public static List<Entity> ResolveEntities(List<Entity> entities)
         {
             // Get the entering and leaving events for entities
             var events = new List<Event>();
@@ -136,7 +143,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
             return result;
         }
 
-        public static List<Entity> PostprocessEntities(List<Entity> entities, stripInfo stripInfo)
+        public static List<Entity> ShiftEntities(List<Entity> entities, StripInfo stripInfo)
         {
             var result = new List<Entity>();
             int shiftLength = 0;

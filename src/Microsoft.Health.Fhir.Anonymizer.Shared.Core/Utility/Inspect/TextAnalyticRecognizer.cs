@@ -82,7 +82,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
 
             // Merge results
             var recognitionResults = SegmentUtility.MergeSegmentRecognitionResults(segments, segmentRecognitionResults);
-            recognitionResults = EntityProcessUtility.PreprocessEntities(recognitionResults);
+            recognitionResults = EntityProcessUtility.ResolveEntities(recognitionResults);
             return recognitionResults;
         }
 

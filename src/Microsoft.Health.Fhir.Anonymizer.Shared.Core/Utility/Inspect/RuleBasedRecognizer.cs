@@ -93,7 +93,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
 
             recognitionResults = Postprocess(text, recognitionResults);
 
-            recognitionResults = EntityProcessUtility.PreprocessEntities(recognitionResults);
+            recognitionResults = EntityProcessUtility.ResolveEntities(recognitionResults);
 
             return recognitionResults;
         }

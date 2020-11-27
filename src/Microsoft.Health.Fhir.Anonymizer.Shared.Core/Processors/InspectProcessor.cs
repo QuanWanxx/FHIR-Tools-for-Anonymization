@@ -89,10 +89,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             // Combined entities
             var entities = entitiesTA.Concat(entitiesStructMatch).Concat(entitiesRuleBased).ToList<Entity>();
 
-            entities = EntityProcessUtility.PreprocessEntities(entities);
-            entities = EntityProcessUtility.PostprocessEntities(entities, stripInfo);
-            var processedText = EntityProcessUtility.ProcessEntities(rawText, entities);
-            node.Value = processedText;
+            node.Value = EntityProcessUtility.Process(rawText, entities, stripInfo);
 
             _logger.LogDebug($"Fhir value '{input}' at '{node.Location}' is de-identified to '{node.Value}'.");
             processResult.AddProcessRecord(AnonymizationOperations.Inspect, node);
