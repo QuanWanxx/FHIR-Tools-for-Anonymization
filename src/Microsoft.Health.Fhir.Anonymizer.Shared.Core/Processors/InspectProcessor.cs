@@ -44,22 +44,25 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
                 return processResult;
             }
 
+            // Preprocess node.Value
             var input = node.Value.ToString();
             var rawText = HttpUtility.HtmlDecode(input);
+            // Replace each HTML tag with a single space
+            // This will change the original indexes of characters, so stripInfo will be used to revert indexes.
             var stripInfo = HtmlTextUtility.StripTags(rawText);
             var strippedText = stripInfo.StrippedText;
 
+            // StructMatch
             var entitiesStructMatch = new List<Entity>();
             if (_inspectParameters.StructMatchRecognizerParameters.EnableStructMatchRecognizer)
             {
-                // Structuerd fields match recognizer results
                 entitiesStructMatch = _structMatchRecognizer.RecognizeText(strippedText, node, settings);
             }
 
+            // Text Analytics API
             var entitiesTA = new List<Entity>();
             if (_inspectParameters.TextAnalyticRecognizerParameters.EnableTextAnalyticRecognizer)
             {
-                // TA recognizer results
                 try
                 {
                     entitiesTA = _textAnalyticRecognizer.RecognizeText(strippedText);
@@ -71,10 +74,10 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
                 }
             }
             
+            // Recognizer.Text & self-designed rules
             var entitiesRuleBased = new List<Entity>();
             if (_inspectParameters.RuleBasedRecognizerParameters.EnableRuleBasedRecognizer)
             {
-                // Rule-based (Recognizers.Text) recognizer results
                 try
                 {
                     entitiesRuleBased = _ruleBasedRecognizer.RecognizeText(strippedText);
@@ -89,7 +92,8 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             // Combined entities
             var entities = entitiesTA.Concat(entitiesStructMatch).Concat(entitiesRuleBased).ToList<Entity>();
 
-            node.Value = EntityProcessUtility.Process(rawText, entities, stripInfo);
+            // Anonymize recognized entities in node.Value
+            node.Value = EntityProcessUtility.Postprocess(rawText, entities, stripInfo);
 
             _logger.LogDebug($"Fhir value '{input}' at '{node.Location}' is de-identified to '{node.Value}'.");
             processResult.AddProcessRecord(AnonymizationOperations.Inspect, node);

@@ -75,7 +75,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utility\DateTimeUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\EncryptUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\Inspect\EntityProcessUtility.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utility\HtmlTextUtility.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utility\Inspect\HtmlTextUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\Inspect\FuzzyMatchUtility.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\Inspect\INamedEntityRecognizer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\Inspect\SegmentUtility.cs" />

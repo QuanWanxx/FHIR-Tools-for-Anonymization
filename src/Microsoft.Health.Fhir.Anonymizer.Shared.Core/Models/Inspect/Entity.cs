@@ -1,6 +1,9 @@
-﻿namespace Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect
+﻿using System;
+using System.Security.Cryptography;
+
+namespace Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect
 {
-    public class Entity
+    public class Entity : IEquatable<Entity>
     {
         public string Category { get; set; }
 
@@ -15,5 +18,12 @@
         public double ConfidenceScore { get; set; }
 
         public string Recognizer { get; set; }
+
+        public bool Equals(Entity entity)
+        {
+            return Category == entity.Category && SubCategory == entity.SubCategory && Text == entity.Text
+                && Offset == entity.Offset && Length == entity.Length && ConfidenceScore == entity.ConfidenceScore
+                && Recognizer == entity.Recognizer;
+        }
     }
 }

@@ -7,10 +7,7 @@ using Microsoft.Health.Fhir.Anonymizer.Core.Models.Inspect;
 
 namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
 {
-    // Used to handle the overlap entities
-    // The task is similiar to an task  https://leetcode.com/problems/the-skyline-problem/
-    // Solution refers to the discussion under this problem.
-    class EntityProcessUtility
+    public class EntityProcessUtility
     {
         struct Event
         {
@@ -26,23 +23,25 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
             }
         }
 
-        public static string Process(string rawText, List<Entity> entities, StripInfo stripInfo)
+        // Anonymize entities in rawText with their categories
+        public static string Postprocess(string rawText, List<Entity> entities, StripInfo stripInfo)
         {
             entities = ResolveEntities(entities);
             entities = ShiftEntities(entities, stripInfo);
             return ReplaceEntities(rawText, entities);
         }
 
-        public static string ReplaceEntities(string originText, IEnumerable<Entity> entities)
+        // Replace entities in originText with their Categories
+        public static string ReplaceEntities(string originalText, IEnumerable<Entity> entities)
         {
-            if (string.IsNullOrWhiteSpace(originText))
+            if (string.IsNullOrWhiteSpace(originalText))
             {
-                return originText;
+                return originalText;
             }
 
             var result = new StringBuilder();
             // Use StringInfo to avoid offset issues https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/concepts/text-offsets
-            var text = new StringInfo(originText);
+            var text = new StringInfo(originalText);
             var startIndex = 0;
             foreach (var entity in entities)
             {
@@ -143,6 +142,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
             return result;
         }
 
+        // Use stripInfo to shift the offsets of entities to the original ones
         public static List<Entity> ShiftEntities(List<Entity> entities, StripInfo stripInfo)
         {
             var result = new List<Entity>();
@@ -152,30 +152,38 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
             {
                 while (i < stripInfo.SkipPositions.Count)
                 {
-                    if (entity.Offset >= stripInfo.SkipPositions[i].Index)
+                    // if the entity is after SkipPositions[i]
+                    if (entity.Offset > stripInfo.SkipPositions[i].Index)
                     {
                         shiftLength += stripInfo.SkipPositions[i].Length;
                         i++;
                     }
+                    // if the entity is before SkipPositions[i]
                     else if (entity.Offset + entity.Length <= stripInfo.SkipPositions[i].Index)
                     {
                         entity.Offset += shiftLength;
                         result.Add(entity);
                         break;
                     }
+                    // if the entity and SkipPositions[i] have overlaps
                     else
                     {
+                        // Add the part before SkipPositions[i] to result
                         var text = entity.Text.Substring(0, stripInfo.SkipPositions[i].Index - entity.Offset);
-                        if (text.Trim().Length == 0) break;
-                        result.Add(new Entity() {
-                            Category = entity.Category,
-                            SubCategory = entity.SubCategory,
-                            Text = text,
-                            Offset = entity.Offset + shiftLength,
-                            Length = stripInfo.SkipPositions[i].Index - entity.Offset,
-                            ConfidenceScore = entity.ConfidenceScore,
-                            Recognizer = entity.Recognizer
-                        });
+                        if (text.Trim().Length != 0)
+                        {
+                            result.Add(new Entity()
+                            {
+                                Category = entity.Category,
+                                SubCategory = entity.SubCategory,
+                                Text = text,
+                                Offset = entity.Offset + shiftLength,
+                                Length = stripInfo.SkipPositions[i].Index - entity.Offset,
+                                ConfidenceScore = entity.ConfidenceScore,
+                                Recognizer = entity.Recognizer
+                            });
+                        }
+                        // the rest of the entity
                         entity.Text = entity.Text.Substring(stripInfo.SkipPositions[i].Index - entity.Offset + 1);
                         entity.Offset = stripInfo.SkipPositions[i].Index + 1;
                         entity.Length = entity.Text.Length;

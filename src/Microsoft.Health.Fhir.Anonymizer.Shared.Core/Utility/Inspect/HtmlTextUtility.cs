@@ -1,11 +1,9 @@
 ﻿using HtmlAgilityPack;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility
+namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
 {
     public class HtmlTextUtility
     {
@@ -22,16 +20,22 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility
             int startIndex = 0;
             foreach (var node in nodes)
             {
-                if (!node.HasChildNodes)
+                if (node.Name == "#text")
                 {
-                    result.SkipPositions.Add(new SkipPosition() { Index = sb.Length, Length = node.StreamPosition - startIndex - 1 });
-                    sb.Append(new string(' ', 1));
+                    if (node.StreamPosition > startIndex)
+                    {
+                        result.SkipPositions.Add(new SkipPosition() { Index = sb.Length, Length = node.StreamPosition - startIndex - 1 });
+                        sb.Append(new string(' ', 1));
+                    }
                     sb.Append(node.InnerText);
                     startIndex = node.StreamPosition + node.InnerLength;
                 }
             }
-            result.SkipPositions.Add(new SkipPosition() { Index = sb.Length, Length = html.Length - startIndex - 1 });
-            sb.Append(new string(' ', 1));
+            if (html.Length > startIndex)
+            {
+                result.SkipPositions.Add(new SkipPosition() { Index = sb.Length, Length = html.Length - startIndex - 1 });
+                sb.Append(new string(' ', 1));
+            }
             result.StrippedText = sb.ToString();
             return result;
         }
