@@ -42,8 +42,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Tool
             {
                 KeepOrder = false,
                 BatchSize = 1,
-                // PartitionCount = Environment.ProcessorCount * 2
-                PartitionCount = 1
+                PartitionCount = Environment.ProcessorCount * 2
             };
 
             executor.AnonymizerFunctionAsync = async file =>

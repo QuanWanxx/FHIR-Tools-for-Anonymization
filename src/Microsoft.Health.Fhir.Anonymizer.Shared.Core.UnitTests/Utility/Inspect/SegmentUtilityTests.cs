@@ -64,10 +64,10 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.UnitTests.Utility.Inspect
             };
             yield return new object[]
             {
-                "I hate Goooooooooogle.", 10,
+                "I like Goooooooooogle.", 10,
                 new List<Segment>()
                 {
-                    new Segment() { Offset = 0, Text = "I hate " },
+                    new Segment() { Offset = 0, Text = "I like " },
                     new Segment() { Offset = 7, Text = "Gooooooooo" },
                     new Segment() { Offset = 17, Text = "ogle." }
                 }
