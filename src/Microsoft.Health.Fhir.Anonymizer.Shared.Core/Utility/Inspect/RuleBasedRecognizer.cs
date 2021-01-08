@@ -38,6 +38,10 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
 
         public RuleBasedRecognizer(RuleBasedRecognizerParameters parameters)
         {
+            if (parameters == null)
+            {
+                return;
+            }
             _timeout = parameters.Timeout;
         }
 

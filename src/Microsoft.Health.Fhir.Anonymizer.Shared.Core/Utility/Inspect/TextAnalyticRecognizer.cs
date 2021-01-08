@@ -41,6 +41,10 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
 
         public TextAnalyticRecognizer(TextAnalyticRecognizerParameters parameters)
         {
+            if (parameters == null)
+            {
+                return;
+            }
             // Configure client
             _client.BaseAddress = new Uri(parameters.RecognizerApi.Url);
             _client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", parameters.RecognizerApi.Key);

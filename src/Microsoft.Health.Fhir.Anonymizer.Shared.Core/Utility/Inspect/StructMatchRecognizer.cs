@@ -26,6 +26,10 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Utility.Inspect
 
         public StructMatchRecognizer(StructMatchRecognizerParameters parameters)
         {
+            if (parameters == null)
+            {
+                return;
+            }
             _enableFuzzyMatch = parameters.EnableFuzzyMatch;
         }
 

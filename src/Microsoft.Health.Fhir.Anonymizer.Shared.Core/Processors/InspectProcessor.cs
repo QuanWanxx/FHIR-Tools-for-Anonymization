@@ -26,9 +26,9 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
 
         public InspectProcessor(InspectParameters inspectParameters)
         {
-            _structMatchRecognizer = new StructMatchRecognizer(inspectParameters.StructMatchRecognizerParameters);
-            _textAnalyticRecognizer = new TextAnalyticRecognizer(inspectParameters.TextAnalyticRecognizerParameters);
-            _ruleBasedRecognizer = new RuleBasedRecognizer(inspectParameters.RuleBasedRecognizerParameters);
+            _structMatchRecognizer = new StructMatchRecognizer(inspectParameters?.StructMatchRecognizerParameters);
+            _textAnalyticRecognizer = new TextAnalyticRecognizer(inspectParameters?.TextAnalyticRecognizerParameters);
+            _ruleBasedRecognizer = new RuleBasedRecognizer(inspectParameters?.RuleBasedRecognizerParameters);
             _inspectParameters = inspectParameters;
         }
 
