@@ -54,14 +54,14 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
 
             // StructMatch
             var entitiesStructMatch = new List<Entity>();
-            if (_inspectParameters.StructMatchRecognizerParameters.EnableStructMatchRecognizer)
+            if (_inspectParameters?.StructMatchRecognizerParameters?.EnableStructMatchRecognizer == true)
             {
                 entitiesStructMatch = _structMatchRecognizer.RecognizeText(strippedText, node, settings);
             }
 
             // Text Analytics API
             var entitiesTA = new List<Entity>();
-            if (_inspectParameters.TextAnalyticRecognizerParameters.EnableTextAnalyticRecognizer)
+            if (_inspectParameters?.TextAnalyticRecognizerParameters?.EnableTextAnalyticRecognizer == true)
             {
                 try
                 {
@@ -76,7 +76,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Processors
             
             // Recognizer.Text & self-designed rules
             var entitiesRuleBased = new List<Entity>();
-            if (_inspectParameters.RuleBasedRecognizerParameters.EnableRuleBasedRecognizer)
+            if (_inspectParameters?.RuleBasedRecognizerParameters?.EnableRuleBasedRecognizer == true)
             {
                 try
                 {
