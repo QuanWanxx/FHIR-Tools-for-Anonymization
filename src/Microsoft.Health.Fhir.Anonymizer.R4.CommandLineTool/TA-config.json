@@ -1,0 +1,9 @@
+{
+	"name": "MicrosoftNerPii",
+	"type": "MicrosoftNer",
+	"api": {
+		"endpoint": "https://eastus.api.cognitive.microsoft.com",
+		"path": "/text/analytics/v3.1-preview.1/entities/recognition/pii",
+		"key": "eff334d6e5e04b2d94d10ca0bccb4602"
+		}
+}

@@ -49,6 +49,7 @@ namespace Microsoft.Health.Fhir.Anonymizer.Tool
             {
                 try
                 {
+                    Console.WriteLine(file);
                     return await FileAnonymize(file).ConfigureAwait(false);
                 }
                 catch (Exception ex)

@@ -30,6 +30,9 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.AnonymizerConfigurations
         [DataMember(Name = "restrictedZipCodeTabulationAreas")]
         public List<string> RestrictedZipCodeTabulationAreas { get; set; }
 
+        [DataMember(Name = "inspectParameters")]
+        public InspectParameters InspectParameters { get; set; }
+
         public string DateShiftKeyPrefix { get; set; }
     }
 }

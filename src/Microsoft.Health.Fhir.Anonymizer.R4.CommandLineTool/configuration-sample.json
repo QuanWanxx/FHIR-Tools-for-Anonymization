@@ -1,6 +1,36 @@
 {
   "fhirVersion": "R4",
   "fhirPathRules": [
+	{
+	  "path": "nodesByType('Narrative').div",
+    "method": "inspect",
+    "exactMatchExpressions": [
+      "nodesByType('Identifier')",
+      "nodesByType('Reference')",
+      "nodesByType('ContactPoint')",
+      "nodesByType('Date')",
+      "nodesByType('Datetime')",
+      "nodesByType('Period')"
+    ],
+    "fuzzyMatchExpressions": [
+      "nodesByType('HumanName')",
+      "nodesByType('Address')",
+      "nodesByType('ContactPoint').where(system='phone')"
+    ],
+	  "ignoreExpressions": [
+		  "nodesByType('CodeableConcept').text"
+	  ],
+	  "matchTypes": [
+      "string",
+      "date",
+      "time",
+      "dateTime",
+      "instant",
+      "url",
+      "uri"
+	  ]
+	},
+	
     {"path": "nodesByType('Extension')", "method": "redact"},
 
     {"path": "Organization.identifier", "method": "keep"},
@@ -11,8 +41,8 @@
     {"path": "nodesByType('HumanName').use", "method": "keep"},
     {"path": "nodesByType('Address').country", "method": "keep"},
     {"path": "nodesByType('Address').state", "method": "keep"},
-
     {"path": "Resource.id", "method": "cryptoHash"},
+
     {"path": "Bundle.entry.fullUrl", "method": "redact"},
     {"path": "Bundle.entry.request.url", "method": "redact"},
     {"path": "Bundle.entry.response.location", "method":"redact"},
@@ -176,7 +206,7 @@
     {"path": "InsurancePlan.coverage.benefit.requirement", "method": "redact"},
     {"path": "InsurancePlan.plan.generalCost.comment", "method": "redact"},
     
-
+    {"path": "nodesByType('Narrative')", "method": "redact"},
     {"path": "nodesByType('Expression').description", "method": "redact"},   
     {"path": "nodesByType('Expression').expression", "method": "redact"},    
     {"path": "nodesByType('Attachment').title", "method": "redact"},
@@ -189,7 +219,6 @@
     {"path": "nodesByType('Reference').display", "method": "redact"},
     {"path": "nodesByType('Reference').reference", "method": "cryptoHash"},
 
-    {"path": "nodesByType('Narrative')", "method": "redact"},
     {"path": "nodesByType('base64Binary')", "method": "redact"},
     {"path": "nodesByType('date')", "method": "dateshift"},
     {"path": "nodesByType('dateTime')", "method": "dateshift"},
@@ -208,6 +237,25 @@
     "enablePartialAgesForRedact": true,
     "enablePartialDatesForRedact": true,
     "enablePartialZipCodesForRedact": true,
+    "inspectParameters": {
+      "structMatchRecognizerParameters": {
+        "enableStructMatchRecognizer": true,
+        "enableFuzzyMatch": true
+      },
+      "textAnalyticRecognizerParameters": {
+        "recognizerApi": {
+          "url": "https://eastus.api.cognitive.microsoft.com/text/analytics/v3.1-preview.1/entities/recognition/pii",
+          "key": "eff334d6e5e04b2d94d10ca0bccb4602"
+        },
+        "enableTextAnalyticRecognizer": true,
+        "timeoutPerTask": 20000,
+        "timeoutPerRequest": 5000
+      },
+      "ruleBasedRecognizerParameters": {
+        "enableRuleBasedRecognizer": true,
+        "timeout": 10000
+      }
+    },
     "restrictedZipCodeTabulationAreas": [
       "036",
       "059",

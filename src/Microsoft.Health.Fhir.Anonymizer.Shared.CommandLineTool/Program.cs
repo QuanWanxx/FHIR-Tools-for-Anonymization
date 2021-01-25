@@ -1,9 +1,7 @@
 ﻿using System;
-using System.IO;
 using System.Threading.Tasks;
 using CommandLine;
-using Microsoft.Extensions.Logging;
-using Microsoft.Health.Fhir.Anonymizer.Core;
+using System.Diagnostics;
 
 namespace Microsoft.Health.Fhir.Anonymizer.Tool    
 {
@@ -33,8 +31,12 @@ namespace Microsoft.Health.Fhir.Anonymizer.Tool
     {
         public async static Task Main(string[] args)
         {
-            await CommandLine.Parser.Default.ParseArguments<Options>(args)
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+            await Parser.Default.ParseArguments<Options>(args)
                .MapResult(async options => await AnonymizationLogic.AnonymizeAsync(options).ConfigureAwait(false), _ => Task.FromResult(1)).ConfigureAwait(false);
+            stopWatch.Stop();
+            Console.WriteLine($"Total: {stopWatch.Elapsed}");
         }        
     }
 }

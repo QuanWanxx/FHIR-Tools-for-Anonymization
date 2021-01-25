@@ -33,6 +33,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Processors\Settings\SubstituteSettingTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Processors\Settings\PerturbSettingTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Processors\SubstituteProcessorTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utility\Inspect\SegmentUtilityTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utility\Inspect\HtmlTextUtilityTests.cs" />
     <None Include="$(MSBuildThisFileDirectory)TestConfigurations\configuration-generalize-fail-compiled-expression.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -68,6 +70,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utility\EncryptUtilityTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\PostalCodeUtilityTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\ReferenceUtilityTests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utility\Inspect\EntityProcessUtilityTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Validation\AttributeValidatorTests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Visitors\AnonymizationVisitorTests.cs" />
   </ItemGroup>

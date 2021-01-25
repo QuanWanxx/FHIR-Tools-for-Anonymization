@@ -6,6 +6,7 @@ using Xunit;
 
 namespace Microsoft.Health.Fhir.Anonymizer.Core.UnitTests.Processors.Settings
 {
+    // TODO: line separators
     public class GeneralizeSettingTests
     {
         public static IEnumerable<object[]> GetGeneralizeFhirRuleConfigs()
