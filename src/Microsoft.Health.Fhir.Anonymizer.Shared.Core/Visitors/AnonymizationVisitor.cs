@@ -67,16 +67,15 @@ namespace Microsoft.Health.Fhir.Anonymizer.Core.Visitors
         private ProcessResult ProcessResourceNode(ElementNode node)
         {
             ProcessResult result = new ProcessResult();
+            ProcessContext context = new ProcessContext
+            {
+                VisitedNodes = _visitedNodes
+            };
             string typeString = node.InstanceType;
             IEnumerable<AnonymizationFhirPathRule> resourceSpecificAndGeneralRules = GetRulesByType(typeString);
 
             foreach (var rule in resourceSpecificAndGeneralRules)
             {
-                ProcessContext context = new ProcessContext
-                {
-                    VisitedNodes = _visitedNodes
-                };
-
                 ProcessResult resultOnRule = new ProcessResult();
                 string method = rule.Method.ToUpperInvariant();
                 if (!_processors.ContainsKey(method))
